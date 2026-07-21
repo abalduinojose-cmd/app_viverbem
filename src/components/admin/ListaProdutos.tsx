@@ -1,15 +1,17 @@
 "use client";
-// Listagem de produtos do painel, com:
-// - toggles de 1 clique: Ativo (some/aparece no totem), Novidade, Destaque
-// - botões Editar e Apagar (Apagar: só admin)
-// - filtro rápido por nome
-// - reordenar arrastando (só admin, com o filtro vazio)
+// Gestão de produtos e preços — visual moderno e elegante.
+// - Cards em grade com foto, preço editável rápido e toggles
+// - Filtro por texto e por situação (ativos/inativos/novidade/destaque)
+// - Resumo no topo (total, ativos, em falta)
+// - Reordenar arrastando (só admin, com o filtro vazio)
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ProdutoDTO, TIPO_COMBO, PAPEL_ADMIN } from "@/lib/tipos";
-import { formatarPreco } from "@/lib/preco";
+import { formatarPreco, centavosParaInput, converterPrecoParaCentavos } from "@/lib/preco";
+
+type FiltroSituacao = "todos" | "ativos" | "inativos" | "novidade" | "destaque";
 
 export function ListaProdutos({
   produtos,
@@ -20,21 +22,44 @@ export function ListaProdutos({
 }) {
   const router = useRouter();
   const ehAdmin = papel === PAPEL_ADMIN;
-  const [filtro, setFiltro] = useState("");
-  const [ocupado, setOcupado] = useState<number | null>(null); // id em atualização
+  const [busca, setBusca] = useState("");
+  const [situacao, setSituacao] = useState<FiltroSituacao>("todos");
+  const [ocupado, setOcupado] = useState<number | null>(null);
+
+  // Edição rápida de preço (id do produto sendo editado)
+  const [editandoPreco, setEditandoPreco] = useState<number | null>(null);
+  const [precoTexto, setPrecoTexto] = useState("");
+  const [erroPreco, setErroPreco] = useState("");
 
   // Cópia local da lista para o drag-and-drop reordenar na hora
   const [lista, setLista] = useState(produtos);
   useEffect(() => setLista(produtos), [produtos]);
 
   const listaFiltrada = useMemo(() => {
-    const termo = filtro.trim().toLowerCase();
-    if (!termo) return lista;
-    return lista.filter((p) => p.nome.toLowerCase().includes(termo));
-  }, [filtro, lista]);
+    const termo = busca.trim().toLowerCase();
+    return lista.filter((p) => {
+      if (termo && !p.nome.toLowerCase().includes(termo)) return false;
+      if (situacao === "ativos") return p.ativo;
+      if (situacao === "inativos") return !p.ativo;
+      if (situacao === "novidade") return p.novidade;
+      if (situacao === "destaque") return p.destaque;
+      return true;
+    });
+  }, [busca, situacao, lista]);
 
-  // ---------- Drag-and-drop (admin, sem filtro ativo) ----------
-  const podeArrastar = ehAdmin && filtro.trim() === "";
+  // Resumo do topo
+  const resumo = useMemo(
+    () => ({
+      total: lista.length,
+      ativos: lista.filter((p) => p.ativo).length,
+      inativos: lista.filter((p) => !p.ativo).length,
+      destaques: lista.filter((p) => p.destaque).length,
+    }),
+    [lista]
+  );
+
+  // ---------- Drag-and-drop (admin, sem filtros) ----------
+  const podeArrastar = ehAdmin && busca.trim() === "" && situacao === "todos";
   const indiceArrastado = useRef<number | null>(null);
 
   function aoSoltar(indiceDestino: number) {
@@ -47,7 +72,6 @@ export function ListaProdutos({
     nova.splice(indiceDestino, 0, movido);
     setLista(nova);
 
-    // Salva a nova ordem no servidor (posição no array = ordem)
     fetch("/api/admin/ordenar", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -55,7 +79,7 @@ export function ListaProdutos({
     }).then(() => router.refresh());
   }
 
-  // Alterna um campo booleano (ativo/novidade/destaque) e recarrega a lista
+  // ---------- Ações ----------
   async function alternar(p: ProdutoDTO, campo: "ativo" | "novidade" | "destaque") {
     setOcupado(p.id);
     try {
@@ -70,9 +94,45 @@ export function ListaProdutos({
     }
   }
 
+  // Salva só o preço (edição rápida no card)
+  async function salvarPreco(p: ProdutoDTO) {
+    const centavos = converterPrecoParaCentavos(precoTexto);
+    if (centavos === null) {
+      setErroPreco("Preço inválido");
+      return;
+    }
+    setOcupado(p.id);
+    setErroPreco("");
+    try {
+      await fetch(`/api/admin/produtos/${p.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          nome: p.nome,
+          descricao: p.descricao,
+          precoCentavos: centavos,
+          tipo: p.tipo,
+          fotoUrl: p.fotoUrl,
+          ativo: p.ativo,
+          novidade: p.novidade,
+          destaque: p.destaque,
+          dosagens: p.dosagens,
+          categoriaId: p.categoriaId,
+        }),
+      });
+      setEditandoPreco(null);
+      router.refresh();
+    } finally {
+      setOcupado(null);
+    }
+  }
+
   async function apagar(p: ProdutoDTO) {
-    // Confirmação nativa simples — evita apagar sem querer
-    if (!confirm(`Apagar "${p.nome}" de vez?\n\nDica: se o produto só está em falta, use o botão "Ativo" para escondê-lo do totem sem perder o cadastro.`)) {
+    if (
+      !confirm(
+        `Apagar "${p.nome}" de vez?\n\nDica: se o produto só está em falta, use o botão "Ativo" para escondê-lo do totem sem perder o cadastro.`
+      )
+    ) {
       return;
     }
     setOcupado(p.id);
@@ -84,27 +144,58 @@ export function ListaProdutos({
     }
   }
 
-  // Botão de toggle (pílula azul/cinza)
+  // ---------- Peças de UI ----------
+  const CartaoResumo = ({
+    rotulo,
+    valor,
+    cor,
+  }: {
+    rotulo: string;
+    valor: number;
+    cor: string;
+  }) => (
+    <div className="bg-white rounded-2xl border border-linha sombra-card px-5 py-4">
+      <p className="text-xs font-semibold tracking-wider uppercase text-grafite-claro">{rotulo}</p>
+      <p className={`text-3xl font-bold tracking-tight mt-1 tabular-nums ${cor}`}>{valor}</p>
+    </div>
+  );
+
+  const ChipFiltro = ({ valor, children }: { valor: FiltroSituacao; children: React.ReactNode }) => (
+    <button
+      type="button"
+      onClick={() => setSituacao(valor)}
+      className={`shrink-0 rounded-full px-4 py-2 text-sm font-medium transition-all active:scale-95 ${
+        situacao === valor
+          ? "bg-royal text-white shadow-[0_4px_14px_rgba(28,105,181,0.3)]"
+          : "bg-white text-grafite-medio border border-linha hover:border-royal/30"
+      }`}
+    >
+      {children}
+    </button>
+  );
+
   const Toggle = ({
     ligado,
     rotulo,
     aoClicar,
     desabilitado,
+    corAtiva = "bg-royal border-royal",
   }: {
     ligado: boolean;
     rotulo: string;
     aoClicar: () => void;
     desabilitado: boolean;
+    corAtiva?: string;
   }) => (
     <button
       type="button"
       onClick={aoClicar}
       disabled={desabilitado}
       title={`${rotulo}: ${ligado ? "sim" : "não"} (clique para alternar)`}
-      className={`text-xs font-semibold rounded-full px-3 py-1.5 border transition-colors disabled:opacity-50 ${
+      className={`flex-1 text-[0.7rem] font-semibold rounded-lg px-2 py-2 border transition-all disabled:opacity-50 ${
         ligado
-          ? "bg-royal text-white border-royal"
-          : "bg-white text-grafite-claro border-grafite/20 hover:border-royal/40"
+          ? `${corAtiva} text-white`
+          : "bg-white text-grafite-claro border-linha hover:border-royal/40"
       }`}
     >
       {rotulo}
@@ -113,34 +204,76 @@ export function ListaProdutos({
 
   return (
     <div>
-      <div className="flex flex-wrap items-center justify-between gap-4">
-        <h1 className="text-2xl font-bold text-grafite">Produtos</h1>
+      {/* ---------- Cabeçalho ---------- */}
+      <div className="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-bold text-grafite tracking-tight">Produtos e preços</h1>
+          <p className="text-grafite-claro mt-1">
+            Cadastre, ajuste preços e controle o que aparece no totem.
+          </p>
+        </div>
         <Link
           href="/admin/produtos/novo"
-          className="bg-escarlate hover:bg-escarlate-escuro text-white font-bold rounded-xl px-5 py-3 transition-colors"
+          className="degrade-marca inline-flex items-center gap-2 text-white font-semibold rounded-xl px-5 py-3.5 transition-all active:scale-95"
         >
-          + Novo produto
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 5v14M5 12h14" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
+          </svg>
+          Novo produto
         </Link>
       </div>
 
-      <div className="mt-5 flex flex-wrap items-center gap-3">
-        <input
-          type="search"
-          value={filtro}
-          onChange={(e) => setFiltro(e.target.value)}
-          placeholder="Filtrar por nome..."
-          className="w-full max-w-sm border border-grafite/20 rounded-xl px-4 py-2.5 bg-white focus:outline-none focus:ring-2 focus:ring-royal/50"
-        />
-        {podeArrastar && (
-          <p className="text-sm text-grafite-claro">
-            Arraste os cards pelo ⠿ para mudar a ordem no totem.
-          </p>
-        )}
+      {/* ---------- Resumo ---------- */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-6">
+        <CartaoResumo rotulo="Cadastrados" valor={resumo.total} cor="text-grafite" />
+        <CartaoResumo rotulo="Ativos no totem" valor={resumo.ativos} cor="text-royal" />
+        <CartaoResumo rotulo="Em falta" valor={resumo.inativos} cor="text-escarlate" />
+        <CartaoResumo rotulo="Em destaque" valor={resumo.destaques} cor="text-grafite" />
       </div>
 
-      <div className="mt-5 flex flex-col gap-3">
+      {/* ---------- Busca + filtros ---------- */}
+      <div className="mt-6 flex flex-wrap items-center gap-3">
+        <div className="relative flex-1 min-w-60 max-w-sm">
+          <svg
+            className="absolute left-4 top-1/2 -translate-y-1/2 text-grafite-claro"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            aria-hidden="true"
+          >
+            <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="2" />
+            <path d="m20 20-3.5-3.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+          </svg>
+          <input
+            type="search"
+            value={busca}
+            onChange={(e) => setBusca(e.target.value)}
+            placeholder="Buscar produto..."
+            className="w-full bg-white border border-linha rounded-xl pl-11 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-royal/40 focus:border-royal/40"
+          />
+        </div>
+        <div className="flex gap-2 overflow-x-auto rolagem-sem-barra">
+          <ChipFiltro valor="todos">Todos</ChipFiltro>
+          <ChipFiltro valor="ativos">Ativos</ChipFiltro>
+          <ChipFiltro valor="inativos">Em falta</ChipFiltro>
+          <ChipFiltro valor="novidade">Novidades</ChipFiltro>
+          <ChipFiltro valor="destaque">Destaques</ChipFiltro>
+        </div>
+      </div>
+
+      {podeArrastar && (
+        <p className="mt-3 text-sm text-grafite-claro">
+          Arraste os cards pelo ⠿ para mudar a ordem no totem.
+        </p>
+      )}
+
+      {/* ---------- Grade de produtos ---------- */}
+      <div className="mt-5 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
         {listaFiltrada.length === 0 && (
-          <p className="text-grafite-claro py-8 text-center">Nenhum produto encontrado.</p>
+          <p className="text-grafite-claro py-12 text-center col-span-full">
+            Nenhum produto encontrado.
+          </p>
         )}
 
         {listaFiltrada.map((p, indice) => (
@@ -150,61 +283,133 @@ export function ListaProdutos({
             onDragStart={() => (indiceArrastado.current = indice)}
             onDragOver={(e) => e.preventDefault()}
             onDrop={() => aoSoltar(indice)}
-            className={`bg-white rounded-2xl border border-grafite/10 shadow-sm p-4 flex flex-wrap items-center gap-4 ${
-              !p.ativo ? "opacity-60" : ""
+            className={`bg-white rounded-2xl border sombra-card overflow-hidden flex flex-col transition-all ${
+              p.ativo ? "border-linha" : "border-escarlate/25 bg-escarlate/[0.02]"
             }`}
           >
-            {/* Alça de arrastar (só admin) */}
-            {podeArrastar && (
-              <span
-                className="cursor-grab active:cursor-grabbing text-grafite-claro text-xl select-none"
-                title="Arraste para reordenar"
-              >
-                ⠿
-              </span>
-            )}
+            {/* Topo: foto + nome + preço */}
+            <div className="p-4 flex gap-4">
+              {podeArrastar && (
+                <span
+                  className="cursor-grab active:cursor-grabbing text-grafite-claro text-lg select-none -ml-1"
+                  title="Arraste para reordenar"
+                >
+                  ⠿
+                </span>
+              )}
 
-            {/* Foto */}
-            {p.fotoUrl ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={p.fotoUrl}
-                alt={p.nome}
-                className="w-16 h-16 rounded-xl object-cover bg-royal-claro shrink-0"
-              />
-            ) : (
-              <div className="w-16 h-16 rounded-xl bg-royal-claro shrink-0" />
-            )}
-
-            {/* Nome / categoria / preço / dosagens */}
-            <div className="flex-1 min-w-40">
-              <div className="flex items-center gap-2 flex-wrap">
-                <p className="font-semibold text-grafite">{p.nome}</p>
-                {p.tipo === TIPO_COMBO && (
-                  <span className="bg-royal text-white text-[0.6rem] font-bold px-2 py-0.5 rounded-full">
-                    COMBO
-                  </span>
+              <div className="shrink-0 w-20 h-20 rounded-xl bg-royal-nevoa border border-linha overflow-hidden flex items-center justify-center p-1.5">
+                {p.fotoUrl ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={p.fotoUrl} alt={p.nome} className="max-w-full max-h-full object-contain" />
+                ) : (
+                  <span className="text-[0.6rem] text-grafite-claro text-center">sem foto</span>
                 )}
               </div>
-              <p className="text-sm text-grafite-claro">
-                {p.categoriaNome ?? "Sem categoria"} · {formatarPreco(p.precoCentavos)}
-                {p.dosagens ? ` · ${p.dosagens}` : ""}
-              </p>
+
+              <div className="flex-1 min-w-0">
+                <div className="flex items-start gap-2">
+                  <p className="font-semibold text-grafite leading-snug line-clamp-2 flex-1">
+                    {p.nome}
+                  </p>
+                  {p.tipo === TIPO_COMBO && (
+                    <span className="shrink-0 bg-royal/10 text-royal text-[0.6rem] font-bold px-2 py-0.5 rounded-full">
+                      COMBO
+                    </span>
+                  )}
+                </div>
+                <p className="text-xs text-grafite-claro mt-0.5 truncate">
+                  {p.categoriaNome ?? "Sem categoria"}
+                  {p.dosagens ? ` · ${p.dosagens}` : ""}
+                </p>
+
+                {/* Preço com edição rápida */}
+                {editandoPreco === p.id ? (
+                  <div className="mt-2 flex items-center gap-1.5">
+                    <span className="text-grafite-claro text-sm">R$</span>
+                    <input
+                      value={precoTexto}
+                      onChange={(e) => setPrecoTexto(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") salvarPreco(p);
+                        if (e.key === "Escape") setEditandoPreco(null);
+                      }}
+                      autoFocus
+                      inputMode="decimal"
+                      className="w-24 border border-royal/40 rounded-lg px-2 py-1.5 text-lg font-bold text-royal focus:outline-none focus:ring-2 focus:ring-royal/40"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => salvarPreco(p)}
+                      disabled={ocupado === p.id}
+                      aria-label="Salvar preço"
+                      className="w-8 h-8 rounded-lg bg-royal text-white flex items-center justify-center disabled:opacity-50"
+                    >
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path d="M5 13l4 4L19 7" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setEditandoPreco(null)}
+                      aria-label="Cancelar"
+                      className="w-8 h-8 rounded-lg bg-grafite/10 text-grafite-medio flex items-center justify-center"
+                    >
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path d="M6 6l12 12M18 6 6 18" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
+                      </svg>
+                    </button>
+                  </div>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setEditandoPreco(p.id);
+                      setPrecoTexto(centavosParaInput(p.precoCentavos));
+                      setErroPreco("");
+                    }}
+                    title="Clique para alterar o preço"
+                    className="group mt-2 inline-flex items-center gap-1.5 text-royal font-bold text-xl tabular-nums hover:text-royal-escuro transition-colors"
+                  >
+                    {formatarPreco(p.precoCentavos)}
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      aria-hidden="true"
+                      className="opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
+                      <path
+                        d="M4 20h4L18.5 9.5a2.1 2.1 0 0 0-3-3L5 17v3Z"
+                        stroke="currentColor"
+                        strokeWidth="1.8"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </button>
+                )}
+                {erroPreco && editandoPreco === p.id && (
+                  <p className="text-escarlate text-xs mt-1">{erroPreco}</p>
+                )}
+              </div>
             </div>
 
             {/* Toggles */}
-            <div className="flex gap-2">
+            <div className="px-4 flex gap-1.5">
               <Toggle
                 ligado={p.ativo}
-                rotulo="Ativo"
+                rotulo={p.ativo ? "Ativo" : "Em falta"}
                 aoClicar={() => alternar(p, "ativo")}
                 desabilitado={ocupado === p.id}
+                corAtiva="bg-green-600 border-green-600"
               />
               <Toggle
                 ligado={p.novidade}
                 rotulo="Novidade"
                 aoClicar={() => alternar(p, "novidade")}
                 desabilitado={ocupado === p.id}
+                corAtiva="bg-escarlate border-escarlate"
               />
               <Toggle
                 ligado={p.destaque}
@@ -215,10 +420,10 @@ export function ListaProdutos({
             </div>
 
             {/* Ações */}
-            <div className="flex gap-2">
+            <div className="p-4 pt-3 mt-auto flex gap-2">
               <Link
                 href={`/admin/produtos/${p.id}/editar`}
-                className="border border-royal text-royal hover:bg-royal hover:text-white font-semibold rounded-xl px-4 py-2 text-sm transition-colors"
+                className="flex-1 text-center border border-royal text-royal hover:bg-royal hover:text-white font-semibold rounded-xl px-4 py-2.5 text-sm transition-colors"
               >
                 Editar
               </Link>
@@ -227,9 +432,17 @@ export function ListaProdutos({
                   type="button"
                   onClick={() => apagar(p)}
                   disabled={ocupado === p.id}
-                  className="border border-escarlate text-escarlate hover:bg-escarlate hover:text-white font-semibold rounded-xl px-4 py-2 text-sm transition-colors disabled:opacity-50"
+                  aria-label={`Apagar ${p.nome}`}
+                  className="w-11 border border-linha text-grafite-claro hover:border-escarlate hover:text-escarlate rounded-xl flex items-center justify-center transition-colors disabled:opacity-50"
                 >
-                  Apagar
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path
+                      d="M4 7h16M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2m3 0-.8 12a2 2 0 0 1-2 1.9H8.8a2 2 0 0 1-2-1.9L6 7"
+                      stroke="currentColor"
+                      strokeWidth="1.8"
+                      strokeLinecap="round"
+                    />
+                  </svg>
                 </button>
               )}
             </div>

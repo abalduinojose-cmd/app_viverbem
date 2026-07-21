@@ -225,6 +225,19 @@ function CatalogoInterno({
           </>
         ) : filtro === "tudo" ? (
           <div className="flex flex-col gap-12">
+            {/* Vitrine: Mais procurados (primeira da página) */}
+            {destaques.length > 0 && (
+              <section>
+                <div className="flex items-center gap-3 mb-4">
+                  <span className="w-1.5 h-6 rounded-full bg-royal" aria-hidden="true" />
+                  <h2 className="text-2xl md:text-[1.7rem] font-bold text-grafite tracking-tight">
+                    Mais procurados
+                  </h2>
+                </div>
+                <Faixa lista={destaques} />
+              </section>
+            )}
+
             {/* Vitrine: Novidades */}
             {novidades.length > 0 && (
               <section>
@@ -235,14 +248,6 @@ function CatalogoInterno({
                   </h2>
                 </div>
                 <Faixa lista={novidades} />
-              </section>
-            )}
-
-            {/* Vitrine: Destaques */}
-            {destaques.length > 0 && (
-              <section>
-                <TituloSecao>Mais procurados</TituloSecao>
-                <Faixa lista={destaques} />
               </section>
             )}
 

@@ -8,7 +8,6 @@ import { useState } from "react";
 import { ProdutoDTO, TIPO_COMBO, listarDosagens } from "@/lib/tipos";
 import { formatarPreco } from "@/lib/preco";
 import { useCarrinho } from "@/lib/carrinho";
-import { linkWhatsAppProduto } from "@/lib/whatsapp";
 import { FotoProduto } from "./FotoProduto";
 
 export function ProdutoModal({
@@ -143,13 +142,13 @@ export function ProdutoModal({
             </div>
           </div>
 
-          {/* Ações */}
-          <div className="flex flex-col md:flex-row gap-3 mt-5">
+          {/* Ação principal */}
+          <div className="mt-5">
             <button
               type="button"
               onClick={adicionarAoCarrinho}
-              className={`flex-1 flex items-center justify-center gap-3 text-white text-lg font-semibold rounded-2xl px-6 py-5 transition-colors active:scale-[0.98] ${
-                adicionado ? "bg-green-600" : "bg-escarlate hover:bg-escarlate-escuro"
+              className={`w-full flex items-center justify-center gap-3 text-white text-lg font-semibold rounded-2xl px-6 py-5 transition-all active:scale-[0.98] shadow-[0_8px_24px_rgba(224,33,41,0.28)] ${
+                adicionado ? "bg-green-600" : "degrade-suave"
               }`}
             >
               {adicionado ? (
@@ -172,17 +171,6 @@ export function ProdutoModal({
               )}
             </button>
 
-            <a
-              href={linkWhatsAppProduto(produto.nome, dosagem)}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex-1 flex items-center justify-center gap-3 bg-[#25D366] hover:bg-[#1eb857] text-white text-lg font-semibold rounded-2xl px-6 py-5 transition-colors active:scale-[0.98]"
-            >
-              <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5.1-1.3A10 10 0 1 0 12 2Zm5.5 14.2c-.2.7-1.3 1.3-1.9 1.4-.5.1-1.1.1-1.8-.1-.4-.1-1-.3-1.7-.6-3-1.3-4.9-4.3-5.1-4.5-.1-.2-1.2-1.6-1.2-3s.7-2.1 1-2.4c.2-.3.5-.4.7-.4h.5c.2 0 .4 0 .6.4l.9 2.1c.1.2.1.4 0 .6l-.4.6-.5.5c-.1.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1.1 2.1 1.4 2.5 1.6.3.1.5.1.6-.1l.8-1c.2-.3.4-.2.7-.1l2.1 1c.3.1.5.2.6.4 0-.1 0 .6-.2 1.3Z" />
-              </svg>
-              Pedir no WhatsApp
-            </a>
           </div>
         </div>
       </div>

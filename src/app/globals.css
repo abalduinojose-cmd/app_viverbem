@@ -65,6 +65,16 @@ h1, h2, h3, h4 {
   background-image: linear-gradient(100deg, #14508c 0%, #14508c 40%, #c9202a 100%);
 }
 
+/* Degradê suave em tom vermelho da marca — usado no carrinho.
+   Mantém a identidade vermelha, mas com transição leve (sem o
+   contraste forte do azul->vermelho). */
+.degrade-suave {
+  background-image: linear-gradient(135deg, #ec5a5f 0%, #e02129 55%, #c9202a 100%);
+}
+.degrade-suave:hover {
+  background-image: linear-gradient(135deg, #e3454b 0%, #c9202a 55%, #b01a22 100%);
+}
+
 /* Texto em degradê da marca (destaques modernos) */
 .texto-degrade {
   background-image: linear-gradient(100deg, #1c69b5 0%, #2f7cc4 45%, #e0403f 100%);

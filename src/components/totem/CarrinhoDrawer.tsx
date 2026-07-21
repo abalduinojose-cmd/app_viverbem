@@ -69,7 +69,7 @@ export function CarrinhoDrawer() {
         type="button"
         onClick={abrir}
         aria-label="Abrir carrinho"
-        className="fixed bottom-6 right-6 z-40 bg-escarlate hover:bg-escarlate-escuro text-white rounded-2xl h-16 pl-5 pr-6 flex items-center gap-3 active:scale-95 transition-all shadow-[0_10px_30px_rgba(224,33,41,0.4)]"
+        className="degrade-suave fixed bottom-6 right-6 z-40 text-white rounded-2xl h-16 pl-5 pr-6 flex items-center gap-3 active:scale-95 transition-all shadow-[0_10px_30px_rgba(224,33,41,0.35)]"
       >
         <span className="relative">
           <svg width="30" height="30" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -306,7 +306,7 @@ export function CarrinhoDrawer() {
                     <button
                       type="button"
                       onClick={irParaFinalizar}
-                      className="w-full flex items-center justify-center gap-3 bg-escarlate hover:bg-escarlate-escuro text-white text-lg font-semibold rounded-2xl px-6 py-5 active:scale-[0.98] transition-all shadow-[0_8px_24px_rgba(224,33,41,0.3)]"
+                      className="degrade-suave w-full flex items-center justify-center gap-3 text-white text-lg font-semibold rounded-2xl px-6 py-5 active:scale-[0.98] transition-all shadow-[0_8px_24px_rgba(224,33,41,0.28)]"
                     >
                       Finalizar pedido
                       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
