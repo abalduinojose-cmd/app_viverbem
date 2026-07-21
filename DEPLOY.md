@@ -1,4 +1,40 @@
-# Publicar na internet (Vercel) — passo a passo
+# Publicar na internet
+
+Há duas publicações possíveis, com finalidades diferentes:
+
+| | **Vitrine (GitHub Pages)** | **App completo (Vercel)** |
+|---|---|---|
+| Para que serve | Mostrar o visual a um cliente | Uso real na loja |
+| Totem do cliente | ✅ funciona | ✅ funciona |
+| Carrinho + WhatsApp | ✅ funciona | ✅ funciona |
+| Painel administrativo | ❌ não vai junto | ✅ funciona |
+| Produtos | congelados na publicação | editáveis pelo painel |
+
+---
+
+# A) Vitrine de demonstração (GitHub Pages)
+
+Já está publicada na branch `gh-pages`. Para o link funcionar, ajuste a
+fonte do Pages **uma única vez**:
+
+1. Abra
+   [Settings → Pages](https://github.com/abalduinojose-cmd/app_viverbem/settings/pages)
+2. Em **Build and deployment → Source**, escolha **Deploy from a branch**
+3. Em **Branch**, selecione **`gh-pages`** e a pasta **`/ (root)`**
+4. **Save** e aguarde ~1 minuto
+
+Link: **https://abalduinojose-cmd.github.io/app_viverbem/**
+
+### Atualizar a vitrine depois de mudar produtos
+
+```bash
+npm run demo:build                       # regenera a partir do banco atual
+cd out && git add -A && git commit -m "atualiza vitrine" && git push --force origin gh-pages && cd ..
+```
+
+---
+
+# B) App completo (Vercel) — passo a passo
 
 Coloca o app **inteiro** no ar (totem + painel administrativo), com link
 público fixo, sem depender do seu computador ligado.
