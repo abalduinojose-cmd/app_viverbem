@@ -8,22 +8,26 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ProdutoDTO, TIPO_COMBO, PAPEL_ADMIN } from "@/lib/tipos";
+import { ProdutoDTO, CategoriaDTO, TIPO_COMBO, PAPEL_ADMIN } from "@/lib/tipos";
 import { formatarPreco, centavosParaInput, converterPrecoParaCentavos } from "@/lib/preco";
 
 type FiltroSituacao = "todos" | "ativos" | "inativos" | "novidade" | "destaque";
 
 export function ListaProdutos({
   produtos,
+  categorias,
   papel,
 }: {
   produtos: ProdutoDTO[];
+  categorias: CategoriaDTO[];
   papel: string;
 }) {
   const router = useRouter();
   const ehAdmin = papel === PAPEL_ADMIN;
   const [busca, setBusca] = useState("");
   const [situacao, setSituacao] = useState<FiltroSituacao>("todos");
+  // "" = todas as categorias; "sem" = produtos sem categoria
+  const [categoriaFiltro, setCategoriaFiltro] = useState<string>("");
   const [ocupado, setOcupado] = useState<number | null>(null);
 
   // Edição rápida de preço (id do produto sendo editado)
@@ -39,13 +43,17 @@ export function ListaProdutos({
     const termo = busca.trim().toLowerCase();
     return lista.filter((p) => {
       if (termo && !p.nome.toLowerCase().includes(termo)) return false;
+      // Filtro por categoria
+      if (categoriaFiltro === "sem" && p.categoriaId !== null) return false;
+      if (categoriaFiltro && categoriaFiltro !== "sem" && p.categoriaId !== Number(categoriaFiltro))
+        return false;
       if (situacao === "ativos") return p.ativo;
       if (situacao === "inativos") return !p.ativo;
       if (situacao === "novidade") return p.novidade;
       if (situacao === "destaque") return p.destaque;
       return true;
     });
-  }, [busca, situacao, lista]);
+  }, [busca, situacao, categoriaFiltro, lista]);
 
   // Resumo do topo
   const resumo = useMemo(
@@ -59,7 +67,8 @@ export function ListaProdutos({
   );
 
   // ---------- Drag-and-drop (admin, sem filtros) ----------
-  const podeArrastar = ehAdmin && busca.trim() === "" && situacao === "todos";
+  const podeArrastar =
+    ehAdmin && busca.trim() === "" && situacao === "todos" && categoriaFiltro === "";
   const indiceArrastado = useRef<number | null>(null);
 
   function aoSoltar(indiceDestino: number) {
@@ -253,6 +262,34 @@ export function ListaProdutos({
             className="w-full bg-white border border-linha rounded-xl pl-11 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-royal/40 focus:border-royal/40"
           />
         </div>
+        {/* Filtro por categoria */}
+        <div className="relative">
+          <select
+            value={categoriaFiltro}
+            onChange={(e) => setCategoriaFiltro(e.target.value)}
+            aria-label="Filtrar por categoria"
+            className="appearance-none bg-white border border-linha rounded-xl pl-4 pr-10 py-3 font-medium text-grafite focus:outline-none focus:ring-2 focus:ring-royal/40 focus:border-royal/40 cursor-pointer"
+          >
+            <option value="">Todas as categorias</option>
+            {categorias.map((c) => (
+              <option key={c.id} value={c.id}>
+                {c.nome}
+              </option>
+            ))}
+            <option value="sem">Sem categoria</option>
+          </select>
+          <svg
+            className="absolute right-3.5 top-1/2 -translate-y-1/2 text-grafite-claro pointer-events-none"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            aria-hidden="true"
+          >
+            <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </div>
+
         <div className="flex gap-2 overflow-x-auto rolagem-sem-barra">
           <ChipFiltro valor="todos">Todos</ChipFiltro>
           <ChipFiltro valor="ativos">Ativos</ChipFiltro>
@@ -261,6 +298,24 @@ export function ListaProdutos({
           <ChipFiltro valor="destaque">Destaques</ChipFiltro>
         </div>
       </div>
+
+      {/* Contagem do resultado filtrado */}
+      {(busca.trim() !== "" || situacao !== "todos" || categoriaFiltro !== "") && (
+        <p className="mt-3 text-sm text-grafite-medio">
+          Mostrando <b className="text-grafite">{listaFiltrada.length}</b> de {lista.length} produtos
+          <button
+            type="button"
+            onClick={() => {
+              setBusca("");
+              setSituacao("todos");
+              setCategoriaFiltro("");
+            }}
+            className="ml-2 text-royal font-semibold hover:underline"
+          >
+            limpar filtros
+          </button>
+        </p>
+      )}
 
       {podeArrastar && (
         <p className="mt-3 text-sm text-grafite-claro">

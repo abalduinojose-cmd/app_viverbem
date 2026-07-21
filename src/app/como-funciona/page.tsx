@@ -172,10 +172,13 @@ export default async function PaginaComoFunciona() {
               <p className="text-7xl md:text-8xl font-bold tracking-tight leading-none">
                 {ANOS_TRADICAO}
               </p>
-              <p className="text-xl md:text-2xl font-semibold mt-2">anos cuidando de Petrópolis</p>
-              <p className="text-white/75 mt-4 max-w-xl mx-auto leading-relaxed">
-                Quase duas décadas de confiança, saúde personalizada e a crença de que beleza
-                autêntica e autoestima fazem parte do bem-estar.
+              <p className="text-xl md:text-2xl font-semibold mt-2">
+                anos cuidando de você em Petrópolis
+              </p>
+              <p className="text-white/75 mt-4 max-w-2xl mx-auto leading-relaxed">
+                Mais do que duas décadas de história, somos especialistas em saúde personalizada e
+                na crença de que a beleza autêntica é o reflexo de uma autoestima lá no alto.
+                Bem-estar é se sentir bem na sua própria pele.
               </p>
             </div>
             <div className="absolute -left-20 -top-20 w-64 h-64 rounded-full bg-white/5" aria-hidden="true" />
