@@ -1,0 +1,99 @@
+// ============================================================
+// Schema do banco de dados — Manipulação Viver Bem
+//
+// Banco: SQLite (arquivo local, definido em DATABASE_URL no .env)
+// Para migrar para Postgres no futuro, basta trocar o "provider"
+// abaixo para "postgresql" e apontar DATABASE_URL para o servidor.
+// Depois rode: npx prisma migrate dev
+// ============================================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// Categoria de produtos (ex.: Dermatologia, Vitaminas...)
+model Categoria {
+  id       Int       @id @default(autoincrement())
+  nome     String
+  // slug: versão do nome para URLs/identificação (ex.: "dermatologia-estetica")
+  slug     String    @unique
+  // ordem: posição de exibição no totem (preparado para o
+  // drag-and-drop da Fase 2 — por enquanto ordena por este número)
+  ordem    Int       @default(0)
+  produtos Produto[]
+}
+
+// Produto manipulado OU combo — os dois vivem na mesma tabela,
+// diferenciados pelo campo "tipo". Isso simplifica o painel
+// (uma tela só de cadastro) e a vitrine do totem.
+model Produto {
+  id            Int      @id @default(autoincrement())
+  nome          String
+  descricao     String
+  // Preço guardado em CENTAVOS (inteiro) para evitar erros de
+  // arredondamento com números decimais. R$ 49,90 => 4990.
+  // Use os helpers em src/lib/preco.ts para formatar/converter.
+  precoCentavos Int
+  // "PRODUTO" ou "COMBO" (SQLite não suporta enum no Prisma,
+  // por isso é String — os valores válidos estão em src/lib/tipos.ts)
+  tipo          String   @default("PRODUTO")
+  // Caminho da foto (ex.: "/uploads/abc123.jpg"), servida da pasta public/
+  fotoUrl       String?
+  // ativo=false: produto some do totem na hora, mas o cadastro fica salvo
+  ativo         Boolean  @default(true)
+  // novidade/destaque: jogam o produto para as vitrines principais do totem
+  novidade      Boolean  @default(false)
+  destaque      Boolean  @default(false)
+  // ordem de exibição dentro da categoria (reordenável por drag-and-drop)
+  ordem         Int      @default(0)
+  // Dosagens disponíveis, separadas por vírgula (ex.: "250mg, 500mg, 1g").
+  // Vazio/null = produto sem opção de dosagem.
+  dosagens      String?
+  categoriaId   Int?
+  // Se a categoria for apagada, o produto NÃO é apagado — só fica sem categoria
+  categoria     Categoria? @relation(fields: [categoriaId], references: [id], onDelete: SetNull)
+  criadoEm      DateTime @default(now())
+  atualizadoEm  DateTime @updatedAt
+}
+
+// Usuário do painel administrativo.
+// papel = "ADMIN" (acesso total) ou "OPERADOR" (só cadastra/edita
+// produtos e preços — não apaga, não mexe em categorias/depoimentos/log)
+model Usuario {
+  id        Int      @id @default(autoincrement())
+  nome      String
+  email     String   @unique
+  senhaHash String
+  papel     String   @default("ADMIN")
+  criadoEm  DateTime @default(now())
+}
+
+// Depoimento / avaliação de cliente exibido no totem.
+// Serve tanto para depoimentos livres quanto para avaliações do Google
+// (fonte = "Google", nota = 1..5 estrelas).
+model Depoimento {
+  id       Int      @id @default(autoincrement())
+  nome     String
+  texto    String
+  nota     Int      @default(5) // estrelas (1 a 5)
+  fonte    String   @default("Google") // "Google" | "Loja"
+  fotoUrl  String? // foto do cliente (opcional); sem foto usa a inicial do nome
+  ativo    Boolean  @default(true)
+  ordem    Int      @default(0)
+  criadoEm DateTime @default(now())
+}
+
+// Log de alterações do painel: quem alterou o quê e quando.
+// Registrado automaticamente pelas rotas de API (src/lib/log.ts).
+model LogAlteracao {
+  id       Int      @id @default(autoincrement())
+  usuario  String   // nome de quem fez a alteração
+  acao     String   // ex.: "criou produto", "alterou preço"
+  detalhe  String   // ex.: nome do produto e o que mudou
+  criadoEm DateTime @default(now())
+}

@@ -1,0 +1,21 @@
+-- AlterTable
+ALTER TABLE "Produto" ADD COLUMN "dosagens" TEXT;
+
+-- CreateTable
+CREATE TABLE "Depoimento" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "nome" TEXT NOT NULL,
+    "texto" TEXT NOT NULL,
+    "ativo" BOOLEAN NOT NULL DEFAULT true,
+    "ordem" INTEGER NOT NULL DEFAULT 0,
+    "criadoEm" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+-- CreateTable
+CREATE TABLE "LogAlteracao" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "usuario" TEXT NOT NULL,
+    "acao" TEXT NOT NULL,
+    "detalhe" TEXT NOT NULL,
+    "criadoEm" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);

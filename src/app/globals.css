@@ -1,0 +1,142 @@
+@import "tailwindcss";
+
+/* ============================================================
+   Identidade visual — Manipulação Viver Bem
+   Azul Royal  #1C69B5  -> cor principal (confiança, saúde)
+   Vermelho    #E02129  -> destaques e chamadas de ação (uso pontual)
+   Cinza       #4D4D4D  -> textos e subtítulos
+
+   Redesign "clean & moderno": tipografia Figtree + Inter,
+   muito respiro, sombras suaves em camadas, cantos generosos,
+   fundo quase branco com leve tom frio. Sem gradientes pesados.
+   ============================================================ */
+@theme {
+  --color-royal: #1c69b5;
+  --color-royal-escuro: #14508c;
+  --color-royal-medio: #2f7cc4;
+  --color-royal-claro: #eef4fb;
+  --color-royal-nevoa: #f6f9fd;
+  --color-escarlate: #e02129;
+  --color-escarlate-escuro: #b81b22;
+  --color-grafite: #33373d;
+  --color-grafite-medio: #5b6169;
+  --color-grafite-claro: #8b929b;
+  --color-linha: #e7ebf0;
+
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-display: var(--font-figtree), system-ui, sans-serif;
+  --font-script: var(--font-kaushan), cursive;
+
+  /* Sombras suaves em camadas (clean, sem peso) */
+  --shadow-card: 0 1px 2px rgba(16, 42, 74, 0.04), 0 4px 16px rgba(16, 42, 74, 0.06);
+  --shadow-card-hover: 0 2px 4px rgba(16, 42, 74, 0.05), 0 12px 32px rgba(16, 42, 74, 0.12);
+  --shadow-flutuante: 0 8px 30px rgba(28, 105, 181, 0.28);
+}
+
+body {
+  background: #fbfcfe;
+  color: var(--color-grafite);
+  font-family: var(--font-sans);
+  letter-spacing: -0.01em;
+  /* Totem: evita seleção de texto e "borracha" azul ao tocar */
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Títulos usam a fonte display (Figtree) */
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
+}
+
+/* Fonte manuscrita do fallback do logo ("Viver Bem") */
+.fonte-logo {
+  font-family: var(--font-script);
+}
+/* Serifada do subtítulo do logo ("MANIPULAÇÃO E HOMEOPATIA") */
+.fonte-serif {
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+/* Degradê da marca (azul royal -> vermelho escarlate) para CTAs */
+.degrade-marca {
+  background-image: linear-gradient(100deg, #1c69b5 0%, #2f7cc4 42%, #e0403f 100%);
+}
+.degrade-marca:hover {
+  background-image: linear-gradient(100deg, #14508c 0%, #14508c 40%, #c9202a 100%);
+}
+
+/* Texto em degradê da marca (destaques modernos) */
+.texto-degrade {
+  background-image: linear-gradient(100deg, #1c69b5 0%, #2f7cc4 45%, #e0403f 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Brilho de fundo suave, decorativo (halo da marca) */
+.halo-marca {
+  position: relative;
+  isolation: isolate;
+}
+.halo-marca::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(60% 45% at 50% 12%, rgba(28, 105, 181, 0.1), transparent 70%),
+    radial-gradient(45% 35% at 82% 78%, rgba(224, 33, 41, 0.06), transparent 70%);
+  pointer-events: none;
+}
+
+/* Classe utilitária: sombra de card padrão do redesign */
+.sombra-card {
+  box-shadow: var(--shadow-card);
+}
+.sombra-card-hover {
+  box-shadow: var(--shadow-card-hover);
+}
+
+/* Esconde a barra de rolagem nas faixas horizontais do totem,
+   mantendo a rolagem por toque funcionando */
+.rolagem-sem-barra {
+  scrollbar-width: none;
+}
+.rolagem-sem-barra::-webkit-scrollbar {
+  display: none;
+}
+
+/* Entrada suave dos cards do catálogo */
+@keyframes surgir {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animar-surgir {
+  animation: surgir 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Brilho sutil e calmo no CTA principal (respeita reduced-motion) */
+@keyframes respirar {
+  0%, 100% {
+    box-shadow: 0 8px 24px rgba(28, 105, 181, 0.25);
+  }
+  50% {
+    box-shadow: 0 12px 36px rgba(28, 105, 181, 0.4);
+  }
+}
+.animar-respirar {
+  animation: respirar 3s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animar-surgir,
+  .animar-respirar {
+    animation: none;
+  }
+}
