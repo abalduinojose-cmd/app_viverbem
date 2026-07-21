@@ -1,15 +1,11 @@
 // POST /api/admin/upload — recebe a foto do produto (multipart/form-data,
-// campo "arquivo") e salva em public/uploads. Retorna { url } para
-// guardar no cadastro do produto.
+// campo "arquivo") e devolve { url } para guardar no cadastro.
 //
-// OBS: as fotos ficam no disco do servidor. Se um dia o deploy for para
-// um serviço sem disco persistente (ex.: Vercel), este é o ÚNICO arquivo
-// que precisa mudar (trocar por S3, Cloudinary etc.).
+// O destino da imagem (disco local ou nuvem) é decidido em
+// src/lib/armazenamento.ts conforme o ambiente.
 import { NextResponse } from "next/server";
-import { writeFile, mkdir } from "fs/promises";
-import path from "path";
-import crypto from "crypto";
 import { exigirSessaoApi } from "@/lib/sessao";
+import { salvarImagem } from "@/lib/armazenamento";
 
 const TIPOS_PERMITIDOS: Record<string, string> = {
   "image/jpeg": ".jpg",
@@ -44,11 +40,6 @@ export async function POST(req: Request) {
     return NextResponse.json({ erro: "Arquivo muito grande (máximo 8 MB)." }, { status: 400 });
   }
 
-  // Nome aleatório para evitar conflitos e caracteres problemáticos
-  const nomeArquivo = crypto.randomUUID() + extensao;
-  const pasta = path.join(process.cwd(), "public", "uploads");
-  await mkdir(pasta, { recursive: true });
-  await writeFile(path.join(pasta, nomeArquivo), Buffer.from(await arquivo.arrayBuffer()));
-
-  return NextResponse.json({ url: `/uploads/${nomeArquivo}` }, { status: 201 });
+  const url = await salvarImagem(arquivo, extensao);
+  return NextResponse.json({ url }, { status: 201 });
 }

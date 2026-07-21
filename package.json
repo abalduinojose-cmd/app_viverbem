@@ -9,13 +9,17 @@
     "lint": "eslint",
     "db:migrate": "prisma migrate dev",
     "db:seed": "prisma db seed",
-    "db:studio": "prisma studio"
+    "db:studio": "prisma studio",
+    "db:sqlite": "node scripts/trocar-banco.js sqlite",
+    "db:postgres": "node scripts/trocar-banco.js postgres",
+    "vercel-build": "prisma generate && next build"
   },
   "prisma": {
     "seed": "node prisma/seed.js"
   },
   "dependencies": {
     "@prisma/client": "^6.19.3",
+    "@vercel/blob": "^2.6.1",
     "bcryptjs": "^3.0.3",
     "iron-session": "^8.0.4",
     "next": "16.2.10",

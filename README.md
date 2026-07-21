@@ -120,9 +120,15 @@ Recomendações:
 2. Aponte `DATABASE_URL` para o Postgres (ex.: `postgresql://usuario:senha@host:5432/viverbem`).
 3. Rode `npx prisma migrate dev` (novo histórico de migrações será criado).
 
-### Se um dia for para nuvem sem disco (Vercel etc.)
+### Publicar na internet (Vercel)
 
-O upload de fotos grava em `public/uploads/` (disco local). Nesse cenário, troque **apenas** `src/app/api/admin/upload/route.ts` por um upload para S3/Cloudinary — o resto do código só usa a URL retornada.
+Veja o guia completo em **[DEPLOY.md](DEPLOY.md)** — sobe o app inteiro
+(totem + painel) com link público, usando Postgres e Vercel Blob.
+
+O upload de fotos já se adapta sozinho ao ambiente (`src/lib/armazenamento.ts`):
+grava em `public/uploads/` no servidor próprio e na nuvem quando existe
+`BLOB_READ_WRITE_TOKEN`. Para trocar por S3/Cloudinary, reescreva só a
+função `salvarImagem()`.
 
 ## Avaliações do Google
 
