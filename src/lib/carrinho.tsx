@@ -19,6 +19,9 @@ export interface ItemCarrinho {
   precoCentavos: number;
   dosagem: string | null; // dosagem escolhida (ex.: "500mg") ou null
   quantidade: number;
+  // Foto do produto, para aparecer no carrinho. Pode vir null em
+  // carrinhos salvos antes deste campo existir.
+  fotoUrl?: string | null;
 }
 
 interface ContextoCarrinho {

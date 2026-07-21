@@ -31,6 +31,7 @@ export function ProdutoModal({
         nome: produto.nome,
         precoCentavos: produto.precoCentavos,
         dosagem,
+        fotoUrl: produto.fotoUrl,
       },
       quantidade
     );

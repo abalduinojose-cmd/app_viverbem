@@ -1,16 +1,17 @@
 "use client";
-// Carrinho do totem: botão flutuante com contador + gaveta com os itens.
+// Carrinho do totem — visual premium alinhado à marca.
 // Tem 2 etapas:
-//   1) "itens"      -> revisar itens, quantidades e total
-//   2) "finalizar"  -> cliente informa o nome (e observação) e confirma
+//   1) "itens"      -> revisar itens (com foto), quantidades e total
+//   2) "finalizar"  -> nome, WhatsApp, forma de pagamento e observação
 // No final, o pedido inteiro vira uma mensagem pronta no WhatsApp da loja,
-// com código, nome do cliente e todas as especificações — para a recepção
+// com código, dados do cliente e todas as especificações — para a recepção
 // receber e mandar preparar.
 
 import { useState } from "react";
 import { useCarrinho } from "@/lib/carrinho";
 import { formatarPreco } from "@/lib/preco";
 import { linkWhatsAppPedido, gerarCodigoPedido } from "@/lib/whatsapp";
+import { FotoProduto } from "./FotoProduto";
 
 type Etapa = "itens" | "finalizar";
 
@@ -63,12 +64,12 @@ export function CarrinhoDrawer() {
 
   return (
     <>
-      {/* Botão flutuante — sempre visível no catálogo */}
+      {/* Botão flutuante — vermelho da marca */}
       <button
         type="button"
         onClick={abrir}
         aria-label="Abrir carrinho"
-        className="fixed bottom-6 right-6 z-40 degrade-marca text-white rounded-2xl shadow-xl h-16 pl-5 pr-6 flex items-center gap-3 active:scale-95 transition-transform"
+        className="fixed bottom-6 right-6 z-40 bg-escarlate hover:bg-escarlate-escuro text-white rounded-2xl h-16 pl-5 pr-6 flex items-center gap-3 active:scale-95 transition-all shadow-[0_10px_30px_rgba(224,33,41,0.4)]"
       >
         <span className="relative">
           <svg width="30" height="30" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -83,12 +84,12 @@ export function CarrinhoDrawer() {
             <circle cx="17" cy="20.5" r="1.5" fill="currentColor" />
           </svg>
           {totalItens > 0 && (
-            <span className="absolute -top-2 -right-2 bg-white text-escarlate text-xs font-extrabold rounded-full min-w-6 h-6 px-1 flex items-center justify-center">
+            <span className="absolute -top-2 -right-2 bg-white text-escarlate text-xs font-extrabold rounded-full min-w-6 h-6 px-1 flex items-center justify-center shadow-sm">
               {totalItens}
             </span>
           )}
         </span>
-        <span className="font-semibold text-base">
+        <span className="font-semibold text-base tabular-nums">
           {totalItens > 0 ? formatarPreco(totalCentavos) : "Carrinho"}
         </span>
       </button>
@@ -100,39 +101,74 @@ export function CarrinhoDrawer() {
           onClick={fechar}
         >
           <div
-            className="bg-[#fbfcfe] w-full max-w-md h-full flex flex-col animar-surgir shadow-2xl"
+            className="bg-[#f7f9fc] w-full max-w-md h-full flex flex-col animar-surgir shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Cabeçalho — faixa de degradê da marca no topo */}
-            <span className="h-1.5 degrade-marca shrink-0" aria-hidden="true" />
-            <div className="flex items-center justify-between px-6 py-5 bg-white border-b border-linha">
-              <div className="flex items-center gap-3">
-                {etapa === "finalizar" && !enviado && (
-                  <button
-                    type="button"
-                    onClick={() => setEtapa("itens")}
-                    aria-label="Voltar ao carrinho"
-                    className="text-grafite-medio hover:text-grafite -ml-1"
-                  >
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                      <path d="M19 12H5m0 0 6-6m-6 6 6 6" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  </button>
-                )}
-                <h2 className="text-2xl font-bold text-grafite tracking-tight">
-                  {etapa === "itens" ? "Meu pedido" : "Finalizar pedido"}
-                </h2>
+            {/* ---------- Cabeçalho premium (azul da marca) ---------- */}
+            <div className="relative bg-royal text-white px-6 pt-6 pb-7 overflow-hidden shrink-0">
+              {/* Elementos decorativos suaves */}
+              <div
+                className="absolute -right-12 -top-16 w-48 h-48 rounded-full bg-white/5"
+                aria-hidden="true"
+              />
+              <div
+                className="absolute -left-10 -bottom-20 w-40 h-40 rounded-full bg-white/5"
+                aria-hidden="true"
+              />
+
+              <div className="relative flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  {etapa === "finalizar" && !enviado && (
+                    <button
+                      type="button"
+                      onClick={() => setEtapa("itens")}
+                      aria-label="Voltar ao carrinho"
+                      className="text-white/80 hover:text-white -ml-1 active:scale-90 transition-transform"
+                    >
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path
+                          d="M19 12H5m0 0 6-6m-6 6 6 6"
+                          stroke="currentColor"
+                          strokeWidth="2.2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </button>
+                  )}
+                  <div>
+                    <p className="text-[0.65rem] font-semibold tracking-[0.22em] uppercase text-white/60">
+                      Viver Bem
+                    </p>
+                    <h2 className="text-2xl font-bold tracking-tight leading-tight">
+                      {etapa === "itens" ? "Meu pedido" : "Finalizar pedido"}
+                    </h2>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={fechar}
+                  aria-label="Fechar carrinho"
+                  className="bg-white/15 hover:bg-white/25 text-white rounded-full w-11 h-11 flex items-center justify-center active:scale-90 transition-all"
+                >
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M6 6l12 12M18 6 6 18" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
+                  </svg>
+                </button>
               </div>
-              <button
-                type="button"
-                onClick={fechar}
-                aria-label="Fechar carrinho"
-                className="bg-royal-nevoa text-grafite-medio hover:text-grafite rounded-full w-11 h-11 flex items-center justify-center active:scale-90 transition-transform"
-              >
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <path d="M6 6l12 12M18 6 6 18" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
-                </svg>
-              </button>
+
+              {/* Resumo dentro do cabeçalho */}
+              {!enviado && itens.length > 0 && (
+                <div className="relative mt-5 flex items-end justify-between">
+                  <span className="text-white/70 text-sm">
+                    {totalItens} {totalItens === 1 ? "item" : "itens"}
+                    {etapa === "finalizar" && codigo ? ` · ${codigo}` : ""}
+                  </span>
+                  <span className="text-3xl font-bold tracking-tight tabular-nums">
+                    {formatarPreco(totalCentavos)}
+                  </span>
+                </div>
+              )}
             </div>
 
             {/* ---------- Confirmação de envio ---------- */}
@@ -151,7 +187,7 @@ export function CarrinhoDrawer() {
                 <button
                   type="button"
                   onClick={fechar}
-                  className="mt-2 bg-royal text-white font-semibold rounded-2xl px-8 py-3.5 active:scale-95 transition-transform"
+                  className="mt-2 bg-royal hover:bg-royal-escuro text-white font-semibold rounded-2xl px-8 py-3.5 active:scale-95 transition-all"
                 >
                   Concluir
                 </button>
@@ -159,71 +195,101 @@ export function CarrinhoDrawer() {
             ) : etapa === "itens" ? (
               /* ---------- Etapa 1: itens ---------- */
               <>
-                <div className="flex-1 overflow-y-auto px-6 py-4 flex flex-col gap-4">
+                <div className="flex-1 overflow-y-auto px-5 py-5 flex flex-col gap-3.5">
                   {itens.length === 0 && (
-                    <p className="text-grafite-claro text-center py-16 text-lg">
-                      Seu carrinho está vazio.
-                      <br />
-                      Toque num produto para adicionar!
-                    </p>
+                    <div className="flex flex-col items-center justify-center text-center py-20 gap-3">
+                      <span className="w-20 h-20 rounded-full bg-royal-claro text-royal flex items-center justify-center">
+                        <svg width="38" height="38" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                          <path
+                            d="M3 4h2l2.2 11.2a2 2 0 0 0 2 1.8h7.9a2 2 0 0 0 2-1.6L21 8H6"
+                            stroke="currentColor"
+                            strokeWidth="1.8"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      </span>
+                      <p className="text-grafite-medio text-lg">
+                        Seu carrinho está vazio.
+                        <br />
+                        <span className="text-grafite-claro text-base">
+                          Toque num produto para adicionar.
+                        </span>
+                      </p>
+                    </div>
                   )}
 
                   {itens.map((item) => (
                     <div
                       key={`${item.produtoId}-${item.dosagem ?? ""}`}
-                      className="bg-white border border-linha rounded-2xl p-4 sombra-card"
+                      className="bg-white border border-linha rounded-[1.35rem] p-3.5 sombra-card flex gap-3.5"
                     >
-                      <div className="flex items-start justify-between gap-2">
-                        <div>
-                          <p className="font-semibold text-grafite leading-snug">{item.nome}</p>
-                          {item.dosagem && (
-                            <span className="inline-block mt-1 bg-royal-claro text-royal text-xs font-semibold px-2.5 py-0.5 rounded-full">
-                              {item.dosagem}
-                            </span>
-                          )}
-                        </div>
-                        <button
-                          type="button"
-                          onClick={() => remover(item.produtoId, item.dosagem)}
-                          aria-label={`Remover ${item.nome}`}
-                          className="text-grafite-claro hover:text-escarlate p-2"
-                        >
-                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                            <path
-                              d="M4 7h16M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2m3 0-.8 12a2 2 0 0 1-2 1.9H8.8a2 2 0 0 1-2-1.9L6 7"
-                              stroke="currentColor"
-                              strokeWidth="1.8"
-                              strokeLinecap="round"
-                            />
-                          </svg>
-                        </button>
+                      {/* Foto do produto */}
+                      <div className="shrink-0 w-20 h-20 rounded-2xl bg-royal-nevoa overflow-hidden flex items-center justify-center p-1.5">
+                        <FotoProduto
+                          fotoUrl={item.fotoUrl ?? null}
+                          nome={item.nome}
+                          className="max-w-full max-h-full !object-contain"
+                        />
                       </div>
 
-                      <div className="flex items-center justify-between mt-3">
-                        <div className="flex items-center gap-2">
+                      {/* Dados + controles */}
+                      <div className="flex-1 min-w-0 flex flex-col">
+                        <div className="flex items-start justify-between gap-2">
+                          <div className="min-w-0">
+                            <p className="font-semibold text-grafite leading-snug line-clamp-2">
+                              {item.nome}
+                            </p>
+                            {item.dosagem && (
+                              <span className="inline-block mt-1 bg-royal-claro text-royal text-[0.7rem] font-semibold px-2.5 py-0.5 rounded-full">
+                                {item.dosagem}
+                              </span>
+                            )}
+                          </div>
                           <button
                             type="button"
-                            onClick={() => mudarQuantidade(item.produtoId, item.dosagem, -1)}
-                            aria-label="Diminuir"
-                            className="w-11 h-11 rounded-xl bg-royal-nevoa text-royal text-2xl font-semibold active:scale-90 transition-transform"
+                            onClick={() => remover(item.produtoId, item.dosagem)}
+                            aria-label={`Remover ${item.nome}`}
+                            className="shrink-0 text-grafite-claro hover:text-escarlate p-1 -mr-1 -mt-1"
                           >
-                            −
-                          </button>
-                          <span className="text-xl font-bold text-grafite w-8 text-center tabular-nums">
-                            {item.quantidade}
-                          </span>
-                          <button
-                            type="button"
-                            onClick={() => mudarQuantidade(item.produtoId, item.dosagem, 1)}
-                            aria-label="Aumentar"
-                            className="w-11 h-11 rounded-xl bg-royal-nevoa text-royal text-2xl font-semibold active:scale-90 transition-transform"
-                          >
-                            +
+                            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                              <path
+                                d="M4 7h16M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2m3 0-.8 12a2 2 0 0 1-2 1.9H8.8a2 2 0 0 1-2-1.9L6 7"
+                                stroke="currentColor"
+                                strokeWidth="1.8"
+                                strokeLinecap="round"
+                              />
+                            </svg>
                           </button>
                         </div>
-                        <p className="text-royal font-bold text-xl tabular-nums">
-                          {formatarPreco(item.precoCentavos * item.quantidade)}
-                        </p>
+
+                        <div className="flex items-center justify-between mt-auto pt-2.5">
+                          {/* Stepper compacto */}
+                          <div className="flex items-center bg-royal-nevoa rounded-full p-1 gap-1">
+                            <button
+                              type="button"
+                              onClick={() => mudarQuantidade(item.produtoId, item.dosagem, -1)}
+                              aria-label="Diminuir"
+                              className="w-9 h-9 rounded-full bg-white text-royal text-xl font-semibold flex items-center justify-center active:scale-90 transition-transform sombra-card"
+                            >
+                              −
+                            </button>
+                            <span className="text-base font-bold text-grafite w-7 text-center tabular-nums">
+                              {item.quantidade}
+                            </span>
+                            <button
+                              type="button"
+                              onClick={() => mudarQuantidade(item.produtoId, item.dosagem, 1)}
+                              aria-label="Aumentar"
+                              className="w-9 h-9 rounded-full bg-white text-royal text-xl font-semibold flex items-center justify-center active:scale-90 transition-transform sombra-card"
+                            >
+                              +
+                            </button>
+                          </div>
+                          <p className="text-royal font-bold text-lg tabular-nums">
+                            {formatarPreco(item.precoCentavos * item.quantidade)}
+                          </p>
+                        </div>
                       </div>
                     </div>
                   ))}
@@ -232,8 +298,8 @@ export function CarrinhoDrawer() {
                 {itens.length > 0 && (
                   <div className="bg-white border-t border-linha px-6 py-5">
                     <div className="flex items-center justify-between mb-4">
-                      <span className="text-lg text-grafite-medio">Total</span>
-                      <span className="text-3xl font-bold text-royal tabular-nums">
+                      <span className="text-grafite-medio">Total do pedido</span>
+                      <span className="text-3xl font-bold text-royal tabular-nums tracking-tight">
                         {formatarPreco(totalCentavos)}
                       </span>
                     </div>
@@ -260,15 +326,7 @@ export function CarrinhoDrawer() {
             ) : (
               /* ---------- Etapa 2: finalizar ---------- */
               <>
-                <div className="flex-1 overflow-y-auto px-6 py-5 flex flex-col gap-5">
-                  <div className="bg-royal-nevoa border border-linha rounded-2xl px-4 py-3">
-                    <p className="text-sm text-grafite-medio">
-                      Pedido <b className="text-grafite">{codigo}</b> · {totalItens}{" "}
-                      {totalItens === 1 ? "item" : "itens"} ·{" "}
-                      <b className="text-royal">{formatarPreco(totalCentavos)}</b>
-                    </p>
-                  </div>
-
+                <div className="flex-1 overflow-y-auto px-5 py-5 flex flex-col gap-5">
                   <label className="flex flex-col gap-2">
                     <span className="font-semibold text-grafite">Seu nome *</span>
                     <input
@@ -276,7 +334,7 @@ export function CarrinhoDrawer() {
                       onChange={(e) => setNome(e.target.value)}
                       autoFocus
                       placeholder="Como a recepção vai te chamar?"
-                      className="border border-linha rounded-2xl px-4 py-4 text-lg focus:outline-none focus:ring-2 focus:ring-royal/40 focus:border-royal/40"
+                      className="bg-white border border-linha rounded-2xl px-4 py-4 text-lg focus:outline-none focus:ring-2 focus:ring-royal/40 focus:border-royal/40"
                     />
                   </label>
 
@@ -287,7 +345,7 @@ export function CarrinhoDrawer() {
                       onChange={(e) => setWhatsapp(e.target.value)}
                       inputMode="tel"
                       placeholder="(24) 99999-9999"
-                      className="border border-linha rounded-2xl px-4 py-4 text-lg focus:outline-none focus:ring-2 focus:ring-royal/40 focus:border-royal/40"
+                      className="bg-white border border-linha rounded-2xl px-4 py-4 text-lg focus:outline-none focus:ring-2 focus:ring-royal/40 focus:border-royal/40"
                     />
                   </label>
 
@@ -302,7 +360,7 @@ export function CarrinhoDrawer() {
                           onClick={() => setPagamento(forma)}
                           className={`rounded-2xl px-4 py-3.5 text-base font-medium border transition-all active:scale-95 ${
                             pagamento === forma
-                              ? "bg-royal text-white border-royal"
+                              ? "bg-royal text-white border-royal shadow-[0_6px_18px_rgba(28,105,181,0.3)]"
                               : "bg-white text-grafite border-linha hover:border-royal/40"
                           }`}
                         >
@@ -321,23 +379,30 @@ export function CarrinhoDrawer() {
                       onChange={(e) => setObservacao(e.target.value)}
                       rows={3}
                       placeholder="Alguma preferência ou informação para a equipe?"
-                      className="border border-linha rounded-2xl px-4 py-3 text-base resize-y focus:outline-none focus:ring-2 focus:ring-royal/40 focus:border-royal/40"
+                      className="bg-white border border-linha rounded-2xl px-4 py-3 text-base resize-y focus:outline-none focus:ring-2 focus:ring-royal/40 focus:border-royal/40"
                     />
                   </label>
 
-                  {/* Resumo dos itens */}
-                  <div className="flex flex-col gap-2">
+                  {/* Resumo com miniaturas */}
+                  <div className="flex flex-col gap-2.5">
                     <span className="font-semibold text-grafite">Resumo</span>
                     {itens.map((item) => (
                       <div
                         key={`r-${item.produtoId}-${item.dosagem ?? ""}`}
-                        className="flex justify-between text-sm text-grafite-medio"
+                        className="bg-white border border-linha rounded-2xl p-2.5 flex items-center gap-3"
                       >
-                        <span>
+                        <div className="shrink-0 w-11 h-11 rounded-xl bg-royal-nevoa overflow-hidden flex items-center justify-center p-1">
+                          <FotoProduto
+                            fotoUrl={item.fotoUrl ?? null}
+                            nome={item.nome}
+                            className="max-w-full max-h-full !object-contain"
+                          />
+                        </div>
+                        <span className="flex-1 min-w-0 text-sm text-grafite truncate">
                           {item.quantidade}× {item.nome}
                           {item.dosagem ? ` (${item.dosagem})` : ""}
                         </span>
-                        <span className="tabular-nums">
+                        <span className="text-sm font-semibold text-grafite tabular-nums">
                           {formatarPreco(item.precoCentavos * item.quantidade)}
                         </span>
                       </div>
