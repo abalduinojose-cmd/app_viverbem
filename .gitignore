@@ -45,3 +45,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# saida da vitrine estatica (gerada com: npm run demo:build)
+/out/
+.demo-temp/
+.teste-pages/

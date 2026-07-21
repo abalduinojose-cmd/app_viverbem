@@ -1,7 +1,7 @@
 // Página do TOTEM: "Como fazer seu pedido" — explica o passo a passo do
 // autoatendimento, mostra as avaliações (carrossel) e as unidades da loja.
 import Link from "next/link";
-import { db } from "@/lib/db";
+import { obterAvaliacoes } from "@/lib/catalogo";
 import { LogoViverBem } from "@/components/totem/LogoViverBem";
 import { CarrosselAvaliacoes } from "@/components/totem/CarrosselAvaliacoes";
 import { ANOS_TRADICAO, WHATSAPP_LOJA } from "@/lib/tipos";
@@ -71,10 +71,7 @@ const UNIDADES = [
 ];
 
 export default async function PaginaComoFunciona() {
-  const avaliacoes = await db.depoimento.findMany({
-    where: { ativo: true },
-    orderBy: { ordem: "asc" },
-  });
+  const avaliacoes = await obterAvaliacoes();
 
   const media =
     avaliacoes.length > 0
@@ -188,19 +185,7 @@ export default async function PaginaComoFunciona() {
 
         {/* ---------- Avaliações (carrossel) ---------- */}
         {avaliacoes.length > 0 && (
-          <CarrosselAvaliacoes
-            media={media}
-            avaliacoes={avaliacoes.map((a) => ({
-              id: a.id,
-              nome: a.nome,
-              texto: a.texto,
-              nota: a.nota,
-              fonte: a.fonte,
-              fotoUrl: a.fotoUrl,
-              ativo: a.ativo,
-              ordem: a.ordem,
-            }))}
-          />
+          <CarrosselAvaliacoes media={media} avaliacoes={avaliacoes} />
         )}
 
         {/* ---------- Onde nos encontrar ---------- */}

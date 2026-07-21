@@ -7,6 +7,7 @@
 // tamanho: "grande" (telas de destaque) ou "medio" (cabeçalhos)
 
 import { useEffect, useRef, useState } from "react";
+import { asset } from "@/lib/asset";
 
 export function LogoViverBem({ tamanho = "grande" }: { tamanho?: "grande" | "medio" }) {
   const grande = tamanho === "grande";
@@ -26,7 +27,7 @@ export function LogoViverBem({ tamanho = "grande" }: { tamanho?: "grande" | "med
       // eslint-disable-next-line @next/next/no-img-element
       <img
         ref={imgRef}
-        src="/logo.png"
+        src={asset("/logo.png")}
         alt="Manipulação Viver Bem"
         draggable={false}
         onError={() => setTemArquivo(false)}

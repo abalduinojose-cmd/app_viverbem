@@ -2,6 +2,7 @@
 // mostra um placeholder clean com as cores da marca.
 // (Usamos <img> comum em vez de next/image porque as fotos são
 // enviadas pelo painel em tempo de execução e também há SVGs.)
+import { asset } from "@/lib/asset";
 
 export function FotoProduto({
   fotoUrl,
@@ -27,6 +28,6 @@ export function FotoProduto({
   }
   return (
     // eslint-disable-next-line @next/next/no-img-element
-    <img src={fotoUrl} alt={nome} className={`object-cover ${className}`} draggable={false} />
+    <img src={asset(fotoUrl)} alt={nome} className={`object-cover ${className}`} draggable={false} />
   );
 }
