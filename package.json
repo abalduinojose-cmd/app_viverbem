@@ -12,7 +12,7 @@
     "db:studio": "prisma studio",
     "db:sqlite": "node scripts/trocar-banco.js sqlite",
     "db:postgres": "node scripts/trocar-banco.js postgres",
-    "vercel-build": "prisma generate && next build"
+    "vercel-build": "node scripts/trocar-banco.js postgres && prisma generate && next build"
   },
   "prisma": {
     "seed": "node prisma/seed.js"
