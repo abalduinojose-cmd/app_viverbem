@@ -61,17 +61,6 @@ h1, h2, h3, h4 {
   line-height: 1.4;
 }
 
-/* Faixa deslizante (marquee) com as palavras da marca */
-@keyframes deslizar-marquee {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
-}
-.marquee-faixa {
-  display: flex;
-  width: max-content;
-  animation: deslizar-marquee 30s linear infinite;
-}
-
 /* Revelação ao rolar (ativada pelo componente Revelar) */
 .revelar {
   opacity: 0;
@@ -182,8 +171,7 @@ h1, h2, h3, h4 {
 
 @media (prefers-reduced-motion: reduce) {
   .animar-surgir,
-  .animar-respirar,
-  .marquee-faixa {
+  .animar-respirar {
     animation: none;
   }
   .revelar {

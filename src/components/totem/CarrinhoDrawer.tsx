@@ -296,13 +296,14 @@ export function CarrinhoDrawer() {
                     </div>
                   )}
 
-                  {itens.map((item) => (
+                  {itens.map((item, i) => (
                     <div
                       key={`${item.produtoId}-${item.dosagem ?? ""}`}
-                      className="bg-white border border-linha rounded-[1.35rem] p-3.5 flex gap-3.5"
+                      className="animar-surgir bg-white border border-linha rounded-[1.35rem] p-3.5 flex gap-3.5 sombra-card hover:sombra-card-hover transition-shadow"
+                      style={{ animationDelay: `${Math.min(i, 6) * 60}ms` }}
                     >
                       {/* Foto do produto */}
-                      <div className="shrink-0 w-20 h-20 rounded-2xl bg-royal-nevoa overflow-hidden flex items-center justify-center p-1.5">
+                      <div className="shrink-0 w-[4.5rem] rounded-2xl bg-royal-nevoa border border-linha/70 overflow-hidden flex items-center justify-center p-1.5 self-stretch">
                         <FotoProduto
                           fotoUrl={item.fotoUrl ?? null}
                           nome={item.nome}
@@ -327,9 +328,9 @@ export function CarrinhoDrawer() {
                             type="button"
                             onClick={() => remover(item.produtoId, item.dosagem)}
                             aria-label={`Remover ${item.nome}`}
-                            className="shrink-0 text-grafite-claro hover:text-escarlate p-1 -mr-1 -mt-1 transition-colors"
+                            className="shrink-0 w-8 h-8 -mr-1.5 -mt-1 rounded-full text-grafite-claro hover:text-escarlate hover:bg-escarlate/10 flex items-center justify-center transition-colors"
                           >
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                               <path
                                 d="M4 7h16M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2m3 0-.8 12a2 2 0 0 1-2 1.9H8.8a2 2 0 0 1-2-1.9L6 7"
                                 stroke="currentColor"
@@ -340,32 +341,40 @@ export function CarrinhoDrawer() {
                           </button>
                         </div>
 
-                        <div className="flex items-center justify-between mt-auto pt-2.5">
+                        <div className="flex items-end justify-between mt-auto pt-2.5">
                           {/* Contador de quantidade */}
-                          <div className="flex items-center border border-linha rounded-full">
+                          <div className="flex items-center bg-royal-nevoa border border-linha rounded-full p-0.5">
                             <button
                               type="button"
                               onClick={() => mudarQuantidade(item.produtoId, item.dosagem, -1)}
                               aria-label="Diminuir"
-                              className="w-8 h-8 rounded-full text-grafite-medio hover:text-royal hover:bg-royal-claro text-lg flex items-center justify-center active:scale-90 transition-all"
+                              className="w-7 h-7 rounded-full bg-white text-grafite-medio hover:text-royal sombra-card text-base flex items-center justify-center active:scale-90 transition-all"
                             >
                               −
                             </button>
-                            <span className="text-sm font-bold text-grafite w-6 text-center tabular-nums">
+                            <span className="text-sm font-bold text-grafite w-7 text-center tabular-nums">
                               {item.quantidade}
                             </span>
                             <button
                               type="button"
                               onClick={() => mudarQuantidade(item.produtoId, item.dosagem, 1)}
                               aria-label="Aumentar"
-                              className="w-8 h-8 rounded-full text-grafite-medio hover:text-royal hover:bg-royal-claro text-lg flex items-center justify-center active:scale-90 transition-all"
+                              className="w-7 h-7 rounded-full bg-white text-grafite-medio hover:text-royal sombra-card text-base flex items-center justify-center active:scale-90 transition-all"
                             >
                               +
                             </button>
                           </div>
-                          <p className="text-grafite font-bold tabular-nums">
-                            {formatarPreco(item.precoCentavos * item.quantidade)}
-                          </p>
+                          <div className="text-right">
+                            {/* Com mais de um, mostra a conta para não parecer erro */}
+                            {item.quantidade > 1 && (
+                              <p className="text-[0.7rem] text-grafite-claro tabular-nums leading-none mb-1">
+                                {item.quantidade} × {formatarPreco(item.precoCentavos)}
+                              </p>
+                            )}
+                            <p className="text-grafite font-bold tabular-nums leading-none">
+                              {formatarPreco(item.precoCentavos * item.quantidade)}
+                            </p>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -373,7 +382,19 @@ export function CarrinhoDrawer() {
                 </div>
 
                 {itens.length > 0 && (
-                  <div className="bg-white border-t border-linha px-5 py-5">
+                  <div className="bg-white border-t border-linha px-5 pt-4 pb-5">
+                    {/* Resumo antes de seguir */}
+                    <div className="flex items-center justify-between text-sm mb-1">
+                      <span className="text-grafite-medio">
+                        Subtotal ({totalItens} {totalItens === 1 ? "item" : "itens"})
+                      </span>
+                      <span className="font-bold text-grafite tabular-nums">
+                        {formatarPreco(totalCentavos)}
+                      </span>
+                    </div>
+                    <p className="text-xs text-grafite-claro mb-4">
+                      Entrega ou retirada e pagamento na próxima etapa.
+                    </p>
                     <button
                       type="button"
                       onClick={irParaFinalizar}
