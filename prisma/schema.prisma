@@ -108,6 +108,10 @@ model Cliente {
   itens         String
   totalCentavos Int
   pagamento     String
+  // Como o pedido chega: "Retirada na loja" ou "Entrega em casa"
+  entrega       String   @default("")
+  // A loja escolhida (retirada) ou o endereço informado (entrega)
+  local         String   @default("")
   codigo        String // código do pedido (ex.: VB-8F3A)
   criadoEm      DateTime @default(now())
 }

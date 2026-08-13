@@ -9,16 +9,12 @@ import {
   WHATSAPP_LOJA,
   WHATSAPP_NUMERO,
   INSTAGRAM_URL,
+  UNIDADES,
+  linkMapaUnidade,
 } from "@/lib/tipos";
 
 const LINK_WHATSAPP = `https://wa.me/${WHATSAPP_NUMERO}`;
 
-// Endereços conforme o perfil das lojas no Google
-const UNIDADES = [
-  { bairro: "Centro", endereco: "Rua Dom Pedro Segundo, 31, Loja 37" },
-  { bairro: "Corrêas", endereco: "Rua Dr. Agostinho Goulão, 22" },
-  { bairro: "Posse", endereco: "Estrada União e Indústria, 33.383" },
-];
 
 const NAVEGACAO = [
   { href: "/", rotulo: "Início" },
@@ -36,11 +32,6 @@ function IconeWhatsApp({ tamanho = 22 }: { tamanho?: number }) {
   );
 }
 
-// Cada endereço abre o Google Maps já com a busca pronta
-function linkMapa(bairro: string, endereco: string) {
-  const busca = `Manipulação Viver Bem, ${endereco}, ${bairro}, Petrópolis RJ`;
-  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(busca)}`;
-}
 
 // Título de coluna, no mesmo padrão nas quatro
 function TituloColuna({ children }: { children: React.ReactNode }) {
@@ -143,7 +134,7 @@ export function Footer() {
               {UNIDADES.map((u) => (
                 <li key={u.bairro}>
                   <a
-                    href={linkMapa(u.bairro, u.endereco)}
+                    href={linkMapaUnidade(u.bairro, u.endereco)}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="group block"

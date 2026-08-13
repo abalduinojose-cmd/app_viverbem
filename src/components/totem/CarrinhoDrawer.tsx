@@ -11,6 +11,7 @@ import Link from "next/link";
 import { useCarrinho } from "@/lib/carrinho";
 import { formatarPreco } from "@/lib/preco";
 import { linkWhatsAppPedido, gerarCodigoPedido } from "@/lib/whatsapp";
+import { UNIDADES, ENTREGA_RETIRADA, ENTREGA_DELIVERY } from "@/lib/tipos";
 import { FotoProduto } from "./FotoProduto";
 
 type Etapa = "itens" | "finalizar";
@@ -27,15 +28,35 @@ export function CarrinhoDrawer() {
   const [nome, setNome] = useState("");
   const [whatsapp, setWhatsapp] = useState("");
   const [pagamento, setPagamento] = useState("");
+  const [entrega, setEntrega] = useState("");
+  const [unidade, setUnidade] = useState("");
+  const [endereco, setEndereco] = useState("");
   const [observacao, setObservacao] = useState("");
   const [codigo, setCodigo] = useState("");
   const [enviado, setEnviado] = useState(false);
 
   const FORMAS_PAGAMENTO = ["Dinheiro", "Pix", "Cartão de débito", "Cartão de crédito"];
-  // Só libera o envio com nome, WhatsApp (10+ dígitos) e forma de pagamento
+
+  // Retirada: precisa da loja. Entrega: precisa do endereço.
+  const ehRetirada = entrega === ENTREGA_RETIRADA;
+  const local = ehRetirada ? unidade : endereco.trim();
+  const entregaResolvida = entrega.length > 0 && local.length > 0;
+
+  // Só libera o envio com nome, WhatsApp (10+ dígitos), pagamento e
+  // a forma de receber já definida
   const digitosWhats = whatsapp.replace(/\D/g, "");
   const podeEnviar =
-    nome.trim().length > 0 && digitosWhats.length >= 10 && pagamento.length > 0;
+    nome.trim().length > 0 &&
+    digitosWhats.length >= 10 &&
+    pagamento.length > 0 &&
+    entregaResolvida;
+
+  // Trocar de modo zera a escolha do outro, para não enviar os dois
+  function escolherEntrega(modo: string) {
+    setEntrega(modo);
+    if (modo === ENTREGA_RETIRADA) setEndereco("");
+    else setUnidade("");
+  }
 
   function abrir() {
     setEtapa("itens");
@@ -65,6 +86,8 @@ export function CarrinhoDrawer() {
         nome: nome.trim(),
         whatsapp: whatsapp.trim(),
         pagamento,
+        entrega,
+        local,
         codigo,
         totalCentavos,
         itens: itens.map((i) => ({
@@ -82,6 +105,8 @@ export function CarrinhoDrawer() {
       nome: nome.trim(),
       whatsapp: whatsapp.trim(),
       pagamento,
+      entrega,
+      local,
       observacao,
       codigo,
     });
@@ -393,6 +418,123 @@ export function CarrinhoDrawer() {
                       className={classeCampo}
                     />
                   </label>
+
+                  {/* Como receber o pedido */}
+                  <div className="flex flex-col gap-2">
+                    <span className="font-semibold text-grafite text-sm">
+                      Como você quer receber *
+                    </span>
+                    <div className="grid grid-cols-2 gap-2.5">
+                      {[
+                        {
+                          modo: ENTREGA_RETIRADA,
+                          titulo: "Retirar na loja",
+                          icone: (
+                            <path
+                              d="M4 9.5 5.4 5A1.5 1.5 0 0 1 6.8 4h10.4a1.5 1.5 0 0 1 1.4 1L20 9.5M4 9.5h16M4 9.5v9A1.5 1.5 0 0 0 5.5 20h13a1.5 1.5 0 0 0 1.5-1.5v-9M9.5 13h5"
+                              stroke="currentColor"
+                              strokeWidth="1.7"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                          ),
+                        },
+                        {
+                          modo: ENTREGA_DELIVERY,
+                          titulo: "Receber em casa",
+                          icone: (
+                            <>
+                              <path
+                                d="M3 7.5h9v8H3zM12 10h4l3 3v2.5h-7z"
+                                stroke="currentColor"
+                                strokeWidth="1.7"
+                                strokeLinejoin="round"
+                              />
+                              <circle cx="7" cy="17.5" r="1.8" stroke="currentColor" strokeWidth="1.7" />
+                              <circle cx="16.5" cy="17.5" r="1.8" stroke="currentColor" strokeWidth="1.7" />
+                            </>
+                          ),
+                        },
+                      ].map((opcao) => (
+                        <button
+                          key={opcao.modo}
+                          type="button"
+                          onClick={() => escolherEntrega(opcao.modo)}
+                          className={`rounded-2xl px-4 py-4 border transition-all active:scale-95 flex flex-col items-center gap-2 text-center ${
+                            entrega === opcao.modo
+                              ? "bg-royal text-white border-royal"
+                              : "bg-white text-grafite border-linha hover:border-royal/40"
+                          }`}
+                        >
+                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            {opcao.icone}
+                          </svg>
+                          <span className="text-sm font-medium leading-tight">{opcao.titulo}</span>
+                        </button>
+                      ))}
+                    </div>
+
+                    {/* Retirada: escolher em qual das 3 lojas */}
+                    {ehRetirada && (
+                      <div className="flex flex-col gap-2 mt-1.5">
+                        <span className="text-sm text-grafite-medio">
+                          Em qual unidade você prefere retirar?
+                        </span>
+                        {UNIDADES.map((u) => (
+                          <button
+                            key={u.bairro}
+                            type="button"
+                            onClick={() => setUnidade(`${u.bairro}, ${u.endereco}`)}
+                            className={`text-left rounded-2xl px-4 py-3 border transition-all active:scale-[0.98] flex items-start gap-3 ${
+                              unidade.startsWith(u.bairro)
+                                ? "bg-royal-claro border-royal"
+                                : "bg-white border-linha hover:border-royal/40"
+                            }`}
+                          >
+                            <span
+                              className={`shrink-0 w-4 h-4 rounded-full border-2 mt-0.5 flex items-center justify-center transition-colors ${
+                                unidade.startsWith(u.bairro)
+                                  ? "border-royal"
+                                  : "border-grafite-claro"
+                              }`}
+                              aria-hidden="true"
+                            >
+                              {unidade.startsWith(u.bairro) && (
+                                <span className="w-2 h-2 rounded-full bg-royal" />
+                              )}
+                            </span>
+                            <span className="min-w-0">
+                              <span className="block font-semibold text-grafite text-sm">
+                                {u.bairro}
+                              </span>
+                              <span className="block text-grafite-medio text-xs leading-snug mt-0.5">
+                                {u.endereco}
+                              </span>
+                            </span>
+                          </button>
+                        ))}
+                      </div>
+                    )}
+
+                    {/* Entrega: endereço, senão a equipe não tem para onde levar */}
+                    {entrega === ENTREGA_DELIVERY && (
+                      <label className="flex flex-col gap-2 mt-1.5">
+                        <span className="text-sm text-grafite-medio">
+                          Endereço da entrega
+                        </span>
+                        <textarea
+                          value={endereco}
+                          onChange={(e) => setEndereco(e.target.value)}
+                          rows={2}
+                          placeholder="Rua, número, complemento e bairro"
+                          className={`${classeCampo} resize-y`}
+                        />
+                        <span className="text-xs text-grafite-claro leading-relaxed">
+                          A equipe confirma a taxa e o prazo da entrega pelo WhatsApp.
+                        </span>
+                      </label>
+                    )}
+                  </div>
 
                   {/* Forma de pagamento */}
                   <div className="flex flex-col gap-2">

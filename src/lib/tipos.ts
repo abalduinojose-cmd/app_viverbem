@@ -74,6 +74,37 @@ export const WHATSAPP_LOJA = "(24) 98873-3934"; // exibição
 export const WHATSAPP_NUMERO = "5524988733934"; // formato do link wa.me
 export const ANOS_TRADICAO = 19;
 
+// As 3 lojas, conforme o perfil de cada uma no Google. Ficam aqui
+// porque o rodapé, a página Sobre e a retirada no carrinho usam a
+// mesma lista — se abrir uma loja nova, muda só neste ponto.
+export const UNIDADES = [
+  {
+    bairro: "Centro",
+    endereco: "Rua Dom Pedro Segundo, 31, Loja 37",
+    telefone: "(24) 2242-3621",
+  },
+  {
+    bairro: "Corrêas",
+    endereco: "Rua Dr. Agostinho Goulão, 22",
+    telefone: null,
+  },
+  {
+    bairro: "Posse",
+    endereco: "Estrada União e Indústria, 33.383",
+    telefone: null,
+  },
+];
+
+/** Link do Google Maps já com a busca da unidade pronta. */
+export function linkMapaUnidade(bairro: string, endereco: string): string {
+  const busca = `Manipulação Viver Bem, ${endereco}, ${bairro}, Petrópolis RJ`;
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(busca)}`;
+}
+
+// Como o pedido chega até o cliente
+export const ENTREGA_RETIRADA = "Retirada na loja";
+export const ENTREGA_DELIVERY = "Entrega em casa";
+
 export const INSTAGRAM_PERFIL = "manipulacaoviverbem";
 export const INSTAGRAM_URL = `https://www.instagram.com/${INSTAGRAM_PERFIL}/`;
 

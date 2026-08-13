@@ -14,6 +14,8 @@ export async function POST(req: Request) {
   const nome = String(corpo.nome ?? "").trim().slice(0, 120);
   const whatsapp = String(corpo.whatsapp ?? "").trim().slice(0, 30);
   const pagamento = String(corpo.pagamento ?? "").trim().slice(0, 40);
+  const entrega = String(corpo.entrega ?? "").trim().slice(0, 40);
+  const local = String(corpo.local ?? "").trim().slice(0, 200);
   const codigo = String(corpo.codigo ?? "").trim().slice(0, 12);
   const totalCentavos = Number(corpo.totalCentavos);
   const itens = Array.isArray(corpo.itens) ? corpo.itens : [];
@@ -35,6 +37,8 @@ export async function POST(req: Request) {
       nome,
       whatsapp,
       pagamento,
+      entrega,
+      local,
       codigo,
       totalCentavos: Number.isFinite(totalCentavos) ? totalCentavos : 0,
       itens: JSON.stringify(itensLimpos),

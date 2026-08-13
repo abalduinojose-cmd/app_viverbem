@@ -10,6 +10,8 @@ interface ClienteDTO {
   nome: string;
   whatsapp: string;
   pagamento: string;
+  entrega: string;
+  local: string;
   codigo: string;
   totalCentavos: number;
   itens: string; // JSON
@@ -66,13 +68,15 @@ export function ListaClientes({ clientes }: { clientes: ClienteDTO[] }) {
   // Gera o CSV no navegador e baixa (compatível com Excel brasileiro)
   function exportarCSV() {
     const linhas = [
-      ["Data", "Pedido", "Nome", "WhatsApp", "Pagamento", "Total", "Itens"],
+      ["Data", "Pedido", "Nome", "WhatsApp", "Pagamento", "Entrega", "Local", "Total", "Itens"],
       ...listaFiltrada.map((c) => [
         formatarData(c.criadoEm),
         c.codigo,
         c.nome,
         c.whatsapp,
         c.pagamento,
+        c.entrega,
+        c.local,
         (c.totalCentavos / 100).toFixed(2).replace(".", ","),
         lerItens(c.itens)
           .map((i) => `${i.quantidade}x ${i.nome}${i.dosagem ? ` (${i.dosagem})` : ""}`)
@@ -169,6 +173,12 @@ export function ListaClientes({ clientes }: { clientes: ClienteDTO[] }) {
                   <p className="text-sm text-grafite-claro">
                     {c.whatsapp} · {c.pagamento || "pagamento a combinar"}
                   </p>
+                  {c.entrega && (
+                    <p className="text-sm text-grafite-medio mt-0.5">
+                      {c.entrega}
+                      {c.local ? `: ${c.local}` : ""}
+                    </p>
+                  )}
                 </div>
                 <div className="text-right">
                   <p className="text-royal font-bold tabular-nums">{formatarPreco(c.totalCentavos)}</p>

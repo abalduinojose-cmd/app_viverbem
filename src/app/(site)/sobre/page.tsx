@@ -4,7 +4,12 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { obterAvaliacoes } from "@/lib/catalogo";
 import { CarrosselAvaliacoes } from "@/components/totem/CarrosselAvaliacoes";
-import { ANOS_TRADICAO, WHATSAPP_LOJA, AVALIACOES_GOOGLE_NOTA } from "@/lib/tipos";
+import {
+  ANOS_TRADICAO,
+  WHATSAPP_LOJA,
+  AVALIACOES_GOOGLE_NOTA,
+  UNIDADES,
+} from "@/lib/tipos";
 
 export const dynamic = "force-dynamic";
 
@@ -36,12 +41,6 @@ const PASSOS = [
   },
 ];
 
-// Unidades da manipulação Viver Bem em Petrópolis
-const UNIDADES = [
-  { bairro: "Centro", endereco: "Rua Dom Pedro Segundo, 31, Loja 37" },
-  { bairro: "Corrêas", endereco: "Rua Dr. Agostinho Goulão, 22" },
-  { bairro: "Posse", endereco: "Estrada União e Indústria, 33.383" },
-];
 
 export default async function PaginaSobre() {
   const avaliacoes = await obterAvaliacoes();

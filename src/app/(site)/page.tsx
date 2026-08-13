@@ -1,7 +1,7 @@
 // HOME do site — a jornada definida com o cliente:
 // Hero (vídeo) > Produtos > Banner > Produtos > Sobre > Produtos >
-// Delivery > Destaques (linha própria) > Destaques (avaliações) >
-// Produtos (combos) > Rodapé.
+// Destaques (linha própria) > Avaliações > Instagram > Combos >
+// Delivery > Rodapé.
 //
 // Identidade: serif Fraunces nos títulos, o script do logo nas
 // anotações e reveals ao rolar.
@@ -17,6 +17,7 @@ import { SecaoTitulo } from "@/components/site/SecaoTitulo";
 import { MarqueeMarca } from "@/components/site/MarqueeMarca";
 import { Revelar } from "@/components/site/Revelar";
 import { ReelsInstagram } from "@/components/site/ReelsInstagram";
+import { SecaoDelivery } from "@/components/site/SecaoDelivery";
 import { CarrosselAvaliacoes } from "@/components/totem/CarrosselAvaliacoes";
 
 export const dynamic = "force-dynamic";
@@ -197,59 +198,8 @@ export default async function Home() {
         </section>
       )}
 
-      {/* 7 ─ DELIVERY */}
-      <section className="max-w-7xl mx-auto px-4 md:px-8 pt-20">
-        <Revelar>
-          <div className="bg-royal-nevoa border border-linha rounded-[2rem] px-8 md:px-14 py-12 grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
-            <div>
-              <p className="selo-secao text-royal">até a sua porta</p>
-              <h2 className="font-display text-3xl md:text-4xl font-semibold text-grafite leading-tight mt-2">
-                Receba seus manipulados
-                <br />
-                <span className="italic">sem sair de casa</span>
-              </h2>
-              <p className="text-grafite-medio text-lg leading-relaxed mt-4">
-                Monte o pedido pelo site, finalize no WhatsApp e combine a entrega com a
-                nossa equipe. Se preferir, retire em qualquer uma das 3 unidades.
-              </p>
-              <a
-                href="https://wa.me/5524988733934"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="degrade-suave mt-7 inline-flex items-center gap-3 text-white text-lg font-semibold rounded-2xl px-8 py-4 active:scale-95 transition-transform"
-              >
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                  <path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5.1-1.3A10 10 0 1 0 12 2Zm5.5 14.2c-.2.7-1.3 1.3-1.9 1.4-.5.1-1.1.1-1.8-.1-.4-.1-1-.3-1.7-.6-3-1.3-4.9-4.3-5.1-4.5-.1-.2-1.2-1.6-1.2-3s.7-2.1 1-2.4c.2-.3.5-.4.7-.4h.5c.2 0 .4 0 .6.4l.9 2.1c.1.2.1.4 0 .6l-.4.6-.5.5c-.1.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1.1 2.1 1.4 2.5 1.6.3.1.5.1.6-.1l.8-1c.2-.3.4-.2.7-.1l2.1 1c.3.1.5.2.6.4 0-.1 0 .6-.2 1.3Z" />
-                </svg>
-                Pedir pelo WhatsApp
-              </a>
-            </div>
 
-            {/* Passos do delivery */}
-            <div className="flex flex-col gap-3">
-              {[
-                { n: "1", t: "Escolha seus produtos", d: "Navegue pelo catálogo e adicione ao carrinho." },
-                { n: "2", t: "Finalize no WhatsApp", d: "O pedido chega pronto para a nossa equipe." },
-                { n: "3", t: "Receba ou retire", d: "Entrega combinada com você ou retirada em loja." },
-              ].map((p, i) => (
-                <Revelar key={p.n} atraso={i * 120}>
-                  <div className="bg-white border border-linha rounded-2xl p-5 flex items-start gap-4 sombra-card">
-                    <span className="shrink-0 w-11 h-11 rounded-xl degrade-marca text-white flex items-center justify-center font-display text-lg font-semibold">
-                      {p.n}
-                    </span>
-                    <div>
-                      <p className="font-bold text-grafite">{p.t}</p>
-                      <p className="text-grafite-medio text-sm mt-0.5">{p.d}</p>
-                    </div>
-                  </div>
-                </Revelar>
-              ))}
-            </div>
-          </div>
-        </Revelar>
-      </section>
-
-      {/* 8 ─ DESTAQUES: linha dermatológica */}
+      {/* 7 ─ DESTAQUES: linha dermatológica */}
       {dermatologicos.length > 0 && (
         <section className="max-w-7xl mx-auto px-4 md:px-8 pt-20">
           <Revelar>
@@ -282,21 +232,21 @@ export default async function Home() {
         </section>
       )}
 
-      {/* 9 ─ DESTAQUES: avaliações do Google */}
+      {/* 8 ─ DESTAQUES: avaliações do Google */}
       {avaliacoes.length > 0 && (
         <Revelar>
           <CarrosselAvaliacoes media={AVALIACOES_GOOGLE_NOTA} avaliacoes={avaliacoes} />
         </Revelar>
       )}
 
-      {/* 10 ─ INSTAGRAM: os vídeos da farmácia */}
+      {/* 9 ─ INSTAGRAM: os vídeos da farmácia */}
       <Revelar>
         <ReelsInstagram />
       </Revelar>
 
-      {/* 11 ─ PRODUTOS: combos especiais */}
+      {/* 10 ─ PRODUTOS: combos especiais */}
       {combos.length > 0 && (
-        <section className="max-w-7xl mx-auto px-4 md:px-8 pt-16 pb-24">
+        <section className="max-w-7xl mx-auto px-4 md:px-8 pt-16">
           <Revelar>
             <SecaoTitulo
               selo="mais completo, mais vantajoso"
@@ -307,6 +257,12 @@ export default async function Home() {
           </Revelar>
         </section>
       )}
+
+      {/* 11 ─ DELIVERY: como o pedido chega (fecha a pagina) */}
+      <Revelar>
+        <SecaoDelivery />
+      </Revelar>
+      <div className="pb-24" aria-hidden="true" />
     </main>
   );
 }

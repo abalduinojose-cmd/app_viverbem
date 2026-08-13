@@ -34,14 +34,6 @@ export function CatalogoClient({
   );
 
   const buscando = busca.trim().length > 0;
-  const resultadoBusca = useMemo(() => {
-    const termo = busca.trim().toLowerCase();
-    if (!termo) return [];
-    return produtos.filter(
-      (p) =>
-        p.nome.toLowerCase().includes(termo) || p.descricao.toLowerCase().includes(termo)
-    );
-  }, [busca, produtos]);
 
   const produtosDoFiltro = useMemo(() => {
     if (filtro === "novidades") return novidades;
@@ -49,6 +41,27 @@ export function CatalogoClient({
     if (typeof filtro === "number") return produtos.filter((p) => p.categoriaId === filtro);
     return produtos;
   }, [filtro, produtos, novidades, combos]);
+
+  // A busca acontece DENTRO da categoria escolhida, então dá para
+  // procurar "vitamina" só entre os combos, por exemplo.
+  const resultadoBusca = useMemo(() => {
+    const termo = busca.trim().toLowerCase();
+    if (!termo) return [];
+    return produtosDoFiltro.filter(
+      (p) =>
+        p.nome.toLowerCase().includes(termo) || p.descricao.toLowerCase().includes(termo)
+    );
+  }, [busca, produtosDoFiltro]);
+
+  // Nome da categoria ativa, para o título dos resultados
+  const nomeDoFiltro = useMemo(() => {
+    if (filtro === "novidades") return "Novidades";
+    if (filtro === "combos") return "Combos";
+    if (typeof filtro === "number") {
+      return categorias.find((c) => c.id === filtro)?.nome ?? null;
+    }
+    return null;
+  }, [filtro, categorias]);
 
   // Chip de filtro — o selecionado ganha leve elevação e glow
   const Chip = ({
@@ -144,39 +157,56 @@ export function CatalogoClient({
           </div>
         </div>
 
-        {/* Chips de categoria */}
-        {!buscando && (
-          <div className="flex gap-2.5 overflow-x-auto rolagem-sem-barra px-4 md:px-8 pb-3.5 max-w-7xl mx-auto w-full">
-            <Chip ativo={filtro === "tudo"} aoTocar={() => setFiltro("tudo")}>
-              Tudo
+        {/* Chips de categoria — ficam visíveis também durante a busca,
+            para dar para procurar dentro de uma categoria */}
+        <div className="flex gap-2.5 overflow-x-auto rolagem-sem-barra px-4 md:px-8 pb-3.5 max-w-7xl mx-auto w-full">
+          <Chip ativo={filtro === "tudo"} aoTocar={() => setFiltro("tudo")}>
+            {buscando ? "Em tudo" : "Tudo"}
+          </Chip>
+          {novidades.length > 0 && (
+            <Chip ativo={filtro === "novidades"} aoTocar={() => setFiltro("novidades")}>
+              Novidades
             </Chip>
-            {novidades.length > 0 && (
-              <Chip ativo={filtro === "novidades"} aoTocar={() => setFiltro("novidades")}>
-                Novidades
-              </Chip>
-            )}
-            {categorias.map((c) => (
-              <Chip key={c.id} ativo={filtro === c.id} aoTocar={() => setFiltro(c.id)}>
-                {c.nome}
-              </Chip>
-            ))}
-            {/* Combos por último */}
-            {combos.length > 0 && (
-              <Chip ativo={filtro === "combos"} aoTocar={() => setFiltro("combos")}>
-                Combos
-              </Chip>
-            )}
-          </div>
-        )}
+          )}
+          {categorias.map((c) => (
+            <Chip key={c.id} ativo={filtro === c.id} aoTocar={() => setFiltro(c.id)}>
+              {c.nome}
+            </Chip>
+          ))}
+          {/* Combos por último */}
+          {combos.length > 0 && (
+            <Chip ativo={filtro === "combos"} aoTocar={() => setFiltro("combos")}>
+              Combos
+            </Chip>
+          )}
+        </div>
       </div>
 
       {/* ---------- Conteúdo ---------- */}
       <main className="flex-1 px-4 md:px-8 py-8 pb-24 max-w-7xl mx-auto w-full">
         {buscando ? (
           <>
-            <h2 className="text-xl font-bold text-grafite mb-5 tracking-tight">
-              Resultados para “{busca.trim()}”
+            <h2 className="text-xl font-bold text-grafite mb-1 tracking-tight">
+              {resultadoBusca.length}{" "}
+              {resultadoBusca.length === 1 ? "resultado" : "resultados"} para “
+              {busca.trim()}”
             </h2>
+            <p className="text-grafite-claro mb-5">
+              {nomeDoFiltro ? (
+                <>
+                  em <b className="text-grafite-medio">{nomeDoFiltro}</b>.{" "}
+                  <button
+                    type="button"
+                    onClick={() => setFiltro("tudo")}
+                    className="text-royal font-medium hover:underline"
+                  >
+                    Procurar no catálogo todo
+                  </button>
+                </>
+              ) : (
+                "em todo o catálogo. Toque numa categoria acima para restringir."
+              )}
+            </p>
             <Grade lista={resultadoBusca} />
           </>
         ) : filtro === "tudo" ? (

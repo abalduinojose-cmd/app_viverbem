@@ -1,6 +1,6 @@
 // Monta os links de WhatsApp (wa.me) com mensagem pronta.
 // Usado nos botões do totem: interesse num produto e envio do pedido.
-import { WHATSAPP_NUMERO } from "./tipos";
+import { WHATSAPP_NUMERO, ENTREGA_RETIRADA } from "./tipos";
 import { formatarPreco } from "./preco";
 import { ItemCarrinho } from "./carrinho";
 
@@ -25,6 +25,8 @@ export interface DadosPedido {
   nome: string;
   whatsapp: string;
   pagamento: string; // "Dinheiro" | "Pix" | "Cartão de débito" | "Cartão de crédito"
+  entrega: string; // "Retirada na loja" | "Entrega em casa"
+  local: string; // a loja escolhida, ou o endereço da entrega
   observacao?: string;
   codigo: string;
 }
@@ -50,6 +52,15 @@ export function linkWhatsAppPedido(itens: ItemCarrinho[], dados: DadosPedido): s
     partes.push(`*WhatsApp:* ${dados.whatsapp.trim()}`);
   }
   partes.push(`*Pagamento:* ${dados.pagamento}`);
+
+  // Como o pedido chega: a equipe precisa disso antes de preparar
+  if (dados.entrega) {
+    partes.push(`*Como receber:* ${dados.entrega}`);
+    if (dados.local && dados.local.trim()) {
+      const rotulo = dados.entrega === ENTREGA_RETIRADA ? "Loja" : "Endereço";
+      partes.push(`*${rotulo}:* ${dados.local.trim()}`);
+    }
+  }
 
   partes.push("", "*Itens:*", ...linhas, "", `*TOTAL: ${formatarPreco(total)}*`);
 

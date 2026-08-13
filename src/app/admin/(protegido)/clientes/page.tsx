@@ -26,6 +26,8 @@ export default async function PaginaClientes() {
         nome: c.nome,
         whatsapp: c.whatsapp,
         pagamento: c.pagamento,
+        entrega: c.entrega,
+        local: c.local,
         codigo: c.codigo,
         totalCentavos: c.totalCentavos,
         itens: c.itens,
