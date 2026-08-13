@@ -9,6 +9,7 @@
 
 const { PrismaClient } = require("@prisma/client");
 const bcrypt = require("bcryptjs");
+const avaliacoesGoogle = require("./avaliacoes-google");
 
 const db = new PrismaClient();
 
@@ -57,174 +58,17 @@ async function main() {
     console.log("Usuário operador criado: operador@viverbem.com.br / operador123");
   }
 
-  // ---------- Avaliações / depoimentos de exemplo ----------
-  // ATENÇÃO: os 23 textos abaixo são EXEMPLOS de demonstração.
-  // Substitua pelos comentários REAIS do Google no painel do gestor
-  // (Avaliações), onde também dá para enviar a foto de cada cliente.
+  // ---------- Avaliacoes reais do Google ----------
+  // Vem de prisma/avaliacoes-google.js, gerado a partir do perfil
+  // do Google da farmacia. O gestor pode editar cada uma no painel.
   await db.depoimento.deleteMany();
-  const depoimentos = [
-    {
-      nome: "Maria Helena Ribeiro",
-      texto:
-        "Manipulo minhas fórmulas na Viver Bem há mais de 10 anos. O atendimento é atencioso e a dosagem é sempre certinha para mim.",
-      nota: 5,
-      fonte: "Google",
-    },
-    {
-      nome: "Carlos Eduardo Moraes",
-      texto:
-        "O creme que o dermatologista receitou ficou pronto rapidinho e o resultado foi muito melhor que o industrializado.",
-      nota: 5,
-      fonte: "Google",
-    },
-    {
-      nome: "Fernanda Salgado",
-      texto:
-        "Amo que eles montam a vitamina do meu jeito, sem excesso de cápsulas. Confiança total no trabalho da equipe.",
-      nota: 5,
-      fonte: "Google",
-    },
-    {
-      nome: "Roberto Almeida",
-      texto:
-        "Equipe muito preparada. Explicaram cada ativo da fórmula com paciência e o preço ficou bem melhor que na drogaria.",
-      nota: 5,
-      fonte: "Google",
-    },
-    {
-      nome: "Juliana Martins",
-      texto:
-        "Peço meus manipulados sempre aqui. Entrega no prazo, embalagem impecável e resultado que eu realmente sinto.",
-      nota: 5,
-      fonte: "Google",
-    },
-    {
-      nome: "Patrícia Nogueira",
-      texto:
-        "Atendimento humano de verdade. A farmacêutica revisou a receita comigo e tirou todas as minhas dúvidas.",
-      nota: 5,
-      fonte: "Google",
-    },
-    {
-      nome: "Marcelo Tavares",
-      texto:
-        "Uso o ômega 3 e a vitamina D deles. Qualidade excelente e sempre com prazo cumprido.",
-      nota: 5,
-      fonte: "Google",
-    },
-    {
-      nome: "Ana Cláudia Ferreira",
-      texto:
-        "A melhor manipulação de Petrópolis. Já indiquei para toda a família e todo mundo aprovou.",
-      nota: 5,
-      fonte: "Google",
-    },
-    {
-      nome: "Luciana Prado",
-      texto:
-        "Fiz o combo de colágeno e minha pele mudou em poucas semanas. Recomendo demais.",
-      nota: 5,
-      fonte: "Google",
-    },
-    {
-      nome: "Sérgio Bastos",
-      texto:
-        "Preço justo, atendimento rápido e a fórmula exatamente como o médico pediu. Nota dez.",
-      nota: 5,
-      fonte: "Google",
-    },
-    {
-      nome: "Renata Coutinho",
-      texto:
-        "Sempre me atendem com carinho, lembram do meu nome e da minha fórmula. Isso não tem preço.",
-      nota: 5,
-      fonte: "Google",
-    },
-    {
-      nome: "Paulo Henrique Dias",
-      texto:
-        "Precisei de um manipulado com urgência e eles ficaram prontos no mesmo dia. Salvaram minha semana.",
-      nota: 5,
-      fonte: "Google",
-    },
-    {
-      nome: "Vanessa Rocha",
-      texto:
-        "Os dermocosméticos são maravilhosos. Uso o protetor solar e o sérum, minha pele nunca esteve tão bem.",
-      nota: 5,
-      fonte: "Google",
-    },
-    {
-      nome: "Antônio Carlos Peixoto",
-      texto:
-        "Trabalho sério, com farmacêutico responsável presente. Confio de olhos fechados.",
-      nota: 5,
-      fonte: "Google",
-    },
-    {
-      nome: "Cristiane Barbosa",
-      texto:
-        "Levo minhas receitas de homeopatia sempre aqui. Atendimento diferenciado e produto de qualidade.",
-      nota: 5,
-      fonte: "Google",
-    },
-    {
-      nome: "Rodrigo Meneses",
-      texto:
-        "Ambiente organizado, equipe simpática e produtos que realmente funcionam. Virei cliente fiel.",
-      nota: 5,
-      fonte: "Google",
-    },
-    {
-      nome: "Beatriz Lemos",
-      texto:
-        "A fórmula para o sono mudou minha rotina. Durmo bem e acordo com muito mais disposição.",
-      nota: 5,
-      fonte: "Google",
-    },
-    {
-      nome: "Gustavo Ramos",
-      texto:
-        "Comprei o kit para treino e gostei bastante. Explicaram direitinho como tomar cada coisa.",
-      nota: 5,
-      fonte: "Google",
-    },
-    {
-      nome: "Sandra Regina Alves",
-      texto:
-        "Já são muitos anos comprando com eles. Nunca tive um problema sequer, sempre tudo perfeito.",
-      nota: 5,
-      fonte: "Google",
-    },
-    {
-      nome: "Felipe Andrade",
-      texto:
-        "Ótimo custo-benefício. O mesmo produto na farmácia comum sai bem mais caro e sem personalização.",
-      nota: 5,
-      fonte: "Google",
-    },
-    {
-      nome: "Camila Vasconcelos",
-      texto:
-        "Adoro poder escolher a dosagem. Faz toda a diferença para quem tem sensibilidade como eu.",
-      nota: 5,
-      fonte: "Google",
-    },
-    {
-      nome: "Eduardo Siqueira",
-      texto:
-        "Atendimento nota mil, produtos de altíssima qualidade e entrega sempre pontual.",
-      nota: 5,
-      fonte: "Google",
-    },
-    {
-      nome: "Mônica Teixeira",
-      texto:
-        "A equipe é atenciosa do começo ao fim. Explicam, orientam e acompanham o resultado. Recomendo muito.",
-      nota: 5,
-      fonte: "Google",
-    },
-  ];
+  const depoimentos = avaliacoesGoogle.map((a) => ({
+    nome: a.nome,
+    texto: a.texto,
+    fotoUrl: a.fotoUrl,
+    nota: 5,
+    fonte: "Google",
+  }));
   for (let i = 0; i < depoimentos.length; i++) {
     await db.depoimento.create({ data: { ...depoimentos[i], ordem: i } });
   }

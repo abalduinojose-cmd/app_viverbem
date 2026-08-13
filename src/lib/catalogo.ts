@@ -1,6 +1,5 @@
-// Consulta do catálogo público (usada pela página do totem E pela
-// rota /api/totem/catalogo — mesma fonte de dados nos dois lugares,
-// o que já prepara o caminho para o modo offline da Fase 3).
+// Consulta do catálogo público, usada por todas as páginas do site
+// (home, lista de produtos e página de cada produto).
 //
 // Em modo DEMO (vitrine estática do GitHub Pages) os dados vêm de um
 // "retrato" em JSON, gerado por scripts/gerar-demo.js — assim a vitrine

@@ -47,7 +47,7 @@ export function HeroHome({ temVideo }: { temVideo: boolean }) {
           <h1 className="font-display text-[2.7rem] md:text-[4.3rem] font-semibold text-grafite leading-[1.03] mt-4">
             Saúde feita
             <br />
-            <span className="sublinhado-onda">sob medida</span>
+            <span>sob medida</span>
             <br />
             <span className="italic text-royal">para você</span>
           </h1>

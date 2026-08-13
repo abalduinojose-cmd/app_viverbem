@@ -18,6 +18,8 @@
   --color-royal-nevoa: #f6f9fd;
   --color-escarlate: #e02129;
   --color-escarlate-escuro: #b81b22;
+  /* Azul profundo do rodapé, para fechar a página com peso */
+  --color-noite: #0d2340;
   --color-grafite: #33373d;
   --color-grafite-medio: #5b6169;
   --color-grafite-claro: #8b929b;
@@ -55,15 +57,6 @@ h1, h2, h3, h4 {
   letter-spacing: 0;
 }
 
-/* Sublinhado ondulado vermelho, eco da onda do logo */
-.sublinhado-onda {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 12' preserveAspectRatio='none'%3E%3Cpath d='M2 8 C 22 2, 42 10, 62 6 S 102 2, 118 6' fill='none' stroke='%23E02129' stroke-width='3.5' stroke-linecap='round'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: center 100%;
-  background-size: 100% 0.32em;
-  padding-bottom: 0.28em;
-}
-
 /* Faixa deslizante (marquee) com as palavras da marca */
 @keyframes deslizar-marquee {
   from { transform: translateX(0); }
@@ -73,15 +66,6 @@ h1, h2, h3, h4 {
   display: flex;
   width: max-content;
   animation: deslizar-marquee 30s linear infinite;
-}
-
-/* Flutuação suave das fotos do hero */
-@keyframes flutuar {
-  0%, 100% { transform: translateY(0) rotate(var(--incl, 0deg)); }
-  50% { transform: translateY(-12px) rotate(var(--incl, 0deg)); }
-}
-.animar-flutuar {
-  animation: flutuar 6s ease-in-out infinite;
 }
 
 /* Revelação ao rolar (ativada pelo componente Revelar) */

@@ -22,13 +22,13 @@ const EXCLUIR = [
   path.join("src", "app", "admin"),
   path.join("src", "app", "api"),
   // redirecionamento não funciona em site estático
-  path.join("src", "app", "como-funciona"),
+  path.join("src", "app", "catalogo"),
 ];
 
 // Páginas cuja renderização dinâmica precisa ser desligada no estático
 const PAGINAS_DINAMICAS = [
   path.join("src", "app", "(site)", "page.tsx"),
-  path.join("src", "app", "(site)", "catalogo", "page.tsx"),
+  path.join("src", "app", "(site)", "produtos", "page.tsx"),
   path.join("src", "app", "(site)", "sobre", "page.tsx"),
   path.join("src", "app", "(site)", "produto", "[slug]", "page.tsx"),
 ];

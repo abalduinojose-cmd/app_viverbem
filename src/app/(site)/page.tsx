@@ -4,7 +4,7 @@
 // Produtos (combos) > Rodapé.
 //
 // Identidade: serif Fraunces nos títulos, o script do logo nas
-// anotações, a onda vermelha como divisor e reveals ao rolar.
+// anotações e reveals ao rolar.
 // O vídeo do hero é opcional: basta salvar public/hero.mp4.
 import fs from "fs";
 import path from "path";
@@ -15,7 +15,6 @@ import { FaixaProdutos } from "@/components/site/FaixaProdutos";
 import { HeroHome } from "@/components/site/HeroHome";
 import { SecaoTitulo } from "@/components/site/SecaoTitulo";
 import { MarqueeMarca } from "@/components/site/MarqueeMarca";
-import { Onda } from "@/components/site/Onda";
 import { Revelar } from "@/components/site/Revelar";
 import { CarrosselAvaliacoes } from "@/components/totem/CarrosselAvaliacoes";
 
@@ -98,21 +97,6 @@ export default async function Home() {
                 </svg>
               </Link>
             </div>
-            {/* Onda do logo atravessando o banner */}
-            <svg
-              viewBox="0 0 400 24"
-              preserveAspectRatio="none"
-              aria-hidden="true"
-              className="absolute -right-10 bottom-8 w-[26rem] opacity-40 hidden md:block"
-            >
-              <path
-                d="M4 16 C 90 2, 160 22, 240 12 S 380 4, 396 10"
-                fill="none"
-                stroke="#ffffff"
-                strokeWidth="4"
-                strokeLinecap="round"
-              />
-            </svg>
             <div className="absolute -right-20 -top-24 w-80 h-80 rounded-full bg-white/10" aria-hidden="true" />
           </div>
         </Revelar>
@@ -141,7 +125,7 @@ export default async function Home() {
             <h2 className="font-display text-3xl md:text-[2.8rem] font-semibold text-grafite leading-[1.08] mt-2">
               {ANOS_TRADICAO} anos cuidando
               <br />
-              <span className="sublinhado-onda italic text-royal">de você</span>
+              <span className="italic text-royal">de você</span>
             </h2>
             <p className="text-grafite-medio text-lg leading-relaxed mt-6">
               Somos especialistas em saúde personalizada e acreditamos que a beleza
@@ -196,20 +180,6 @@ export default async function Home() {
                   <p className="text-white/70 mt-1">fórmulas sob medida</p>
                 </div>
               </div>
-              <svg
-                viewBox="0 0 400 24"
-                preserveAspectRatio="none"
-                aria-hidden="true"
-                className="absolute left-8 right-8 bottom-6 w-[calc(100%-4rem)] opacity-50"
-              >
-                <path
-                  d="M4 16 C 90 2, 160 22, 240 12 S 380 4, 396 10"
-                  fill="none"
-                  stroke="#E02129"
-                  strokeWidth="4"
-                  strokeLinecap="round"
-                />
-              </svg>
               <div className="absolute -right-16 -top-20 w-56 h-56 rounded-full bg-white/5" aria-hidden="true" />
             </div>
           </Revelar>
@@ -283,12 +253,11 @@ export default async function Home() {
         </Revelar>
       </section>
 
-      {/* 8 ─ DESTAQUES: linha dermatológica (com a onda entrando e saindo) */}
+      {/* 8 ─ DESTAQUES: linha dermatológica */}
       {dermatologicos.length > 0 && (
-        <section className="pt-20">
-          <Onda cor="#1c69b5" />
-          <div className="bg-royal py-12 md:py-16 -mt-px">
-            <div className="max-w-7xl mx-auto px-4 md:px-8">
+        <section className="max-w-7xl mx-auto px-4 md:px-8 pt-20">
+          <Revelar>
+            <div className="bg-royal rounded-[2rem] px-6 md:px-12 py-12 md:py-16">
               <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-8">
                 <div>
                   <p className="palavra-script text-2xl text-white/85">beleza autêntica</p>
@@ -313,10 +282,7 @@ export default async function Home() {
               </div>
               <FaixaProdutos produtos={dermatologicos} />
             </div>
-          </div>
-          <div className="bg-royal">
-            <Onda cor="#fbfcfe" />
-          </div>
+          </Revelar>
         </section>
       )}
 
