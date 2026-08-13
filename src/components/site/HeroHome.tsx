@@ -40,7 +40,7 @@ export function HeroHome({ temVideo }: { temVideo: boolean }) {
       <div className="relative max-w-7xl mx-auto px-4 md:px-8 w-full pt-28 pb-20 grid grid-cols-1 md:grid-cols-12 gap-10 items-center">
         {/* Texto */}
         <div className="md:col-span-7">
-          <p className="palavra-script text-2xl md:text-3xl text-escarlate">
+          <p className="selo-secao text-escarlate">
             há {ANOS_TRADICAO} anos em Petrópolis
           </p>
 
@@ -107,7 +107,7 @@ export function HeroHome({ temVideo }: { temVideo: boolean }) {
 
             {/* Selo 100% sob medida */}
             <div className="absolute right-0 bottom-10 bg-royal text-white rounded-2xl px-5 py-3.5 shadow-[0_14px_34px_rgba(28,105,181,0.35)] rotate-3">
-              <p className="palavra-script text-xl leading-none">fórmulas</p>
+              <p className="font-display italic text-lg leading-none">fórmulas</p>
               <p className="text-xs font-semibold tracking-widest uppercase mt-1">100% sob medida</p>
             </div>
           </div>

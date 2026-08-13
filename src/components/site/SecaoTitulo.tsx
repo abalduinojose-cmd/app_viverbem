@@ -19,7 +19,7 @@ export function SecaoTitulo({
     <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-8">
       <div>
         <p
-          className={`palavra-script text-2xl ${
+          className={`selo-secao ${
             corSelo === "escarlate" ? "text-escarlate" : "text-royal"
           }`}
         >

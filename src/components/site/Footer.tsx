@@ -3,6 +3,7 @@
 // colunas (marca, navegação, unidades, atendimento) e a linha legal.
 import Link from "next/link";
 import { asset } from "@/lib/asset";
+import { HorarioAtendimento } from "./HorarioAtendimento";
 import {
   ANOS_TRADICAO,
   WHATSAPP_LOJA,
@@ -26,11 +27,6 @@ const NAVEGACAO = [
   { href: "/contato", rotulo: "Contatos" },
 ];
 
-const HORARIOS = [
-  { dias: "Segunda a sexta", horas: "9h às 19h" },
-  { dias: "Sábado", horas: "9h às 13h" },
-  { dias: "Domingo", horas: "Fechado" },
-];
 
 function IconeWhatsApp({ tamanho = 22 }: { tamanho?: number }) {
   return (
@@ -63,7 +59,7 @@ export function Footer() {
         <div className="pt-14 md:pt-16">
           <div className="bg-white/[0.06] border border-white/10 rounded-[1.75rem] px-7 md:px-10 py-8 md:py-9 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
             <div>
-              <p className="palavra-script text-2xl text-white/70">fale com a gente</p>
+              <p className="selo-secao text-white/60">fale com a gente</p>
               <h2 className="font-display text-2xl md:text-[1.75rem] font-semibold mt-0.5">
                 Pronto para montar o seu pedido?
               </h2>
@@ -175,16 +171,9 @@ export function Footer() {
           </div>
 
           {/* Atendimento */}
-          <div className="md:col-span-3">
+          <div className="col-span-2 md:col-span-3">
             <TituloColuna>Atendimento</TituloColuna>
-            <ul className="flex flex-col gap-2.5">
-              {HORARIOS.map((h) => (
-                <li key={h.dias} className="flex items-baseline justify-between gap-4 text-sm">
-                  <span className="text-white/60">{h.dias}</span>
-                  <span className="text-white/90 font-medium whitespace-nowrap">{h.horas}</span>
-                </li>
-              ))}
-            </ul>
+            <HorarioAtendimento />
           </div>
         </div>
 

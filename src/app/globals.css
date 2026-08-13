@@ -6,9 +6,8 @@
    Vermelho    #E02129  -> destaques e chamadas de ação (uso pontual)
    Cinza       #4D4D4D  -> textos e subtítulos
 
-   Redesign "clean & moderno": tipografia Figtree + Inter,
-   muito respiro, sombras suaves em camadas, cantos generosos,
-   fundo quase branco com leve tom frio. Sem gradientes pesados.
+   Redesign "clean & moderno": muito respiro, sombras suaves em
+   camadas, cantos generosos, fundo quase branco com leve tom frio.
    ============================================================ */
 @theme {
   --color-royal: #1c69b5;
@@ -18,6 +17,7 @@
   --color-royal-nevoa: #f6f9fd;
   --color-escarlate: #e02129;
   --color-escarlate-escuro: #b81b22;
+
   /* Azul profundo do rodapé, para fechar a página com peso */
   --color-noite: #0d2340;
   --color-grafite: #33373d;
@@ -27,7 +27,6 @@
 
   --font-sans: var(--font-inter), system-ui, sans-serif;
   --font-display: var(--font-fraunces), Georgia, serif;
-  --font-script: var(--font-kaushan), cursive;
 
   /* Sombras suaves em camadas (clean, sem peso) */
   --shadow-card: 0 1px 2px rgba(16, 42, 74, 0.04), 0 4px 16px rgba(16, 42, 74, 0.06);
@@ -50,11 +49,16 @@ h1, h2, h3, h4 {
   letter-spacing: -0.015em;
 }
 
-/* Palavra em destaque no estilo do logo (script manuscrito) */
-.palavra-script {
-  font-family: var(--font-script);
-  font-weight: 400;
-  letter-spacing: 0;
+/* Selo que abre cada seção ("os queridinhos", "até a sua porta").
+   Era um script de pincel, que ficava mal desenhado em português;
+   virou uma etiqueta espaçada em caixa alta, que combina com a
+   serifada dos títulos e lê bem em qualquer tamanho. */
+.selo-secao {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  line-height: 1.4;
 }
 
 /* Faixa deslizante (marquee) com as palavras da marca */
@@ -82,7 +86,8 @@ h1, h2, h3, h4 {
 
 /* Fonte manuscrita do fallback do logo ("Viver Bem") */
 .fonte-logo {
-  font-family: var(--font-script);
+  font-family: var(--font-display);
+  font-style: italic;
 }
 /* Serifada do subtítulo do logo ("MANIPULAÇÃO E HOMEOPATIA") */
 .fonte-serif {

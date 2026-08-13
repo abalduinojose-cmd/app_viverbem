@@ -75,7 +75,7 @@ export function ReelsInstagram() {
         {/* Cabeçalho */}
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-5 mb-9">
           <div>
-            <p className="palavra-script text-2xl text-escarlate">acompanhe a gente</p>
+            <p className="selo-secao text-escarlate">acompanhe a gente</p>
             <h2 className="font-display text-3xl md:text-4xl font-semibold text-grafite leading-tight mt-2">
               Por dentro da
               <br />

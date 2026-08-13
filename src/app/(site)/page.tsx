@@ -71,7 +71,7 @@ export default async function Home() {
         <Revelar>
           <div className="degrade-marca rounded-[2rem] px-8 md:px-14 py-12 md:py-16 text-white relative overflow-hidden">
             <div className="relative max-w-2xl">
-              <p className="palavra-script text-2xl md:text-3xl text-white/90">
+              <p className="selo-secao text-white/75">
                 do seu jeito
               </p>
               <h2 className="font-display text-3xl md:text-5xl font-semibold leading-[1.08] mt-2">
@@ -117,7 +117,7 @@ export default async function Home() {
       <section className="max-w-7xl mx-auto px-4 md:px-8 pt-20">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
           <Revelar>
-            <p className="palavra-script text-2xl text-escarlate">desde 2007</p>
+            <p className="selo-secao text-escarlate">desde 2007</p>
             <h2 className="font-display text-3xl md:text-[2.8rem] font-semibold text-grafite leading-[1.08] mt-2">
               {ANOS_TRADICAO} anos cuidando
               <br />
@@ -202,7 +202,7 @@ export default async function Home() {
         <Revelar>
           <div className="bg-royal-nevoa border border-linha rounded-[2rem] px-8 md:px-14 py-12 grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
             <div>
-              <p className="palavra-script text-2xl text-royal">até a sua porta</p>
+              <p className="selo-secao text-royal">até a sua porta</p>
               <h2 className="font-display text-3xl md:text-4xl font-semibold text-grafite leading-tight mt-2">
                 Receba seus manipulados
                 <br />
@@ -256,7 +256,7 @@ export default async function Home() {
             <div className="bg-royal rounded-[2rem] px-6 md:px-12 py-12 md:py-16">
               <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-8">
                 <div>
-                  <p className="palavra-script text-2xl text-white/85">beleza autêntica</p>
+                  <p className="selo-secao text-white/75">beleza autêntica</p>
                   <h2 className="font-display text-3xl md:text-4xl font-semibold text-white mt-2 leading-tight">
                     Cuidados dermatológicos
                     <br />

@@ -207,7 +207,7 @@ export default async function PaginaProduto({ params }: Props) {
       {/* Relacionados */}
       {relacionados.length > 0 && (
         <section className="max-w-6xl mx-auto px-4 md:px-8 pt-4 pb-14 border-t border-linha">
-          <p className="palavra-script text-2xl text-escarlate mt-10">combina com</p>
+          <p className="selo-secao text-escarlate mt-10">combina com</p>
           <h2 className="font-display text-2xl md:text-3xl font-semibold text-grafite mt-1 mb-6">
             Você também pode gostar
           </h2>

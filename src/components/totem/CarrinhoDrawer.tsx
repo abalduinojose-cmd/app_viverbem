@@ -101,7 +101,7 @@ export function CarrinhoDrawer() {
         type="button"
         onClick={abrir}
         aria-label="Abrir carrinho"
-        className="fixed bottom-6 right-6 z-40 bg-noite text-white rounded-full h-14 pl-5 pr-6 flex items-center gap-3 ring-1 ring-white/10 shadow-[0_10px_30px_rgba(13,35,64,0.35)] hover:bg-royal-escuro active:scale-95 transition-all"
+        className="degrade-suave fixed bottom-6 right-6 z-40 text-white rounded-full h-14 pl-5 pr-6 flex items-center gap-3 shadow-[0_10px_30px_rgba(224,33,41,0.35)] active:scale-95 transition-all"
       >
         <span className="relative">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -116,7 +116,7 @@ export function CarrinhoDrawer() {
             <circle cx="17" cy="20.5" r="1.5" fill="currentColor" />
           </svg>
           {totalItens > 0 && (
-            <span className="absolute -top-2.5 -right-2.5 bg-escarlate text-white text-[0.7rem] font-bold rounded-full min-w-5 h-5 px-1 flex items-center justify-center ring-2 ring-noite">
+            <span className="absolute -top-2.5 -right-2.5 bg-white text-escarlate text-[0.7rem] font-bold rounded-full min-w-5 h-5 px-1 flex items-center justify-center shadow-sm">
               {totalItens}
             </span>
           )}

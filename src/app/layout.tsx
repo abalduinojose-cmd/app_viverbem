@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Fraunces, Inter, Kaushan_Script } from "next/font/google";
+import { Fraunces, Inter } from "next/font/google";
 import "./globals.css";
 
 // Fraunces: títulos — serif expressiva que ecoa o serif do logo
@@ -16,13 +16,6 @@ const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
-});
-
-// Kaushan Script: usada só no fallback do wordmark "Viver Bem"
-const kaushan = Kaushan_Script({
-  variable: "--font-kaushan",
-  subsets: ["latin"],
-  weight: "400",
 });
 
 // Endereço público do site (troque pela URL do domínio próprio no deploy,
@@ -57,7 +50,7 @@ export default function RootLayout({
   return (
     <html
       lang="pt-BR"
-      className={`${fraunces.variable} ${inter.variable} ${kaushan.variable} h-full antialiased`}
+      className={`${fraunces.variable} ${inter.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>

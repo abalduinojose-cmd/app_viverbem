@@ -59,7 +59,7 @@ export function VistosRecentemente({
     <section className="max-w-6xl mx-auto px-4 md:px-8 pt-4 pb-20">
       <div className="flex items-end justify-between gap-4 mb-6">
         <div>
-          <p className="palavra-script text-2xl text-royal">continue de onde parou</p>
+          <p className="selo-secao text-royal">continue de onde parou</p>
           <h2 className="font-display text-2xl md:text-3xl font-semibold text-grafite mt-1">
             Você viu recentemente
           </h2>
