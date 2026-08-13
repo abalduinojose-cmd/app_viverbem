@@ -73,3 +73,13 @@ export function listarDosagens(dosagens: string | null | undefined): string[] {
 export const WHATSAPP_LOJA = "(24) 98873-3934"; // exibição
 export const WHATSAPP_NUMERO = "5524988733934"; // formato do link wa.me
 export const ANOS_TRADICAO = 19;
+
+export const INSTAGRAM_PERFIL = "manipulacaoviverbem";
+export const INSTAGRAM_URL = `https://www.instagram.com/${INSTAGRAM_PERFIL}/`;
+
+// Total de avaliações no perfil do Google (o site mostra só uma
+// seleção delas). Conferido em ago/2026 — atualize quando crescer.
+export const AVALIACOES_GOOGLE_TOTAL = 634;
+export const AVALIACOES_GOOGLE_NOTA = 5.0;
+export const PERFIL_GOOGLE_URL =
+  "https://www.google.com/maps/search/?api=1&query=Viver%20Bem%20-%20Farm%C3%A1cia%20de%20Manipula%C3%A7%C3%A3o&query_place_id=ChIJnz1PkICpmQARI67bD1sFiE8";

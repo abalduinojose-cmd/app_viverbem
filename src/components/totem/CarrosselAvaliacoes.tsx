@@ -3,7 +3,11 @@
 // com foto do cliente (ou inicial do nome), estrelas e selo do Google.
 
 import { useRef } from "react";
-import { DepoimentoDTO } from "@/lib/tipos";
+import {
+  DepoimentoDTO,
+  AVALIACOES_GOOGLE_TOTAL,
+  PERFIL_GOOGLE_URL,
+} from "@/lib/tipos";
 import { Estrelas } from "./Estrelas";
 
 // Logotipo "G" do Google
@@ -69,9 +73,15 @@ export function CarrosselAvaliacoes({
                   {media.toFixed(1)}
                 </span>
                 <Estrelas nota={Math.round(media)} tamanho={20} />
-                <span className="text-sm text-grafite-claro">
-                  ({avaliacoes.length} avaliações)
-                </span>
+                {/* O total é o do perfil, não o número de cartões aqui */}
+                <a
+                  href={PERFIL_GOOGLE_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm text-grafite-claro hover:text-royal underline decoration-transparent hover:decoration-inherit underline-offset-4 transition-colors"
+                >
+                  {AVALIACOES_GOOGLE_TOTAL} avaliações
+                </a>
               </div>
             </div>
           </div>

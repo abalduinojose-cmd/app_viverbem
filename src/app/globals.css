@@ -178,7 +178,6 @@ h1, h2, h3, h4 {
 @media (prefers-reduced-motion: reduce) {
   .animar-surgir,
   .animar-respirar,
-  .animar-flutuar,
   .marquee-faixa {
     animation: none;
   }

@@ -10,12 +10,13 @@ import fs from "fs";
 import path from "path";
 import Link from "next/link";
 import { obterCatalogo, obterAvaliacoes } from "@/lib/catalogo";
-import { TIPO_COMBO, ANOS_TRADICAO } from "@/lib/tipos";
+import { TIPO_COMBO, ANOS_TRADICAO, AVALIACOES_GOOGLE_NOTA } from "@/lib/tipos";
 import { FaixaProdutos } from "@/components/site/FaixaProdutos";
 import { HeroHome } from "@/components/site/HeroHome";
 import { SecaoTitulo } from "@/components/site/SecaoTitulo";
 import { MarqueeMarca } from "@/components/site/MarqueeMarca";
 import { Revelar } from "@/components/site/Revelar";
+import { ReelsInstagram } from "@/components/site/ReelsInstagram";
 import { CarrosselAvaliacoes } from "@/components/totem/CarrosselAvaliacoes";
 
 export const dynamic = "force-dynamic";
@@ -39,11 +40,6 @@ export default async function Home() {
   const produtosVitaminas = vitaminas
     ? produtos.filter((p) => p.categoriaId === vitaminas.id)
     : [];
-
-  const mediaAvaliacoes =
-    avaliacoes.length > 0
-      ? avaliacoes.reduce((s, a) => s + a.nota, 0) / avaliacoes.length
-      : 0;
 
   // O vídeo do hero só entra se o arquivo existir em public/hero.mp4
   const temVideo = fs.existsSync(path.join(process.cwd(), "public", "hero.mp4"));
@@ -172,7 +168,7 @@ export default async function Home() {
                   <p className="text-white/70 mt-1">unidades em Petrópolis</p>
                 </div>
                 <div>
-                  <p className="font-display text-5xl font-semibold">{mediaAvaliacoes.toFixed(1)}</p>
+                  <p className="font-display text-5xl font-semibold">{AVALIACOES_GOOGLE_NOTA.toFixed(1)}</p>
                   <p className="text-white/70 mt-1">nota no Google</p>
                 </div>
                 <div>
@@ -289,11 +285,16 @@ export default async function Home() {
       {/* 9 ─ DESTAQUES: avaliações do Google */}
       {avaliacoes.length > 0 && (
         <Revelar>
-          <CarrosselAvaliacoes media={mediaAvaliacoes} avaliacoes={avaliacoes} />
+          <CarrosselAvaliacoes media={AVALIACOES_GOOGLE_NOTA} avaliacoes={avaliacoes} />
         </Revelar>
       )}
 
-      {/* 10 ─ PRODUTOS: combos especiais */}
+      {/* 10 ─ INSTAGRAM: os vídeos da farmácia */}
+      <Revelar>
+        <ReelsInstagram />
+      </Revelar>
+
+      {/* 11 ─ PRODUTOS: combos especiais */}
       {combos.length > 0 && (
         <section className="max-w-7xl mx-auto px-4 md:px-8 pt-16 pb-24">
           <Revelar>

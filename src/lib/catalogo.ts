@@ -71,13 +71,15 @@ export async function obterCatalogo(): Promise<Catalogo> {
 }
 
 /** Avaliações ativas exibidas na página "Como fazer seu pedido". */
+// Só entram no site as avaliações COM foto do cliente: um cartão com
+// a inicial no lugar do rosto passa impressão de depoimento inventado.
 export async function obterAvaliacoes(): Promise<DepoimentoDTO[]> {
   if (EH_DEMO) {
-    return (await lerRetratoDemo()).avaliacoes;
+    return (await lerRetratoDemo()).avaliacoes.filter((a) => Boolean(a.fotoUrl));
   }
 
   const avaliacoes = await db.depoimento.findMany({
-    where: { ativo: true },
+    where: { ativo: true, NOT: { fotoUrl: null } },
     orderBy: { ordem: "asc" },
   });
 

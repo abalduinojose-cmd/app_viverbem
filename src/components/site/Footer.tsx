@@ -3,7 +3,12 @@
 // colunas (marca, navegação, unidades, atendimento) e a linha legal.
 import Link from "next/link";
 import { asset } from "@/lib/asset";
-import { ANOS_TRADICAO, WHATSAPP_LOJA, WHATSAPP_NUMERO } from "@/lib/tipos";
+import {
+  ANOS_TRADICAO,
+  WHATSAPP_LOJA,
+  WHATSAPP_NUMERO,
+  INSTAGRAM_URL,
+} from "@/lib/tipos";
 
 const LINK_WHATSAPP = `https://wa.me/${WHATSAPP_NUMERO}`;
 
@@ -103,7 +108,7 @@ export function Footer() {
                 <IconeWhatsApp tamanho={19} />
               </a>
               <a
-                href="https://www.instagram.com/"
+                href={INSTAGRAM_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Instagram"
@@ -180,10 +185,6 @@ export function Footer() {
                 </li>
               ))}
             </ul>
-            <p className="text-white/50 text-sm leading-relaxed mt-5">
-              Monte o pedido pelo site e finalize no WhatsApp. Combinamos o pagamento e
-              a entrega ou retirada com você.
-            </p>
           </div>
         </div>
 
@@ -193,8 +194,8 @@ export function Footer() {
             Os dados informados na finalização do pedido (nome e WhatsApp) são usados
             apenas pela Viver Bem para atendimento e ofertas, conforme a LGPD.
           </p>
-          <p className="text-white/40 text-xs md:text-right">
-            © {new Date().getFullYear()} Manipulação Viver Bem · Site por FluxoIA Studio
+          <p className="text-white/40 text-xs md:text-right whitespace-nowrap">
+            © {new Date().getFullYear()} Manipulação Viver Bem
           </p>
         </div>
       </div>
