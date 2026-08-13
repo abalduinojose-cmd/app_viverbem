@@ -1,6 +1,6 @@
 "use client";
 // Gestão de categorias: criar, renomear, apagar e reordenar arrastando
-// (a ordem aqui é a ordem dos chips e seções no totem).
+// (a ordem aqui é a ordem dos chips e seções no site).
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -131,7 +131,7 @@ export function ListaCategorias({ categorias }: { categorias: CategoriaComTotal[
       )}
 
       <p className="mt-4 text-sm text-grafite-claro">
-        Arraste os cards pelo ⠿ para mudar a ordem das categorias no totem.
+        Arraste os cartões pela alça para mudar a ordem das categorias no site.
       </p>
 
       {/* Lista */}
@@ -143,13 +143,17 @@ export function ListaCategorias({ categorias }: { categorias: CategoriaComTotal[
             onDragStart={() => (indiceArrastado.current = indice)}
             onDragOver={(e) => e.preventDefault()}
             onDrop={() => aoSoltar(indice)}
-            className="bg-white rounded-2xl border border-grafite/10 shadow-sm p-4 flex items-center gap-4"
+            className="bg-white rounded-2xl border border-linha p-4 flex items-center gap-4"
           >
             <span
-              className="cursor-grab active:cursor-grabbing text-grafite-claro text-xl select-none"
+              className="cursor-grab active:cursor-grabbing text-grafite-claro hover:text-royal select-none transition-colors"
               title="Arraste para reordenar"
             >
-              ⠿
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <circle cx="9" cy="6" r="1.6" /><circle cx="15" cy="6" r="1.6" />
+                <circle cx="9" cy="12" r="1.6" /><circle cx="15" cy="12" r="1.6" />
+                <circle cx="9" cy="18" r="1.6" /><circle cx="15" cy="18" r="1.6" />
+              </svg>
             </span>
             {editando === c.id ? (
               <>

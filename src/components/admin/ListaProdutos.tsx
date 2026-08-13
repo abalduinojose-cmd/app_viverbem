@@ -139,7 +139,7 @@ export function ListaProdutos({
   async function apagar(p: ProdutoDTO) {
     if (
       !confirm(
-        `Apagar "${p.nome}" de vez?\n\nDica: se o produto só está em falta, use o botão "Ativo" para escondê-lo do totem sem perder o cadastro.`
+        `Apagar "${p.nome}" de vez?\n\nDica: se o produto só está em falta, use o botão "Ativo" para escondê-lo do site sem perder o cadastro.`
       )
     ) {
       return;
@@ -163,9 +163,11 @@ export function ListaProdutos({
     valor: number;
     cor: string;
   }) => (
-    <div className="bg-white rounded-2xl border border-linha sombra-card px-5 py-4">
-      <p className="text-xs font-semibold tracking-wider uppercase text-grafite-claro">{rotulo}</p>
-      <p className={`text-3xl font-bold tracking-tight mt-1 tabular-nums ${cor}`}>{valor}</p>
+    <div className="bg-white rounded-2xl border border-linha px-4 py-3.5 md:px-5 md:py-4">
+      <p className="text-[0.65rem] md:text-xs font-semibold tracking-wider uppercase text-grafite-claro leading-tight">
+        {rotulo}
+      </p>
+      <p className={`text-2xl md:text-3xl font-bold tracking-tight mt-1 tabular-nums ${cor}`}>{valor}</p>
     </div>
   );
 
@@ -173,9 +175,9 @@ export function ListaProdutos({
     <button
       type="button"
       onClick={() => setSituacao(valor)}
-      className={`shrink-0 rounded-full px-4 py-2 text-sm font-medium transition-all active:scale-95 ${
+      className={`shrink-0 rounded-full px-4 py-2.5 text-sm font-medium transition-colors active:scale-95 ${
         situacao === valor
-          ? "bg-royal text-white shadow-[0_4px_14px_rgba(28,105,181,0.3)]"
+          ? "bg-royal text-white"
           : "bg-white text-grafite-medio border border-linha hover:border-royal/30"
       }`}
     >
@@ -214,16 +216,18 @@ export function ListaProdutos({
   return (
     <div>
       {/* ---------- Cabeçalho ---------- */}
-      <div className="flex flex-wrap items-end justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-end sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-grafite tracking-tight">Produtos e preços</h1>
-          <p className="text-grafite-claro mt-1">
-            Cadastre, ajuste preços e controle o que aparece no totem.
+          <h1 className="font-display text-2xl md:text-3xl font-semibold text-grafite tracking-tight">
+            Produtos e preços
+          </h1>
+          <p className="text-grafite-claro text-sm md:text-base mt-1">
+            Cadastre, ajuste preços e controle o que aparece no site.
           </p>
         </div>
         <Link
           href="/admin/produtos/novo"
-          className="degrade-marca inline-flex items-center gap-2 text-white font-semibold rounded-xl px-5 py-3.5 transition-all active:scale-95"
+          className="degrade-marca inline-flex items-center justify-center gap-2 text-white font-semibold rounded-xl px-5 py-3.5 transition-all active:scale-95"
         >
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <path d="M12 5v14M5 12h14" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
@@ -235,7 +239,7 @@ export function ListaProdutos({
       {/* ---------- Resumo ---------- */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-6">
         <CartaoResumo rotulo="Cadastrados" valor={resumo.total} cor="text-grafite" />
-        <CartaoResumo rotulo="Ativos no totem" valor={resumo.ativos} cor="text-royal" />
+        <CartaoResumo rotulo="Ativos no site" valor={resumo.ativos} cor="text-royal" />
         <CartaoResumo rotulo="Em falta" valor={resumo.inativos} cor="text-escarlate" />
         <CartaoResumo rotulo="Em destaque" valor={resumo.destaques} cor="text-grafite" />
       </div>
@@ -319,7 +323,7 @@ export function ListaProdutos({
 
       {podeArrastar && (
         <p className="mt-3 text-sm text-grafite-claro">
-          Arraste os cards pelo ⠿ para mudar a ordem no totem.
+          Arraste os cartões pela alça para mudar a ordem no site.
         </p>
       )}
 
@@ -346,10 +350,14 @@ export function ListaProdutos({
             <div className="p-4 flex gap-4">
               {podeArrastar && (
                 <span
-                  className="cursor-grab active:cursor-grabbing text-grafite-claro text-lg select-none -ml-1"
+                  className="cursor-grab active:cursor-grabbing text-grafite-claro hover:text-royal select-none -ml-1 mt-1 transition-colors"
                   title="Arraste para reordenar"
                 >
-                  ⠿
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <circle cx="9" cy="6" r="1.6" /><circle cx="15" cy="6" r="1.6" />
+                <circle cx="9" cy="12" r="1.6" /><circle cx="15" cy="12" r="1.6" />
+                <circle cx="9" cy="18" r="1.6" /><circle cx="15" cy="18" r="1.6" />
+              </svg>
                 </span>
               )}
 

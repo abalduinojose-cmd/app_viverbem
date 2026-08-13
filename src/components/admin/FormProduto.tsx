@@ -192,7 +192,7 @@ export function FormProduto({
             required
             rows={3}
             className="border border-grafite/20 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-royal/50 resize-y"
-            placeholder="Descrição curta que aparece no totem"
+            placeholder="Descrição curta que aparece no site"
           />
         </label>
 
@@ -253,7 +253,7 @@ export function FormProduto({
             placeholder="Separe por vírgula. Ex.: 250mg, 500mg, 1g"
           />
           <span className="text-xs text-grafite-claro">
-            Se preencher, o cliente escolhe a dosagem no totem antes de adicionar ao carrinho.
+            Se preencher, o cliente escolhe a dosagem no site antes de adicionar ao carrinho.
           </span>
         </label>
 
@@ -314,19 +314,19 @@ export function FormProduto({
             marcado={ativo}
             aoMudar={setAtivo}
             titulo="Ativo"
-            descricaoCurta="Desmarque para esconder do totem sem apagar (ex.: item em falta)"
+            descricaoCurta="Desmarque para esconder do site sem apagar (ex.: item em falta)"
           />
           <Caixa
             marcado={novidade}
             aoMudar={setNovidade}
             titulo="Novidade"
-            descricaoCurta="Aparece na vitrine ✨ Novidades do totem"
+            descricaoCurta="Aparece na vitrine Novidades da home"
           />
           <Caixa
             marcado={destaque}
             aoMudar={setDestaque}
             titulo="Destaque"
-            descricaoCurta="Aparece na vitrine Mais procurados do totem"
+            descricaoCurta="Aparece na vitrine Mais procurados da home"
           />
         </div>
 

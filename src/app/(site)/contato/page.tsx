@@ -94,7 +94,7 @@ export default function PaginaContato() {
                 )}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-5 inline-flex items-center gap-2 text-royal font-semibold hover:gap-3 transition-all"
+                className="mt-3 inline-flex items-center min-h-11 gap-2 text-royal font-semibold hover:gap-3 transition-all"
               >
                 Ver no mapa
                 <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true">

@@ -64,8 +64,8 @@ function Sanfona({
   if (!temLista && !texto) return null;
 
   return (
-    <details className="group border-b border-linha py-4">
-      <summary className="flex items-center justify-between gap-4 cursor-pointer list-none font-semibold text-grafite marker:content-['']">
+    <details className="group border-b border-linha py-1.5">
+      <summary className="flex items-center justify-between gap-4 min-h-12 cursor-pointer list-none font-semibold text-grafite marker:content-['']">
         {titulo}
         <svg
           width="18"
@@ -80,7 +80,7 @@ function Sanfona({
       </summary>
 
       {temLista ? (
-        <ul className="mt-3.5 flex flex-col gap-2">
+        <ul className="mb-3 flex flex-col gap-2">
           {itens.map((i) => (
             <li key={i} className="flex items-start gap-2.5 text-grafite-medio leading-relaxed">
               <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-escarlate mt-2.5" aria-hidden="true" />
@@ -89,7 +89,7 @@ function Sanfona({
           ))}
         </ul>
       ) : (
-        <p className="mt-3.5 text-grafite-medio leading-relaxed whitespace-pre-line">{texto}</p>
+        <p className="mb-3 text-grafite-medio leading-relaxed whitespace-pre-line">{texto}</p>
       )}
     </details>
   );
@@ -113,7 +113,7 @@ export default async function PaginaProduto({ params }: Props) {
     <main className="flex-1 pt-16 md:pt-[4.5rem] bg-white">
       {/* Trilha de navegação */}
       <div className="max-w-6xl mx-auto px-4 md:px-8 pt-7">
-        <nav className="flex items-center gap-2 text-sm text-grafite-claro" aria-label="Você está em">
+        <nav className="flex items-center gap-2 text-sm text-grafite-claro min-h-10" aria-label="Você está em">
           <Link href="/" className="hover:text-royal transition-colors">Início</Link>
           <span aria-hidden="true">/</span>
           <Link href="/produtos" className="hover:text-royal transition-colors">Produtos</Link>
@@ -143,6 +143,7 @@ export default async function PaginaProduto({ params }: Props) {
               fotoUrl={produto.fotoUrl}
               nome={produto.nome}
               className="max-w-full max-h-[24rem] !object-contain"
+              prioritaria
             />
           </div>
 
@@ -152,7 +153,7 @@ export default async function PaginaProduto({ params }: Props) {
               {produto.categoriaNome && (
                 <Link
                   href="/produtos"
-                  className="text-[0.65rem] font-semibold tracking-[0.18em] uppercase text-royal bg-royal-claro hover:bg-royal hover:text-white px-3 py-1.5 rounded-full transition-colors"
+                  className="inline-flex items-center min-h-9 text-[0.65rem] font-semibold tracking-[0.18em] uppercase text-royal bg-royal-claro hover:bg-royal hover:text-white px-3.5 rounded-full transition-colors"
                 >
                   {produto.categoriaNome}
                 </Link>

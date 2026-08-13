@@ -171,7 +171,7 @@ export function SecaoDelivery() {
 
             <Link
               href="/lojas"
-              className="mt-3 text-center text-white/45 hover:text-white/80 text-sm transition-colors"
+              className="mt-2 inline-flex items-center justify-center min-h-11 text-center text-white/45 hover:text-white/80 text-sm transition-colors"
             >
               Ver detalhes das lojas
             </Link>

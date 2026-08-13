@@ -148,7 +148,7 @@ export default async function Home() {
             </ul>
             <Link
               href="/sobre"
-              className="mt-7 inline-flex items-center gap-2 text-royal font-semibold hover:gap-3 transition-all"
+              className="mt-5 inline-flex items-center min-h-11 gap-2 text-royal font-semibold hover:gap-3 transition-all"
             >
               Conheça a nossa história
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">

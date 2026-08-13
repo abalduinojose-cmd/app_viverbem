@@ -8,10 +8,14 @@ export function FotoProduto({
   fotoUrl,
   nome,
   className = "",
+  prioritaria = false,
 }: {
   fotoUrl: string | null;
   nome: string;
   className?: string;
+  /** Só para a foto grande da página do produto, que é o que a pessoa
+   *  vê primeiro. O resto carrega conforme aparece na tela. */
+  prioritaria?: boolean;
 }) {
   if (!fotoUrl) {
     return (
@@ -28,6 +32,14 @@ export function FotoProduto({
   }
   return (
     // eslint-disable-next-line @next/next/no-img-element
-    <img src={asset(fotoUrl)} alt={nome} className={`object-cover ${className}`} draggable={false} />
+    <img
+      src={asset(fotoUrl)}
+      alt={nome}
+      className={`object-cover ${className}`}
+      draggable={false}
+      loading={prioritaria ? "eager" : "lazy"}
+      decoding="async"
+      {...(prioritaria ? { fetchPriority: "high" as const } : {})}
+    />
   );
 }

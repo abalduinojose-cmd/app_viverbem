@@ -49,7 +49,7 @@ export function HeroHome({ temVideo }: { temVideo: boolean }) {
             href={PERFIL_GOOGLE_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 bg-white border border-linha rounded-full pl-2.5 pr-3.5 py-1.5 sombra-card hover:border-royal/30 transition-colors"
+            className="inline-flex items-center min-h-10 gap-2 bg-white border border-linha rounded-full pl-3 pr-4 py-2 sombra-card hover:border-royal/30 transition-colors"
           >
             <span className="flex items-center gap-0.5 text-[#f5a623]" aria-hidden="true">
               {[0, 1, 2, 3, 4].map((e) => (
@@ -114,21 +114,21 @@ export function HeroHome({ temVideo }: { temVideo: boolean }) {
               style={{ rotate: FOTOS_HERO[0].incl }}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={asset(FOTOS_HERO[0].src)} alt="" className="w-full h-40 object-contain" />
+              <img src={asset(FOTOS_HERO[0].src)} alt="" decoding="async" width={320} height={320} className="w-full h-40 object-contain" />
             </div>
             <div
               className="absolute right-6 top-16 w-48 bg-white rounded-3xl border border-linha p-4 shadow-[0_18px_44px_rgba(16,42,74,0.16)]"
               style={{ rotate: FOTOS_HERO[1].incl }}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={asset(FOTOS_HERO[1].src)} alt="" className="w-full h-44 object-contain" />
+              <img src={asset(FOTOS_HERO[1].src)} alt="" decoding="async" width={320} height={320} className="w-full h-44 object-contain" />
             </div>
             <div
               className="absolute left-24 bottom-2 w-44 bg-white rounded-3xl border border-linha p-4 shadow-[0_18px_44px_rgba(16,42,74,0.14)]"
               style={{ rotate: FOTOS_HERO[2].incl }}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={asset(FOTOS_HERO[2].src)} alt="" className="w-full h-40 object-contain" />
+              <img src={asset(FOTOS_HERO[2].src)} alt="" decoding="async" width={320} height={320} className="w-full h-40 object-contain" />
             </div>
 
             {/* Selo 100% sob medida */}

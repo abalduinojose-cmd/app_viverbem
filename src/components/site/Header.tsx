@@ -83,6 +83,8 @@ export function Header() {
             src={asset("/logo.png")}
             alt="Manipulação Viver Bem"
             draggable={false}
+            width={220}
+            height={97}
             className="h-10 md:h-12 w-auto object-contain"
           />
         </Link>

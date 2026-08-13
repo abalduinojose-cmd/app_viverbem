@@ -76,6 +76,10 @@ export function Footer() {
               src={asset("/logo.png")}
               alt="Manipulação Viver Bem"
               draggable={false}
+              loading="lazy"
+              decoding="async"
+              width={220}
+              height={97}
               className="h-11 w-auto object-contain brightness-0 invert"
             />
             <p className="text-white/60 leading-relaxed mt-5 max-w-xs">
@@ -112,12 +116,12 @@ export function Footer() {
           {/* Navegação */}
           <div className="md:col-span-3">
             <TituloColuna>Navegação</TituloColuna>
-            <ul className="flex flex-col gap-3">
+            <ul className="flex flex-col -my-1.5">
               {NAVEGACAO.map((l) => (
                 <li key={l.href}>
                   <Link
                     href={l.href}
-                    className="text-white/60 hover:text-white transition-colors"
+                    className="inline-flex items-center min-h-11 text-white/60 hover:text-white transition-colors"
                   >
                     {l.rotulo}
                   </Link>
