@@ -24,7 +24,7 @@
   --color-linha: #e7ebf0;
 
   --font-sans: var(--font-inter), system-ui, sans-serif;
-  --font-display: var(--font-figtree), system-ui, sans-serif;
+  --font-display: var(--font-fraunces), Georgia, serif;
   --font-script: var(--font-kaushan), cursive;
 
   /* Sombras suaves em camadas (clean, sem peso) */
@@ -42,10 +42,58 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
-/* Títulos usam a fonte display (Figtree) */
+/* Títulos usam a fonte display (Fraunces, serif da marca) */
 h1, h2, h3, h4 {
   font-family: var(--font-display);
-  letter-spacing: -0.02em;
+  letter-spacing: -0.015em;
+}
+
+/* Palavra em destaque no estilo do logo (script manuscrito) */
+.palavra-script {
+  font-family: var(--font-script);
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+/* Sublinhado ondulado vermelho, eco da onda do logo */
+.sublinhado-onda {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 12' preserveAspectRatio='none'%3E%3Cpath d='M2 8 C 22 2, 42 10, 62 6 S 102 2, 118 6' fill='none' stroke='%23E02129' stroke-width='3.5' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center 100%;
+  background-size: 100% 0.32em;
+  padding-bottom: 0.28em;
+}
+
+/* Faixa deslizante (marquee) com as palavras da marca */
+@keyframes deslizar-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.marquee-faixa {
+  display: flex;
+  width: max-content;
+  animation: deslizar-marquee 30s linear infinite;
+}
+
+/* Flutuação suave das fotos do hero */
+@keyframes flutuar {
+  0%, 100% { transform: translateY(0) rotate(var(--incl, 0deg)); }
+  50% { transform: translateY(-12px) rotate(var(--incl, 0deg)); }
+}
+.animar-flutuar {
+  animation: flutuar 6s ease-in-out infinite;
+}
+
+/* Revelação ao rolar (ativada pelo componente Revelar) */
+.revelar {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.revelar.visivel {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* Fonte manuscrita do fallback do logo ("Viver Bem") */
@@ -145,7 +193,14 @@ h1, h2, h3, h4 {
 
 @media (prefers-reduced-motion: reduce) {
   .animar-surgir,
-  .animar-respirar {
+  .animar-respirar,
+  .animar-flutuar,
+  .marquee-faixa {
     animation: none;
+  }
+  .revelar {
+    opacity: 1;
+    transform: none;
+    transition: none;
   }
 }

@@ -1,12 +1,14 @@
 import type { Metadata, Viewport } from "next";
-import { Figtree, Inter, Kaushan_Script } from "next/font/google";
+import { Fraunces, Inter, Kaushan_Script } from "next/font/google";
 import "./globals.css";
 
-// Figtree: títulos — geométrica moderna, clean, ótima para saúde
-const figtree = Figtree({
-  variable: "--font-figtree",
+// Fraunces: títulos — serif expressiva que ecoa o serif do logo
+// ("MANIPULAÇÃO E HOMEOPATIA") e dá o ar de boticário premium
+const fraunces = Fraunces({
+  variable: "--font-fraunces",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
+  weight: ["400", "500", "600", "700"],
+  style: ["normal", "italic"],
 });
 
 // Inter: corpo — altamente legível, moderna e neutra
@@ -55,7 +57,7 @@ export default function RootLayout({
   return (
     <html
       lang="pt-BR"
-      className={`${figtree.variable} ${inter.variable} ${kaushan.variable} h-full antialiased`}
+      className={`${fraunces.variable} ${inter.variable} ${kaushan.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>

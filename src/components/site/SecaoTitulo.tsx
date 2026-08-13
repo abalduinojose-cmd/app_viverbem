@@ -1,5 +1,5 @@
-// Cabeçalho padrão das seções da home: selo, título, descrição e o
-// atalho opcional "ver tudo" alinhado à direita.
+// Cabeçalho padrão das seções: o "selo" vira uma anotação em script
+// (eco do logo) com um traço da onda, e o título usa a serif da marca.
 import Link from "next/link";
 
 export function SecaoTitulo({
@@ -16,21 +16,19 @@ export function SecaoTitulo({
   corSelo?: "royal" | "escarlate";
 }) {
   return (
-    <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-7">
+    <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-8">
       <div>
-        <span
-          className={`inline-block text-xs font-semibold tracking-[0.22em] uppercase px-4 py-1.5 rounded-full ${
-            corSelo === "escarlate"
-              ? "text-escarlate bg-escarlate/10"
-              : "text-royal bg-royal-claro"
+        <p
+          className={`palavra-script text-2xl ${
+            corSelo === "escarlate" ? "text-escarlate" : "text-royal"
           }`}
         >
           {selo}
-        </span>
-        <h2 className="text-3xl md:text-4xl font-bold text-grafite tracking-tight mt-3">
+        </p>
+        <h2 className="font-display text-3xl md:text-[2.6rem] font-semibold text-grafite mt-1.5">
           {titulo}
         </h2>
-        {descricao && <p className="text-grafite-medio text-lg mt-1.5">{descricao}</p>}
+        {descricao && <p className="text-grafite-medio text-lg mt-2">{descricao}</p>}
       </div>
       {verTudo && (
         <Link

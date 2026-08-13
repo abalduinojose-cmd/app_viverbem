@@ -1,8 +1,10 @@
-// Rodapé premium do site: marca, navegação, unidades e contato,
-// com a nota de privacidade (LGPD) e o crédito da FluxoIA Studio.
+// Rodapé premium do site: a onda da marca faz a transição para o
+// azul profundo, com navegação, unidades, contato, a nota de
+// privacidade (LGPD) e o crédito da FluxoIA Studio.
 import Link from "next/link";
 import { asset } from "@/lib/asset";
 import { ANOS_TRADICAO, WHATSAPP_LOJA } from "@/lib/tipos";
+import { Onda } from "./Onda";
 
 const UNIDADES = [
   { bairro: "Centro", endereco: "Rua Dom Pedro Segundo, 31, Loja 37" },
@@ -12,7 +14,9 @@ const UNIDADES = [
 
 export function Footer() {
   return (
-    <footer className="bg-[#10173f] text-white mt-auto">
+    <footer className="mt-auto">
+      <Onda cor="#10173f" className="-mb-px" />
+      <div className="bg-[#10173f] text-white">
       <div className="max-w-7xl mx-auto px-4 md:px-8 pt-14 pb-8">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-10">
           {/* Marca */}
@@ -119,6 +123,7 @@ export function Footer() {
             © {new Date().getFullYear()} Manipulação Viver Bem · Site por FluxoIA Studio
           </p>
         </div>
+      </div>
       </div>
     </footer>
   );
