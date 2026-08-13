@@ -265,6 +265,66 @@ export default async function PaginaPainel() {
           </ul>
         )}
       </div>
+
+      {/* Atalhos do dia a dia. Ficam por último de propósito: o que
+          importa nesta tela são os números, não o cadastro. */}
+      <div className="mt-4 mb-2">
+        <p className="text-[0.65rem] font-semibold tracking-wider uppercase text-grafite-claro px-1">
+          Atalhos
+        </p>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-2.5">
+          {[
+            {
+              href: "/admin/produtos/novo",
+              titulo: "Novo produto",
+              apoio: "cadastrar no catálogo",
+              icone: <path d="M12 5v14M5 12h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />,
+            },
+            {
+              href: "/admin/produtos",
+              titulo: "Ajustar preços",
+              apoio: "editar direto na lista",
+              icone: (
+                <path
+                  d="M4 20h4L18.5 9.5a2.1 2.1 0 0 0-3-3L5 17v3Z"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinejoin="round"
+                />
+              ),
+            },
+            {
+              href: "/admin/categorias",
+              titulo: "Categorias",
+              apoio: "agrupar os produtos",
+              icone: (
+                <>
+                  <rect x="3.5" y="4" width="7" height="7" rx="2" stroke="currentColor" strokeWidth="1.8" />
+                  <rect x="13.5" y="4" width="7" height="7" rx="2" stroke="currentColor" strokeWidth="1.8" />
+                  <rect x="3.5" y="13" width="7" height="7" rx="2" stroke="currentColor" strokeWidth="1.8" />
+                  <rect x="13.5" y="13" width="7" height="7" rx="2" stroke="currentColor" strokeWidth="1.8" />
+                </>
+              ),
+            },
+          ].map((a) => (
+            <Link
+              key={a.titulo}
+              href={a.href}
+              className="group bg-white rounded-2xl border border-linha hover:border-royal/40 px-4 py-3.5 flex items-center gap-3 transition-colors"
+            >
+              <span className="shrink-0 w-9 h-9 rounded-xl bg-royal-nevoa text-grafite-claro group-hover:bg-royal-claro group-hover:text-royal flex items-center justify-center transition-colors">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  {a.icone}
+                </svg>
+              </span>
+              <span className="min-w-0">
+                <span className="block text-sm font-medium text-grafite">{a.titulo}</span>
+                <span className="block text-xs text-grafite-claro">{a.apoio}</span>
+              </span>
+            </Link>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
