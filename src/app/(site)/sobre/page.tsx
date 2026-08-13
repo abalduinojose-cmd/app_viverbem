@@ -52,7 +52,7 @@ export default async function PaginaSobre() {
   return (
     <main className="flex-1 pt-16 md:pt-[4.5rem]">
       {/* ---------- Hero ---------- */}
-      <section className="halo-marca px-4 md:px-8 pt-14 pb-4">
+      <section id="historia" className="halo-marca px-4 md:px-8 pt-14 pb-4 scroll-mt-24">
         <div className="text-center max-w-3xl mx-auto">
           <span className="inline-flex items-center gap-2 text-xs font-semibold tracking-[0.22em] uppercase text-royal bg-royal-claro px-4 py-2 rounded-full">
             <span className="w-1.5 h-1.5 rounded-full bg-escarlate" aria-hidden="true" />
@@ -72,7 +72,7 @@ export default async function PaginaSobre() {
       </section>
 
       {/* ---------- Como fazer o pedido ---------- */}
-      <section className="px-4 md:px-8 mt-12 max-w-6xl mx-auto">
+      <section id="como-pedir" className="px-4 md:px-8 mt-12 max-w-6xl mx-auto scroll-mt-24">
         <h2 className="text-2xl md:text-3xl font-bold text-grafite tracking-tight text-center mb-8">
           Como fazer seu pedido por aqui
         </h2>
@@ -133,7 +133,9 @@ export default async function PaginaSobre() {
 
       {/* ---------- Avaliações ---------- */}
       {avaliacoes.length > 0 && (
-        <CarrosselAvaliacoes media={media} avaliacoes={avaliacoes} />
+        <div id="avaliacoes" className="scroll-mt-24">
+          <CarrosselAvaliacoes media={media} avaliacoes={avaliacoes} />
+        </div>
       )}
 
       {/* ---------- Unidades ---------- */}

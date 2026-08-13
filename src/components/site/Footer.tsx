@@ -17,7 +17,8 @@ const LINK_WHATSAPP = `https://wa.me/${WHATSAPP_NUMERO}`;
 const NAVEGACAO = [
   { href: "/", rotulo: "Início" },
   { href: "/produtos", rotulo: "Produtos" },
-  { href: "/sobre", rotulo: "Sobre" },
+  { href: "/sobre", rotulo: "A Viver Bem" },
+  { href: "/lojas", rotulo: "Lojas" },
   { href: "/contato", rotulo: "Contatos" },
 ];
 

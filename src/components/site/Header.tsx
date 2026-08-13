@@ -1,24 +1,49 @@
 "use client";
 // Cabeçalho do site: fixo no topo, transparente sobre o hero da home e
 // sólido (branco com sombra) ao rolar ou nas demais páginas.
-// Menu: Produtos · Sobre · Contatos (+ menu hambúrguer no celular).
+// Menu: A Viver Bem (dropdown) · Produtos · Lojas · Contatos.
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { asset } from "@/lib/asset";
 
+// Itens do dropdown "A Viver Bem" (âncoras da página Sobre)
+const MENU_SOBRE = [
+  { href: "/sobre#historia", rotulo: "Nossa história" },
+  { href: "/sobre#como-pedir", rotulo: "Como fazer o pedido" },
+  { href: "/sobre#avaliacoes", rotulo: "O que dizem os clientes" },
+];
+
 const LINKS = [
   { href: "/produtos", rotulo: "Produtos" },
-  { href: "/sobre", rotulo: "Sobre" },
+  { href: "/lojas", rotulo: "Lojas" },
   { href: "/contato", rotulo: "Contatos" },
 ];
+
+function Seta({ aberto }: { aberto: boolean }) {
+  return (
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      aria-hidden="true"
+      className={`transition-transform duration-200 ${aberto ? "rotate-180" : ""}`}
+    >
+      <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
 
 export function Header() {
   const pathname = usePathname();
   const naHome = pathname === "/";
   const [rolou, setRolou] = useState(false);
   const [menuAberto, setMenuAberto] = useState(false);
+  const [sobreAberto, setSobreAberto] = useState(false);
+  // Pequena tolerância ao tirar o mouse, senão o menu fecha no caminho
+  const fechamento = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     const aoRolar = () => setRolou(window.scrollY > 24);
@@ -27,10 +52,22 @@ export function Header() {
     return () => window.removeEventListener("scroll", aoRolar);
   }, []);
 
-  // Fecha o menu do celular ao trocar de página
-  useEffect(() => setMenuAberto(false), [pathname]);
+  // Fecha os menus ao trocar de página
+  useEffect(() => {
+    setMenuAberto(false);
+    setSobreAberto(false);
+  }, [pathname]);
+
+  function abrirSobre() {
+    if (fechamento.current) clearTimeout(fechamento.current);
+    setSobreAberto(true);
+  }
+  function fecharSobre() {
+    fechamento.current = setTimeout(() => setSobreAberto(false), 160);
+  }
 
   const solido = !naHome || rolou || menuAberto;
+  const sobreAtivo = pathname.startsWith("/sobre");
 
   return (
     <header
@@ -52,6 +89,45 @@ export function Header() {
 
         {/* Navegação (desktop) */}
         <nav className="hidden md:flex items-center gap-1">
+          {/* A Viver Bem, com dropdown */}
+          <div
+            className="relative"
+            onMouseEnter={abrirSobre}
+            onMouseLeave={fecharSobre}
+          >
+            <button
+              type="button"
+              onClick={() => setSobreAberto((a) => !a)}
+              aria-expanded={sobreAberto}
+              aria-haspopup="true"
+              className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-[0.95rem] font-medium transition-colors ${
+                sobreAtivo || sobreAberto
+                  ? "text-royal bg-royal-claro"
+                  : "text-grafite-medio hover:text-royal hover:bg-royal-nevoa"
+              }`}
+            >
+              A Viver Bem
+              <Seta aberto={sobreAberto} />
+            </button>
+
+            {sobreAberto && (
+              <div className="absolute left-0 top-full pt-2 animar-surgir">
+                <div className="w-60 bg-white rounded-2xl border border-linha shadow-[0_16px_44px_rgba(16,42,74,0.14)] p-2">
+                  {MENU_SOBRE.map((l) => (
+                    <Link
+                      key={l.href}
+                      href={l.href}
+                      onClick={() => setSobreAberto(false)}
+                      className="block px-4 py-2.5 rounded-xl text-[0.95rem] text-grafite-medio hover:text-royal hover:bg-royal-nevoa transition-colors"
+                    >
+                      {l.rotulo}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
           {LINKS.map((l) => {
             const ativo = pathname.startsWith(l.href);
             return (
@@ -86,9 +162,7 @@ export function Header() {
           type="button"
           onClick={() => setMenuAberto((m) => !m)}
           aria-label={menuAberto ? "Fechar menu" : "Abrir menu"}
-          className={`md:hidden w-11 h-11 rounded-xl flex items-center justify-center transition-colors ${
-            solido ? "text-grafite" : "text-grafite"
-          }`}
+          className="md:hidden w-11 h-11 rounded-xl flex items-center justify-center text-grafite transition-colors"
         >
           <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true">
             {menuAberto ? (
@@ -103,6 +177,20 @@ export function Header() {
       {/* Menu do celular */}
       {menuAberto && (
         <nav className="md:hidden bg-white border-t border-linha px-4 pb-4 pt-2 flex flex-col gap-1 animar-surgir">
+          {/* Grupo A Viver Bem, já aberto (no toque, dropdown só atrapalha) */}
+          <p className="px-4 pt-2 pb-1 selo-secao text-grafite-claro">A Viver Bem</p>
+          {MENU_SOBRE.map((l) => (
+            <Link
+              key={l.href}
+              href={l.href}
+              className="px-4 py-3 rounded-xl text-base font-medium text-grafite-medio hover:bg-royal-nevoa transition-colors"
+            >
+              {l.rotulo}
+            </Link>
+          ))}
+
+          <div className="border-t border-linha my-1.5" aria-hidden="true" />
+
           {LINKS.map((l) => (
             <Link
               key={l.href}
