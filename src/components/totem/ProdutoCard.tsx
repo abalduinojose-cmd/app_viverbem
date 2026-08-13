@@ -1,25 +1,18 @@
-"use client";
-// Card de produto do totem — clean, alvo de toque grande, com foto
-// em proporção fixa, selos discretos, nome, descrição e preço.
-
+// Card de produto — leva à página exclusiva do produto (o mesmo
+// endereço que é divulgado no Instagram). Foto em proporção fixa,
+// selos discretos, nome, descrição e preço.
+import Link from "next/link";
 import { ProdutoDTO, TIPO_COMBO, listarDosagens } from "@/lib/tipos";
 import { formatarPreco } from "@/lib/preco";
 import { FotoProduto } from "./FotoProduto";
 
-export function ProdutoCard({
-  produto,
-  aoTocar,
-}: {
-  produto: ProdutoDTO;
-  aoTocar: (p: ProdutoDTO) => void;
-}) {
+export function ProdutoCard({ produto }: { produto: ProdutoDTO }) {
   const temDosagem = listarDosagens(produto.dosagens).length > 0;
 
   return (
-    <button
-      type="button"
-      onClick={() => aoTocar(produto)}
-      className="group animar-surgir text-left bg-white rounded-3xl sombra-card hover:sombra-card-hover border border-linha overflow-hidden active:scale-[0.98] transition-all duration-200 flex flex-col w-full"
+    <Link
+      href={`/produto/${produto.slug}`}
+      className="group animar-surgir text-left bg-white rounded-3xl sombra-card hover:sombra-card-hover border border-linha overflow-hidden active:scale-[0.98] transition-all duration-200 flex flex-col w-full h-full"
     >
       <div className="relative p-3 pb-0">
         <div className="relative rounded-2xl overflow-hidden bg-royal-nevoa aspect-square">
@@ -28,7 +21,7 @@ export function ProdutoCard({
             nome={produto.nome}
             className="w-full h-full group-hover:scale-[1.03] transition-transform duration-300"
           />
-          {/* Selos discretos no canto */}
+          {/* Selos no canto da foto */}
           <div className="absolute top-2.5 left-2.5 flex gap-1.5">
             {produto.novidade && (
               <span className="bg-escarlate text-white text-[0.6rem] font-semibold tracking-wide px-2.5 py-1 rounded-full shadow-sm">
@@ -58,6 +51,6 @@ export function ProdutoCard({
           )}
         </div>
       </div>
-    </button>
+    </Link>
   );
 }

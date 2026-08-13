@@ -29,6 +29,13 @@ const icones = {
       <path d="M8.5 8h7M8.5 12h7M8.5 16h4" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
     </>
   ),
+  clientes: (
+    <>
+      <circle cx="9" cy="8.5" r="3.5" stroke="currentColor" strokeWidth="1.7" />
+      <path d="M3.5 19.5c.6-3 2.8-4.7 5.5-4.7s4.9 1.7 5.5 4.7" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
+      <path d="M15.5 5.6a3.5 3.5 0 0 1 0 5.8M18 15.2c1.4.8 2.3 2.2 2.6 4.3" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
+    </>
+  ),
   totem: (
     <>
       <rect x="3" y="4" width="18" height="13" rx="2.5" stroke="currentColor" strokeWidth="1.7" />
@@ -121,16 +128,19 @@ export default async function LayoutAdmin({ children }: { children: React.ReactN
 
           {ehAdmin && (
             <>
-              <TituloGrupo>Acompanhamento</TituloGrupo>
+              <TituloGrupo>Gestão</TituloGrupo>
+              <ItemMenu href="/admin/clientes" icone={icones.clientes}>
+                Clientes captados
+              </ItemMenu>
               <ItemMenu href="/admin/log" icone={icones.log}>
                 Log de alterações
               </ItemMenu>
             </>
           )}
 
-          <TituloGrupo>Totem</TituloGrupo>
+          <TituloGrupo>Site</TituloGrupo>
           <ItemMenu href="/" icone={icones.totem} externo>
-            Ver totem do cliente
+            Ver o site
           </ItemMenu>
         </nav>
 

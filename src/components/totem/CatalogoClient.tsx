@@ -1,62 +1,23 @@
 "use client";
-// Tela principal do catálogo do TOTEM — redesign clean.
-// - Busca simples por nome/descrição
-// - Filtro por categoria + atalhos "Novidades" e "Combos"
-// - Vitrines de Novidades, Combos e da linha Dermatológica na visão "Tudo"
-// - Toque no card abre o detalhe (modal) com dosagem/quantidade/carrinho
-// - Carrinho flutuante: pedido final vai para o WhatsApp da loja
-// - Timer de inatividade: sem toques por 90s, volta à tela inicial
+// Catálogo do site — busca, filtro por categoria e vitrines.
+// Cada card leva à página exclusiva do produto (o link do Instagram).
+// O carrinho é global (vive no layout do site).
 
-import { useEffect, useMemo, useRef, useState } from "react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useMemo, useState } from "react";
 import { CategoriaDTO, ProdutoDTO, TIPO_COMBO } from "@/lib/tipos";
-import { CarrinhoProvider } from "@/lib/carrinho";
-import { LogoViverBem } from "./LogoViverBem";
 import { ProdutoCard } from "./ProdutoCard";
-import { ProdutoModal } from "./ProdutoModal";
-import { CarrinhoDrawer } from "./CarrinhoDrawer";
-
-const SEGUNDOS_INATIVIDADE = 90;
 
 type Filtro = "tudo" | "novidades" | "combos" | number; // number = id da categoria
 
-// Componente exportado: só envolve o catálogo com o provider do carrinho
-export function CatalogoClient(props: { categorias: CategoriaDTO[]; produtos: ProdutoDTO[] }) {
-  return (
-    <CarrinhoProvider>
-      <CatalogoInterno {...props} />
-    </CarrinhoProvider>
-  );
-}
-
-function CatalogoInterno({
+export function CatalogoClient({
   categorias,
   produtos,
 }: {
   categorias: CategoriaDTO[];
   produtos: ProdutoDTO[];
 }) {
-  const router = useRouter();
   const [filtro, setFiltro] = useState<Filtro>("tudo");
   const [busca, setBusca] = useState("");
-  const [produtoAberto, setProdutoAberto] = useState<ProdutoDTO | null>(null);
-  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  // ---------- Timer de inatividade (modo quiosque) ----------
-  useEffect(() => {
-    const reiniciar = () => {
-      if (timerRef.current) clearTimeout(timerRef.current);
-      timerRef.current = setTimeout(() => router.push("/"), SEGUNDOS_INATIVIDADE * 1000);
-    };
-    const eventos = ["pointerdown", "keydown", "scroll", "touchstart"] as const;
-    eventos.forEach((ev) => window.addEventListener(ev, reiniciar, { passive: true }));
-    reiniciar();
-    return () => {
-      if (timerRef.current) clearTimeout(timerRef.current);
-      eventos.forEach((ev) => window.removeEventListener(ev, reiniciar));
-    };
-  }, [router]);
 
   // ---------- Listas derivadas ----------
   const novidades = useMemo(() => produtos.filter((p) => p.novidade), [produtos]);
@@ -89,10 +50,7 @@ function CatalogoInterno({
     return produtos;
   }, [filtro, produtos, novidades, combos]);
 
-  const abrir = (p: ProdutoDTO) => setProdutoAberto(p);
-
-  // Chip de filtro — clean; o selecionado ganha um efeito leve
-  // (leve elevação + glow suave + micro-escala)
+  // Chip de filtro — o selecionado ganha leve elevação e glow
   const Chip = ({
     ativo,
     aoTocar,
@@ -115,7 +73,6 @@ function CatalogoInterno({
     </button>
   );
 
-  // Cabeçalho de seção — título display
   const TituloSecao = ({ children }: { children: React.ReactNode }) => (
     <h2 className="text-2xl md:text-[1.7rem] font-bold text-grafite mb-4 tracking-tight">
       {children}
@@ -128,30 +85,29 @@ function CatalogoInterno({
     ) : (
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5">
         {lista.map((p) => (
-          <ProdutoCard key={p.id} produto={p} aoTocar={abrir} />
+          <ProdutoCard key={p.id} produto={p} />
         ))}
       </div>
     );
 
-  // Faixa horizontal (vitrine) com rolagem por toque
   const Faixa = ({ lista }: { lista: ProdutoDTO[] }) => (
-    <div className="flex gap-4 md:gap-5 overflow-x-auto rolagem-sem-barra pb-2 -mx-1 px-1">
+    <div className="flex gap-4 md:gap-5 overflow-x-auto rolagem-sem-barra pb-2 -mx-1 px-1 snap-x">
       {lista.map((p) => (
-        <div key={p.id} className="w-52 md:w-64 shrink-0">
-          <ProdutoCard produto={p} aoTocar={abrir} />
+        <div key={p.id} className="w-52 md:w-64 shrink-0 snap-start">
+          <ProdutoCard produto={p} />
         </div>
       ))}
     </div>
   );
 
   return (
-    <div className="flex-1 flex flex-col min-h-screen">
-      {/* ---------- Cabeçalho fixo ---------- */}
-      <header className="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-linha">
-        <div className="flex items-center gap-4 px-4 md:px-8 py-3.5 max-w-7xl mx-auto w-full">
-          <Link href="/" className="shrink-0 active:scale-95 transition-transform">
-            <LogoViverBem tamanho="medio" />
-          </Link>
+    <div className="flex-1 flex flex-col min-h-screen pt-16 md:pt-[4.5rem]">
+      {/* ---------- Barra de busca e filtros (gruda abaixo do header) ---------- */}
+      <div className="sticky top-16 md:top-[4.5rem] z-40 bg-white/95 backdrop-blur-md border-b border-linha">
+        <div className="flex items-center gap-4 px-4 md:px-8 pt-4 pb-3 max-w-7xl mx-auto w-full">
+          <h1 className="hidden md:block text-xl font-bold text-grafite tracking-tight shrink-0">
+            Catálogo
+          </h1>
 
           {/* Busca */}
           <div className="flex-1 relative max-w-2xl ml-auto">
@@ -212,10 +168,10 @@ function CatalogoInterno({
             )}
           </div>
         )}
-      </header>
+      </div>
 
       {/* ---------- Conteúdo ---------- */}
-      <main className="flex-1 px-4 md:px-8 py-8 pb-16 max-w-7xl mx-auto w-full">
+      <main className="flex-1 px-4 md:px-8 py-8 pb-24 max-w-7xl mx-auto w-full">
         {buscando ? (
           <>
             <h2 className="text-xl font-bold text-grafite mb-5 tracking-tight">
@@ -251,7 +207,7 @@ function CatalogoInterno({
               </section>
             )}
 
-            {/* Vitrine especial: linha dermatológica/estética (clean, premium) */}
+            {/* Vitrine especial: linha dermatológica/estética */}
             {categoriaDermato && (
               <section className="bg-royal rounded-[1.75rem] p-8 md:p-12 text-white relative overflow-hidden">
                 <div className="relative max-w-lg">
@@ -262,7 +218,7 @@ function CatalogoInterno({
                     Cuidados dermatológicos sob medida
                   </h2>
                   <p className="text-white/80 mt-3 text-base leading-relaxed">
-                    Cremes, séruns e fórmulas estéticas personalizadas para a sua pele — porque
+                    Cremes, séruns e fórmulas estéticas personalizadas para a sua pele, porque
                     autoestima também é saúde.
                   </p>
                   <button
@@ -282,7 +238,6 @@ function CatalogoInterno({
                     </svg>
                   </button>
                 </div>
-                {/* Elemento decorativo sutil */}
                 <div className="absolute -right-16 -bottom-16 w-64 h-64 rounded-full bg-white/5" aria-hidden="true" />
                 <div className="absolute right-10 top-8 w-32 h-32 rounded-full bg-white/5" aria-hidden="true" />
               </section>
@@ -317,14 +272,6 @@ function CatalogoInterno({
           <Grade lista={produtosDoFiltro} />
         )}
       </main>
-
-      {/* Carrinho flutuante + gaveta */}
-      <CarrinhoDrawer />
-
-      {/* Detalhe do produto */}
-      {produtoAberto && (
-        <ProdutoModal produto={produtoAberto} aoFechar={() => setProdutoAberto(null)} />
-      )}
     </div>
   );
 }

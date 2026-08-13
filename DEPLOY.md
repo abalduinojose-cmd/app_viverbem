@@ -39,7 +39,8 @@ cd out && git add -A && git commit -m "atualiza vitrine" && git push --force ori
 Coloca o app **inteiro** no ar (totem + painel administrativo), com link
 público fixo, sem depender do seu computador ligado.
 
-Tempo estimado: ~15 minutos. Tudo pelo navegador, sem instalar nada.
+Tempo estimado: ~10 minutos, **só cliques** — nenhum comando de terminal.
+As tabelas e os produtos são criados sozinhos no primeiro deploy.
 Você usa apenas a conta do **GitHub que já tem** — o Vercel entra com ela.
 
 > **Por que não GitHub Pages?** O Pages só serve arquivos estáticos. Este
@@ -64,53 +65,35 @@ Ainda **não clique em Deploy** — falta cadastrar uma variável (Passo 2).
 
 Ainda na tela de importação, abra **Environment Variables** e cadastre:
 
-| Nome | Valor |
+| Name (Nome) | Value (Valor) |
 |---|---|
-| `SESSION_SECRET` | um texto aleatório com **32+ caracteres** |
+| `SESSION_SECRET` | cole o valor pronto abaixo |
 
-Para gerar um valor seguro, rode no seu computador:
+Valor pronto para copiar (já é um segredo aleatório válido):
 
-```bash
-node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+```
+6118848de47126b7f98eb5d59fd75d53e6e565a5cae1c58195355629d534d094
 ```
 
-Agora sim, clique em **Deploy**. A primeira publicação vai falhar ao abrir
-as páginas (ainda não existe banco) — é esperado, resolvemos no Passo 3.
+Clique em **Deploy**. Essa primeira publicação vai **falhar** — é esperado,
+porque o banco ainda não existe. Resolvemos no Passo 3.
 
 ---
 
-## Passo 3 — Criar o banco de dados
+## Passo 3 — Criar o banco de dados (Postgres)
 
 O SQLite guarda tudo num arquivo, e a nuvem apaga esse arquivo a cada
-publicação. Por isso a versão online usa **PostgreSQL**.
+publicação. Por isso a versão online usa **PostgreSQL**, provisionado pelo
+próprio Vercel (não precisa de outra conta).
 
-1. No projeto, vá em **Storage → Create Database → Postgres**.
-2. Dê um nome (ex.: `viverbem-db`) e escolha a região mais próxima
-   (`São Paulo` ou `Washington D.C.`).
-3. Clique em **Connect** para ligar ao projeto.
+1. No projeto, abra a aba **Storage → Create Database → Postgres**.
+2. Dê um nome (ex.: `viverbem-db`), escolha a região **Washington, D.C.**
+   ou **São Paulo** e clique em **Create**.
+3. Clique em **Connect** para ligar o banco ao projeto.
 
-O Vercel cria sozinho a variável `DATABASE_URL`. **Não precisa criar conta
-em outro serviço** — o Postgres é provisionado pelo próprio Vercel.
-
-### Criar as tabelas e os dados iniciais
-
-Copie a `DATABASE_URL` (em **Storage → seu banco → `.env.local`**) e rode
-no seu computador:
-
-```bash
-cd "C:\Users\ABJ PUBLICIDADE\Desktop\ABJ\EXTRA\NK\ANTES E DEPOIS\viverbem-app"
-
-npm run db:postgres                 # troca o schema para PostgreSQL
-# cole a DATABASE_URL do Vercel no arquivo .env
-npx prisma db push                  # cria as tabelas
-npm run db:seed                     # cria os usuários e os 38 produtos
-
-npm run db:sqlite                   # volta o schema para o SQLite local
-# e devolva DATABASE_URL="file:./dev.db" no .env
-```
-
-> A última linha é importante: ela devolve o seu ambiente local ao SQLite.
-> No Vercel isso não afeta nada — o build troca para PostgreSQL sozinho.
+Pronto — o Vercel cria a variável `DATABASE_URL` automaticamente.
+**Você não roda nenhum comando:** no próximo deploy, o build cria as
+tabelas e cadastra os 38 produtos sozinho.
 
 ---
 
@@ -119,9 +102,13 @@ npm run db:sqlite                   # volta o schema para o SQLite local
 Em servidores serverless o disco é temporário, então as fotos enviadas pelo
 painel precisam ir para um armazenamento externo.
 
-1. **Storage → Create Database → Blob**.
+1. **Storage → Create Database → Blob** e clique em **Create**.
 2. Clique em **Connect** para ligar ao projeto.
-3. **Deployments → ⋯ → Redeploy** para aplicar.
+3. Vá em **Deployments**, abra o menu **⋯** do topo da lista e clique em
+   **Redeploy** para aplicar.
+
+Esse **Redeploy** é também o que cria as tabelas e cadastra os produtos
+(o Passo 3 tinha ligado o banco; agora o build roda com ele conectado).
 
 O Vercel cria a variável `BLOB_READ_WRITE_TOKEN`, e o código
 (`src/lib/armazenamento.ts`) detecta isso sozinho: com ela, as fotos vão
@@ -173,7 +160,10 @@ git push
 
 | Sintoma | Causa provável | Solução |
 |---|---|---|
-| Páginas com erro 500 | Banco não criado | Rode o Passo 3 (`prisma db push` + seed) |
-| Catálogo vazio | Seed não rodou | `npm run db:seed` apontando para a `DATABASE_URL` do Vercel |
-| Não consigo entrar no painel | `SESSION_SECRET` ausente ou curto | Cadastre com 32+ caracteres e refaça o deploy |
+| 1º deploy falhou | Banco ainda não existe | Normal — faça os Passos 3 e 4 e o **Redeploy** |
+| Páginas com erro 500 | Banco não conectado | Confira se o Postgres aparece ligado em **Storage** e refaça o **Redeploy** |
+| Catálogo vazio | Deploy rodou antes de o banco existir | Faça um **Redeploy** com o Postgres já conectado |
+| Não entra no painel | `SESSION_SECRET` ausente | Confira a variável em **Settings → Environment Variables** e refaça o **Redeploy** |
 | Foto some após publicar | Blob não conectado | Faça o Passo 4 |
+
+> Todas as soluções são pelo painel do Vercel — nenhum comando de terminal.

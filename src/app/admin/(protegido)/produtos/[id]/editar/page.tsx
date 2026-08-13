@@ -24,6 +24,7 @@ export default async function PaginaEditarProduto({
       produto={{
         id: produto.id,
         nome: produto.nome,
+        slug: produto.slug,
         descricao: produto.descricao,
         precoCentavos: produto.precoCentavos,
         tipo: produto.tipo,

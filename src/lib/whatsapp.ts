@@ -12,7 +12,7 @@ function linkComMensagem(mensagem: string): string {
 export function linkWhatsAppProduto(nome: string, dosagem?: string | null): string {
   const item = dosagem ? `${nome} (${dosagem})` : nome;
   return linkComMensagem(
-    `Olá! 👋 Vi no totem da Viver Bem e tenho interesse em: *${item}*. Pode me ajudar?`
+    `Olá! 👋 Vi no site da Viver Bem e tenho interesse em: *${item}*. Pode me ajudar?`
   );
 }
 
@@ -30,10 +30,10 @@ export interface DadosPedido {
 }
 
 /** Link com o PEDIDO completo do carrinho, com todas as especificações
- *  para quem está na recepção receber e mandar preparar. */
+ *  para a equipe da farmácia receber e preparar. */
 export function linkWhatsAppPedido(itens: ItemCarrinho[], dados: DadosPedido): string {
   const linhas = itens.map((item, i) => {
-    const dosagem = item.dosagem ? ` — dosagem ${item.dosagem}` : "";
+    const dosagem = item.dosagem ? ` (dosagem ${item.dosagem})` : "";
     const unit = formatarPreco(item.precoCentavos);
     const subtotal = formatarPreco(item.precoCentavos * item.quantidade);
     return `${i + 1}) *${item.nome}*${dosagem}\n    Qtd: ${item.quantidade} × ${unit} = ${subtotal}`;
@@ -41,7 +41,7 @@ export function linkWhatsAppPedido(itens: ItemCarrinho[], dados: DadosPedido): s
   const total = itens.reduce((soma, i) => soma + i.precoCentavos * i.quantidade, 0);
 
   const partes = [
-    "🧾 *NOVO PEDIDO — TOTEM VIVER BEM*",
+    "🧾 *NOVO PEDIDO · SITE VIVER BEM*",
     `*Pedido:* ${dados.codigo}`,
     `*Cliente:* ${dados.nome}`,
   ];
@@ -57,7 +57,7 @@ export function linkWhatsAppPedido(itens: ItemCarrinho[], dados: DadosPedido): s
     partes.push("", `*Observação:* ${dados.observacao.trim()}`);
   }
 
-  partes.push("", "_Pedido feito no totem. Favor conferir e preparar._ 🙏");
+  partes.push("", "_Pedido feito pelo site. Favor conferir e preparar._ 🙏");
 
   return linkComMensagem(partes.join("\n"));
 }

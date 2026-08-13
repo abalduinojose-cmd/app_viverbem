@@ -47,9 +47,32 @@ export function CarrinhoDrawer() {
     setEtapa("finalizar");
   }
 
-  // Abre o WhatsApp com o pedido completo e limpa o carrinho
+  // Abre o WhatsApp com o pedido completo e limpa o carrinho.
+  // Antes, registra o cliente na base (nome, WhatsApp e itens) para o
+  // painel do gestor — sem travar o envio caso o registro falhe.
   function enviarPedido() {
     if (!podeEnviar) return;
+
+    fetch("/api/pedidos", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        nome: nome.trim(),
+        whatsapp: whatsapp.trim(),
+        pagamento,
+        codigo,
+        totalCentavos,
+        itens: itens.map((i) => ({
+          nome: i.nome,
+          dosagem: i.dosagem,
+          quantidade: i.quantidade,
+          precoCentavos: i.precoCentavos,
+        })),
+      }),
+    }).catch(() => {
+      /* o pedido segue para o WhatsApp mesmo sem o registro */
+    });
+
     const url = linkWhatsAppPedido(itens, {
       nome: nome.trim(),
       whatsapp: whatsapp.trim(),
@@ -412,7 +435,9 @@ export function CarrinhoDrawer() {
 
                 <div className="bg-white border-t border-linha px-6 py-5">
                   <p className="text-sm text-grafite-claro text-center mb-3">
-                    Ao enviar, abriremos o WhatsApp com seu pedido para a recepção preparar.
+                    Ao enviar, abriremos o WhatsApp com seu pedido para a nossa equipe preparar.
+                    Seus dados (nome e WhatsApp) ficam com a Viver Bem apenas para atendimento
+                    e ofertas, conforme a LGPD.
                   </p>
                   <button
                     type="button"

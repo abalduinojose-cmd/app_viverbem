@@ -12,6 +12,16 @@ const bcrypt = require("bcryptjs");
 
 const db = new PrismaClient();
 
+// Gera o slug do produto (mesma regra de src/lib/slug.ts)
+function slugificar(nome) {
+  return nome
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
 async function main() {
   // ---------- Usuário admin (não recria se já existir) ----------
   const adminExiste = await db.usuario.findUnique({
@@ -464,11 +474,18 @@ async function main() {
     },
   ];
 
+  const slugsUsados = new Set();
   for (let i = 0; i < produtos.length; i++) {
     const p = produtos[i];
+    // Slug único: se repetir, ganha um sufixo numérico
+    let slug = slugificar(p.nome);
+    let n = 2;
+    while (slugsUsados.has(slug)) slug = slugificar(p.nome) + "-" + n++;
+    slugsUsados.add(slug);
     await db.produto.create({
       data: {
         nome: p.nome,
+        slug,
         descricao: p.descricao,
         precoCentavos: p.precoCentavos,
         tipo: p.tipo || "PRODUTO",

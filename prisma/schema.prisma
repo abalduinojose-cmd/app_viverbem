@@ -34,6 +34,10 @@ model Categoria {
 model Produto {
   id            Int      @id @default(autoincrement())
   nome          String
+  // slug: endereço do produto no site (ex.: /produto/omega-3-viver-bem).
+  // Gerado no cadastro e NÃO muda ao renomear, para os links postados
+  // no Instagram continuarem funcionando.
+  slug          String   @unique
   descricao     String
   // Preço guardado em CENTAVOS (inteiro) para evitar erros de
   // arredondamento com números decimais. R$ 49,90 => 4990.
@@ -86,6 +90,20 @@ model Depoimento {
   ativo    Boolean  @default(true)
   ordem    Int      @default(0)
   criadoEm DateTime @default(now())
+}
+
+// Cliente captado ao finalizar um pedido no site (base para
+// marketing e recompra, exibida no painel do gestor).
+model Cliente {
+  id            Int      @id @default(autoincrement())
+  nome          String
+  whatsapp      String
+  // Resumo do pedido em JSON (itens, dosagens, quantidades)
+  itens         String
+  totalCentavos Int
+  pagamento     String
+  codigo        String // código do pedido (ex.: VB-8F3A)
+  criadoEm      DateTime @default(now())
 }
 
 // Log de alterações do painel: quem alterou o quê e quando.

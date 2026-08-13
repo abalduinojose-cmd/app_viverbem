@@ -51,6 +51,7 @@ export async function obterCatalogo(): Promise<Catalogo> {
     produtos: produtos.map((p) => ({
       id: p.id,
       nome: p.nome,
+      slug: p.slug,
       descricao: p.descricao,
       precoCentavos: p.precoCentavos,
       tipo: p.tipo,

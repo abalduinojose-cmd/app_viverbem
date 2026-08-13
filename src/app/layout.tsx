@@ -23,18 +23,28 @@ const kaushan = Kaushan_Script({
   weight: "400",
 });
 
+// Endereço público do site (troque pela URL do domínio próprio no deploy,
+// via variável NEXT_PUBLIC_SITE_URL — usada nos links de compartilhamento)
+const URL_SITE = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+
 export const metadata: Metadata = {
-  title: "Manipulação Viver Bem",
+  metadataBase: new URL(URL_SITE),
+  title: {
+    default: "Manipulação Viver Bem · Manipulação e Homeopatia em Petrópolis",
+    template: "%s",
+  },
   description:
-    "Manipulação e Homeopatia — há 19 anos cuidando de você em Petrópolis.",
+    "Há 19 anos em Petrópolis: fórmulas manipuladas, homeopatia e saúde personalizada. Monte seu pedido pelo site e finalize no WhatsApp.",
+  openGraph: {
+    siteName: "Manipulação Viver Bem",
+    locale: "pt_BR",
+    type: "website",
+  },
 };
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  // Impede zoom por pinça no tablet do totem (modo quiosque)
-  maximumScale: 1,
-  userScalable: false,
 };
 
 export default function RootLayout({

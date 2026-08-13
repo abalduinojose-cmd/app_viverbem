@@ -1,9 +1,12 @@
-# Manipulação Viver Bem — Totem + Painel Admin
+# Manipulação Viver Bem — Site + Painel Admin
 
-Sistema de autoatendimento para a farmácia de manipulação **Viver Bem** (Petrópolis-RJ):
+Site híbrido (institucional + catálogo) da farmácia de manipulação **Viver Bem** (Petrópolis-RJ):
 
-- **Totem** (`/`): catálogo de manipulados para o tablet do balcão, em modo quiosque — navegação 100% por toque, com busca, categorias e vitrines de Novidades, Combos e Destaques.
-- **Painel admin** (`/admin`): a equipe da loja cadastra produtos, sobe fotos, altera preços e gerencia categorias sem depender de suporte técnico.
+- **Site** (`/`): home com hero em vídeo, vitrines de produtos, banner, sobre, delivery, destaques e avaliações; catálogo por categorias com busca; **página exclusiva por produto** (`/produto/nome-do-produto`, o link para o Instagram, com miniatura de compartilhamento); carrinho que **finaliza o pedido pelo WhatsApp**.
+- **Base de clientes**: cada pedido finalizado registra nome, WhatsApp e itens — consulte e exporte em Painel → Clientes captados.
+- **Painel admin** (`/admin`): a equipe cadastra produtos, sobe fotos, altera preços e gerencia categorias sem depender de suporte técnico (papéis administrador e operador).
+
+> Vídeo do hero: salve o arquivo como `public/hero.mp4` que ele entra sozinho na home.
 
 ## Stack
 

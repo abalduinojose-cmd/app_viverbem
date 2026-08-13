@@ -6,6 +6,7 @@ import { exigirSessaoApi } from "@/lib/sessao";
 import { validarCorpoProduto } from "@/lib/validarProduto";
 import { registrarLog } from "@/lib/log";
 import { formatarPreco } from "@/lib/preco";
+import { gerarSlugProdutoUnico } from "@/lib/slug";
 
 export async function POST(req: Request) {
   const sessao = await exigirSessaoApi();
@@ -19,7 +20,10 @@ export async function POST(req: Request) {
     return NextResponse.json({ erro: resultado.erro }, { status: 400 });
   }
 
-  const produto = await db.produto.create({ data: resultado.dados });
+  // O slug (endereço do produto no site) é gerado UMA vez, no cadastro,
+  // e não muda depois: os links postados no Instagram continuam válidos.
+  const slug = await gerarSlugProdutoUnico(resultado.dados.nome);
+  const produto = await db.produto.create({ data: { ...resultado.dados, slug } });
   await registrarLog(
     sessao.nome ?? "?",
     "criou produto",

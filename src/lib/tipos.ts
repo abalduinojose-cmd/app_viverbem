@@ -17,6 +17,8 @@ export interface CategoriaDTO {
 export interface ProdutoDTO {
   id: number;
   nome: string;
+  // Endereço do produto no site (ex.: "omega-3-viver-bem")
+  slug: string;
   descricao: string;
   precoCentavos: number;
   tipo: string; // "PRODUTO" | "COMBO"
