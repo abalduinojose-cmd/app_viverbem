@@ -18,6 +18,7 @@ import { MarqueeMarca } from "@/components/site/MarqueeMarca";
 import { Revelar } from "@/components/site/Revelar";
 import { ReelsInstagram } from "@/components/site/ReelsInstagram";
 import { SecaoDelivery } from "@/components/site/SecaoDelivery";
+import { CartaoNumeros } from "@/components/site/CartaoNumeros";
 import { CarrosselAvaliacoes } from "@/components/totem/CarrosselAvaliacoes";
 
 export const dynamic = "force-dynamic";
@@ -156,29 +157,9 @@ export default async function Home() {
             </Link>
           </Revelar>
 
-          {/* Cartão dos números */}
+          {/* Cartão dos números, que sobem contando ao entrar na tela */}
           <Revelar atraso={140}>
-            <div className="bg-royal rounded-[2rem] p-10 md:p-12 text-white relative overflow-hidden">
-              <div className="relative grid grid-cols-2 gap-8">
-                <div>
-                  <p className="font-display text-5xl font-semibold">{ANOS_TRADICAO}</p>
-                  <p className="text-white/70 mt-1">anos de tradição</p>
-                </div>
-                <div>
-                  <p className="font-display text-5xl font-semibold">3</p>
-                  <p className="text-white/70 mt-1">unidades em Petrópolis</p>
-                </div>
-                <div>
-                  <p className="font-display text-5xl font-semibold">{AVALIACOES_GOOGLE_NOTA.toFixed(1)}</p>
-                  <p className="text-white/70 mt-1">nota no Google</p>
-                </div>
-                <div>
-                  <p className="font-display text-5xl font-semibold">100%</p>
-                  <p className="text-white/70 mt-1">fórmulas sob medida</p>
-                </div>
-              </div>
-              <div className="absolute -right-16 -top-20 w-56 h-56 rounded-full bg-white/5" aria-hidden="true" />
-            </div>
+            <CartaoNumeros />
           </Revelar>
         </div>
       </section>

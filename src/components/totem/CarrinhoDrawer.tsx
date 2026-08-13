@@ -12,6 +12,7 @@ import { useCarrinho } from "@/lib/carrinho";
 import { formatarPreco } from "@/lib/preco";
 import { linkWhatsAppPedido, gerarCodigoPedido } from "@/lib/whatsapp";
 import { UNIDADES, ENTREGA_RETIRADA, ENTREGA_DELIVERY } from "@/lib/tipos";
+import { IconeMoto } from "@/components/site/IconeMoto";
 import { FotoProduto } from "./FotoProduto";
 
 type Etapa = "itens" | "finalizar";
@@ -429,47 +430,47 @@ export function CarrinhoDrawer() {
                         {
                           modo: ENTREGA_RETIRADA,
                           titulo: "Retirar na loja",
+                          apoio: "sem taxa",
                           icone: (
-                            <path
-                              d="M4 9.5 5.4 5A1.5 1.5 0 0 1 6.8 4h10.4a1.5 1.5 0 0 1 1.4 1L20 9.5M4 9.5h16M4 9.5v9A1.5 1.5 0 0 0 5.5 20h13a1.5 1.5 0 0 0 1.5-1.5v-9M9.5 13h5"
-                              stroke="currentColor"
-                              strokeWidth="1.7"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                              <path
+                                d="M4 9.5 5.4 5A1.5 1.5 0 0 1 6.8 4h10.4a1.5 1.5 0 0 1 1.4 1L20 9.5M4 9.5h16M4 9.5v9A1.5 1.5 0 0 0 5.5 20h13a1.5 1.5 0 0 0 1.5-1.5v-9M9.5 13h5"
+                                stroke="currentColor"
+                                strokeWidth="1.6"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                            </svg>
                           ),
                         },
                         {
                           modo: ENTREGA_DELIVERY,
                           titulo: "Receber em casa",
-                          icone: (
-                            <>
-                              <path
-                                d="M3 7.5h9v8H3zM12 10h4l3 3v2.5h-7z"
-                                stroke="currentColor"
-                                strokeWidth="1.7"
-                                strokeLinejoin="round"
-                              />
-                              <circle cx="7" cy="17.5" r="1.8" stroke="currentColor" strokeWidth="1.7" />
-                              <circle cx="16.5" cy="17.5" r="1.8" stroke="currentColor" strokeWidth="1.7" />
-                            </>
-                          ),
+                          apoio: "de moto",
+                          icone: <IconeMoto tamanho={24} />,
                         },
                       ].map((opcao) => (
                         <button
                           key={opcao.modo}
                           type="button"
                           onClick={() => escolherEntrega(opcao.modo)}
-                          className={`rounded-2xl px-4 py-4 border transition-all active:scale-95 flex flex-col items-center gap-2 text-center ${
+                          className={`rounded-2xl px-3 py-4 border transition-all active:scale-95 flex flex-col items-center gap-1.5 text-center ${
                             entrega === opcao.modo
                               ? "bg-royal text-white border-royal"
                               : "bg-white text-grafite border-linha hover:border-royal/40"
                           }`}
                         >
-                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                            {opcao.icone}
-                          </svg>
-                          <span className="text-sm font-medium leading-tight">{opcao.titulo}</span>
+                          {opcao.icone}
+                          <span className="text-sm font-medium leading-tight mt-0.5">
+                            {opcao.titulo}
+                          </span>
+                          <span
+                            className={`text-[0.7rem] leading-none ${
+                              entrega === opcao.modo ? "text-white/65" : "text-grafite-claro"
+                            }`}
+                          >
+                            {opcao.apoio}
+                          </span>
                         </button>
                       ))}
                     </div>

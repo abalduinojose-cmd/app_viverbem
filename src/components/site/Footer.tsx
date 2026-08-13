@@ -1,6 +1,6 @@
 // Rodapé do site em azul profundo, para fechar a página com peso.
 // Estrutura: chamada de WhatsApp em cartão destacado, depois quatro
-// colunas (marca, navegação, unidades, atendimento) e a linha legal.
+// colunas (marca, navegação e atendimento) e a linha legal.
 import Link from "next/link";
 import { asset } from "@/lib/asset";
 import { HorarioAtendimento } from "./HorarioAtendimento";
@@ -9,8 +9,6 @@ import {
   WHATSAPP_LOJA,
   WHATSAPP_NUMERO,
   INSTAGRAM_URL,
-  UNIDADES,
-  linkMapaUnidade,
 } from "@/lib/tipos";
 
 const LINK_WHATSAPP = `https://wa.me/${WHATSAPP_NUMERO}`;
@@ -70,7 +68,7 @@ export function Footer() {
         {/* Colunas */}
         <div className="py-14 grid grid-cols-2 md:grid-cols-12 gap-x-8 gap-y-12">
           {/* Marca */}
-          <div className="col-span-2 md:col-span-4">
+          <div className="col-span-2 md:col-span-5">
             {/* O logo é colorido, então some no escuro: viramos ele em branco */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
@@ -111,7 +109,7 @@ export function Footer() {
           </div>
 
           {/* Navegação */}
-          <div className="md:col-span-2">
+          <div className="md:col-span-3">
             <TituloColuna>Navegação</TituloColuna>
             <ul className="flex flex-col gap-3">
               {NAVEGACAO.map((l) => (
@@ -127,42 +125,9 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Unidades */}
-          <div className="md:col-span-3">
-            <TituloColuna>Nossas unidades</TituloColuna>
-            <ul className="flex flex-col gap-4">
-              {UNIDADES.map((u) => (
-                <li key={u.bairro}>
-                  <a
-                    href={linkMapaUnidade(u.bairro, u.endereco)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group block"
-                  >
-                    <p className="font-semibold text-white/90 group-hover:text-white flex items-center gap-1.5 transition-colors">
-                      {u.bairro}
-                      <svg
-                        width="14"
-                        height="14"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        aria-hidden="true"
-                        className="opacity-0 group-hover:opacity-100 transition-opacity"
-                      >
-                        <path d="M7 17 17 7m0 0H8m9 0v9" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
-                    </p>
-                    <p className="text-white/50 text-sm leading-snug mt-0.5 group-hover:text-white/70 transition-colors">
-                      {u.endereco}
-                    </p>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
 
           {/* Atendimento */}
-          <div className="col-span-2 md:col-span-3">
+          <div className="col-span-2 md:col-span-4">
             <TituloColuna>Atendimento</TituloColuna>
             <HorarioAtendimento />
           </div>

@@ -2,6 +2,7 @@
 // que aparecem no carrinho — entrega em casa ou retirada em uma das
 // 3 lojas, cada uma com link para o mapa.
 import Link from "next/link";
+import { IconeMoto } from "./IconeMoto";
 import {
   UNIDADES,
   WHATSAPP_NUMERO,
@@ -29,24 +30,27 @@ export function SecaoDelivery() {
           </h2>
           <p className="text-white/65 text-lg leading-relaxed mt-4">
             Monte o pedido pelo site e finalize no WhatsApp. Você escolhe se prefere
-            receber em casa ou passar em uma das nossas 3 unidades.
+            receber em casa, de moto, ou passar em uma das nossas 3 unidades.
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mt-10">
           {/* Entrega */}
-          <div className="bg-white/[0.05] border border-white/10 rounded-[1.5rem] p-7 flex flex-col">
+          <div className="group bg-white/[0.05] hover:bg-white/[0.08] border border-white/10 hover:border-white/20 rounded-[1.5rem] p-7 flex flex-col transition-colors">
             <div className="flex items-center gap-3">
-              <span className="w-11 h-11 rounded-xl bg-white/10 flex items-center justify-center shrink-0">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <path d="M3 7.5h9v8H3zM12 10h4l3 3v2.5h-7z" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round" />
-                  <circle cx="7" cy="17.5" r="1.8" stroke="currentColor" strokeWidth="1.7" />
-                  <circle cx="16.5" cy="17.5" r="1.8" stroke="currentColor" strokeWidth="1.7" />
-                </svg>
+              <span className="w-12 h-12 rounded-xl bg-white/10 text-white flex items-center justify-center shrink-0 transition-transform duration-500 group-hover:translate-x-1">
+                <IconeMoto tamanho={26} />
               </span>
-              <h3 className="font-display text-xl font-semibold">Entrega em casa</h3>
+              <div>
+                <h3 className="font-display text-xl font-semibold leading-tight">
+                  Entrega em casa
+                </h3>
+                <p className="text-white/45 text-xs tracking-wide mt-0.5">
+                  de moto, por toda Petrópolis
+                </p>
+              </div>
             </div>
-            <p className="text-white/60 leading-relaxed mt-4">
+            <p className="text-white/60 leading-relaxed mt-5">
               Informe o endereço na hora de fechar o pedido. A nossa equipe combina a
               taxa e o prazo da entrega com você pelo WhatsApp, antes de sair da loja.
             </p>
@@ -79,24 +83,31 @@ export function SecaoDelivery() {
           </div>
 
           {/* Retirada */}
-          <div className="bg-white/[0.05] border border-white/10 rounded-[1.5rem] p-7 flex flex-col">
+          <div className="group bg-white/[0.05] hover:bg-white/[0.08] border border-white/10 hover:border-white/20 rounded-[1.5rem] p-7 flex flex-col transition-colors">
             <div className="flex items-center gap-3">
-              <span className="w-11 h-11 rounded-xl bg-white/10 flex items-center justify-center shrink-0">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <span className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center shrink-0 transition-transform duration-500 group-hover:-translate-y-0.5">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                   <path
                     d="M4 9.5 5.4 5A1.5 1.5 0 0 1 6.8 4h10.4a1.5 1.5 0 0 1 1.4 1L20 9.5M4 9.5h16M4 9.5v9A1.5 1.5 0 0 0 5.5 20h13a1.5 1.5 0 0 0 1.5-1.5v-9M9.5 13h5"
                     stroke="currentColor"
-                    strokeWidth="1.7"
+                    strokeWidth="1.6"
                     strokeLinecap="round"
                     strokeLinejoin="round"
                   />
                 </svg>
               </span>
-              <h3 className="font-display text-xl font-semibold">Retirada na loja</h3>
+              <div>
+                <h3 className="font-display text-xl font-semibold leading-tight">
+                  Retirada na loja
+                </h3>
+                <p className="text-white/45 text-xs tracking-wide mt-0.5">
+                  sem taxa, em 3 unidades
+                </p>
+              </div>
             </div>
-            <p className="text-white/60 leading-relaxed mt-4">
-              Sem taxa e no seu tempo. Escolha a unidade ao fechar o pedido e a gente
-              avisa assim que estiver pronto para retirar.
+            <p className="text-white/60 leading-relaxed mt-5">
+              No seu tempo. Escolha a unidade ao fechar o pedido e a gente avisa assim
+              que estiver pronto para retirar.
             </p>
 
             <ul className="flex flex-col gap-2 mt-6 flex-1">
