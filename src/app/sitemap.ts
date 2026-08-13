@@ -9,7 +9,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const fixas: MetadataRoute.Sitemap = [
     { url: `${URL_SITE}/`, priority: 1 },
-    { url: `${URL_SITE}/catalogo`, priority: 0.9 },
+    { url: `${URL_SITE}/produtos`, priority: 0.9 },
     { url: `${URL_SITE}/sobre`, priority: 0.6 },
     { url: `${URL_SITE}/contato`, priority: 0.6 },
   ];

@@ -58,6 +58,12 @@ model Produto {
   // Dosagens disponíveis, separadas por vírgula (ex.: "250mg, 500mg, 1g").
   // Vazio/null = produto sem opção de dosagem.
   dosagens      String?
+  // Campos ricos da página do produto (todos opcionais).
+  // Preenchidos pelo painel; quando vazios, a seção não aparece.
+  composicao    String? // ativos da fórmula, um por linha ou separados por vírgula
+  modoUso       String? // como tomar/aplicar
+  indicacoes    String? // para que serve, um benefício por linha
+  apresentacao  String? // ex.: "30 cápsulas", "100ml", "Pote 30g"
   categoriaId   Int?
   // Se a categoria for apagada, o produto NÃO é apagado — só fica sem categoria
   categoria     Categoria? @relation(fields: [categoriaId], references: [id], onDelete: SetNull)

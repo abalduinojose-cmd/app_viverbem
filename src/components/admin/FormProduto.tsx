@@ -25,6 +25,10 @@ export function FormProduto({
     produto?.categoriaId ? String(produto.categoriaId) : ""
   );
   const [dosagens, setDosagens] = useState(produto?.dosagens ?? "");
+  const [apresentacao, setApresentacao] = useState(produto?.apresentacao ?? "");
+  const [indicacoes, setIndicacoes] = useState(produto?.indicacoes ?? "");
+  const [composicao, setComposicao] = useState(produto?.composicao ?? "");
+  const [modoUso, setModoUso] = useState(produto?.modoUso ?? "");
   const [ativo, setAtivo] = useState(produto?.ativo ?? true);
   const [novidade, setNovidade] = useState(produto?.novidade ?? false);
   const [destaque, setDestaque] = useState(produto?.destaque ?? false);
@@ -79,6 +83,10 @@ export function FormProduto({
         novidade,
         destaque,
         dosagens: dosagens.trim() || null,
+        apresentacao: apresentacao.trim() || null,
+        indicacoes: indicacoes.trim() || null,
+        composicao: composicao.trim() || null,
+        modoUso: modoUso.trim() || null,
         categoriaId: categoriaId ? Number(categoriaId) : null,
       };
 
@@ -248,6 +256,57 @@ export function FormProduto({
             Se preencher, o cliente escolhe a dosagem no totem antes de adicionar ao carrinho.
           </span>
         </label>
+
+        {/* Informações da página do produto */}
+        <div className="border-t border-linha pt-5">
+          <p className="font-semibold text-grafite">Informações da página do produto</p>
+          <p className="text-sm text-grafite-claro mt-0.5">
+            Tudo aqui é opcional: o que ficar vazio simplesmente não aparece no site.
+          </p>
+
+          <label className="flex flex-col gap-1.5 mt-4">
+            <span className="text-sm font-medium text-grafite">Apresentação</span>
+            <input
+              value={apresentacao}
+              onChange={(e) => setApresentacao(e.target.value)}
+              className="border border-grafite/20 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-royal/50"
+              placeholder="Ex.: 30 cápsulas · 100ml · Pote 30g"
+            />
+          </label>
+
+          <label className="flex flex-col gap-1.5 mt-4">
+            <span className="text-sm font-medium text-grafite">Indicações</span>
+            <textarea
+              value={indicacoes}
+              onChange={(e) => setIndicacoes(e.target.value)}
+              rows={3}
+              className="border border-grafite/20 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-royal/50 resize-y"
+              placeholder="Um benefício por linha. Ex.: Regula o ciclo do sono"
+            />
+          </label>
+
+          <label className="flex flex-col gap-1.5 mt-4">
+            <span className="text-sm font-medium text-grafite">Composição</span>
+            <textarea
+              value={composicao}
+              onChange={(e) => setComposicao(e.target.value)}
+              rows={3}
+              className="border border-grafite/20 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-royal/50 resize-y"
+              placeholder="Um ativo por linha. Ex.: Melatonina 0,21mg"
+            />
+          </label>
+
+          <label className="flex flex-col gap-1.5 mt-4">
+            <span className="text-sm font-medium text-grafite">Modo de uso</span>
+            <textarea
+              value={modoUso}
+              onChange={(e) => setModoUso(e.target.value)}
+              rows={2}
+              className="border border-grafite/20 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-royal/50 resize-y"
+              placeholder="Ex.: Tomar 1 cápsula 30 minutos antes de dormir."
+            />
+          </label>
+        </div>
 
         {/* Flags */}
         <div className="flex flex-wrap gap-3">

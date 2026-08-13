@@ -195,7 +195,7 @@ export default async function PaginaSobre() {
 
           <div className="mt-10 text-center">
             <Link
-              href="/catalogo"
+              href="/produtos"
               className="degrade-marca inline-flex items-center gap-3 text-white text-lg font-semibold rounded-2xl px-10 py-5 active:scale-[0.98] transition-all"
             >
               Explorar o catálogo

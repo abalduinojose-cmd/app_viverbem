@@ -35,6 +35,10 @@ export default async function PaginaEditarProduto({
         ordem: produto.ordem,
         categoriaId: produto.categoriaId,
         dosagens: produto.dosagens,
+        composicao: produto.composicao,
+        modoUso: produto.modoUso,
+        indicacoes: produto.indicacoes,
+        apresentacao: produto.apresentacao,
       }}
     />
   );

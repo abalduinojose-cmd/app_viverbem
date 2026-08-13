@@ -31,6 +31,11 @@ export interface ProdutoDTO {
   categoriaNome?: string | null;
   // Dosagens disponíveis separadas por vírgula (ex.: "250mg, 500mg") ou null
   dosagens: string | null;
+  // Campos ricos da página do produto (opcionais)
+  composicao: string | null;
+  modoUso: string | null;
+  indicacoes: string | null;
+  apresentacao: string | null;
 }
 
 export interface DepoimentoDTO {
@@ -42,6 +47,17 @@ export interface DepoimentoDTO {
   fotoUrl: string | null; // foto do cliente (opcional)
   ativo: boolean;
   ordem: number;
+}
+
+/** Quebra um texto em itens por quebra de linha ou ";".
+ *  Não usa vírgula como separador porque ela aparece nos números
+ *  (ex.: "Melatonina 0,21mg" precisa ficar em um item só). */
+export function listarItens(texto: string | null | undefined): string[] {
+  if (!texto) return [];
+  return texto
+    .split(/[\n;]/)
+    .map((t) => t.trim())
+    .filter((t) => t.length > 0);
 }
 
 /** "250mg, 500mg" -> ["250mg", "500mg"]; null/vazio -> [] */

@@ -26,6 +26,10 @@ export function validarCorpoProduto(corpo: Record<string, unknown>) {
       categoriaId: corpo.categoriaId ? Number(corpo.categoriaId) : null,
       // Dosagens: texto livre separado por vírgula (ex.: "250mg, 500mg")
       dosagens: corpo.dosagens ? String(corpo.dosagens).trim() || null : null,
+      composicao: corpo.composicao ? String(corpo.composicao).trim() || null : null,
+      modoUso: corpo.modoUso ? String(corpo.modoUso).trim() || null : null,
+      indicacoes: corpo.indicacoes ? String(corpo.indicacoes).trim() || null : null,
+      apresentacao: corpo.apresentacao ? String(corpo.apresentacao).trim() || null : null,
     },
   } as const;
 }

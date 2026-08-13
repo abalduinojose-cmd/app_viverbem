@@ -89,7 +89,7 @@ export function AcoesProduto({ produto }: { produto: ProdutoDTO }) {
       <button
         type="button"
         onClick={adicionarAoCarrinho}
-        className={`w-full mt-5 flex items-center justify-center gap-3 text-white text-lg font-semibold rounded-2xl px-6 py-5 transition-all active:scale-[0.98] shadow-[0_8px_24px_rgba(28,105,181,0.28)] ${
+        className={`w-full mt-5 flex items-center justify-center gap-3 text-white text-lg font-semibold rounded-2xl px-6 py-5 transition-all active:scale-[0.98] ${
           adicionado ? "bg-green-600" : "degrade-suave"
         }`}
       >

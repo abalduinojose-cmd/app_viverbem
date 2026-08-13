@@ -329,7 +329,7 @@ export function CarrinhoDrawer() {
                     <button
                       type="button"
                       onClick={irParaFinalizar}
-                      className="degrade-suave w-full flex items-center justify-center gap-3 text-white text-lg font-semibold rounded-2xl px-6 py-5 active:scale-[0.98] transition-all shadow-[0_8px_24px_rgba(224,33,41,0.28)]"
+                      className="degrade-suave w-full flex items-center justify-center gap-3 text-white text-lg font-semibold rounded-2xl px-6 py-5 active:scale-[0.98] transition-all"
                     >
                       Finalizar pedido
                       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">

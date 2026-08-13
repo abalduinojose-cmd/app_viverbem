@@ -89,7 +89,7 @@ export default async function Home() {
                 com acompanhamento farmacêutico de verdade.
               </p>
               <Link
-                href="/catalogo"
+                href="/produtos"
                 className="mt-7 inline-flex items-center gap-3 bg-white text-royal text-lg font-semibold rounded-2xl px-8 py-4 active:scale-95 transition-transform"
               >
                 Explorar o catálogo
@@ -224,7 +224,7 @@ export default async function Home() {
               selo="para o seu dia a dia"
               titulo="Vitaminas e suplementos"
               descricao="Energia, imunidade e bem-estar, na dose que o seu corpo precisa."
-              verTudo="/catalogo"
+              verTudo="/produtos"
             />
             <FaixaProdutos produtos={produtosVitaminas} />
           </Revelar>
@@ -302,7 +302,7 @@ export default async function Home() {
                   </p>
                 </div>
                 <Link
-                  href="/catalogo"
+                  href="/produtos"
                   className="shrink-0 inline-flex items-center gap-2 bg-white text-royal font-semibold rounded-2xl px-6 py-3.5 active:scale-95 transition-transform"
                 >
                   Ver linha completa

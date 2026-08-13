@@ -63,6 +63,10 @@ export async function obterCatalogo(): Promise<Catalogo> {
       categoriaId: p.categoriaId,
       categoriaNome: p.categoria?.nome ?? null,
       dosagens: p.dosagens,
+      composicao: p.composicao,
+      modoUso: p.modoUso,
+      indicacoes: p.indicacoes,
+      apresentacao: p.apresentacao,
     })),
   };
 }

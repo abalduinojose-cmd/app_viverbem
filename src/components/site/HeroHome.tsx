@@ -1,6 +1,6 @@
 // Hero da home — assimétrico e com a cara da Viver Bem:
 // à esquerda o texto (com o script e o sublinhado ondulado da marca),
-// à direita uma composição flutuante com fotos reais dos produtos.
+// à direita uma composição em cartões com fotos reais dos produtos.
 // Se public/hero.mp4 existir, o vídeo assume o fundo inteiro.
 import Link from "next/link";
 import { asset } from "@/lib/asset";
@@ -8,9 +8,9 @@ import { ANOS_TRADICAO } from "@/lib/tipos";
 
 // Fotos reais da linha própria usadas na composição do hero
 const FOTOS_HERO = [
-  { src: "/uploads/citorepair.png", alt: "CitoRepair 2.0", incl: "-6deg", atraso: "0s" },
-  { src: "/uploads/glow-cream.png", alt: "Glow Cream", incl: "4deg", atraso: "1.4s" },
-  { src: "/uploads/omega3.png", alt: "Ômega 3 Viver Bem", incl: "-3deg", atraso: "2.6s" },
+  { src: "/uploads/citorepair.png", incl: "-5deg" },
+  { src: "/uploads/glow-cream.png", incl: "3deg" },
+  { src: "/uploads/omega3.png", incl: "-2deg" },
 ];
 
 export function HeroHome({ temVideo }: { temVideo: boolean }) {
@@ -37,22 +37,6 @@ export function HeroHome({ temVideo }: { temVideo: boolean }) {
         <div className="absolute inset-0 halo-marca" aria-hidden="true" />
       )}
 
-      {/* Onda vermelha decorativa cruzando o fundo */}
-      <svg
-        viewBox="0 0 1440 220"
-        preserveAspectRatio="none"
-        aria-hidden="true"
-        className="absolute bottom-16 left-0 w-[140%] -ml-[20%] h-40 opacity-[0.07]"
-      >
-        <path
-          d="M0 120 C 240 40, 480 190, 720 110 S 1200 30, 1440 100"
-          fill="none"
-          stroke="#E02129"
-          strokeWidth="26"
-          strokeLinecap="round"
-        />
-      </svg>
-
       <div className="relative max-w-7xl mx-auto px-4 md:px-8 w-full pt-28 pb-20 grid grid-cols-1 md:grid-cols-12 gap-10 items-center">
         {/* Texto */}
         <div className="md:col-span-7">
@@ -75,7 +59,7 @@ export function HeroHome({ temVideo }: { temVideo: boolean }) {
 
           <div className="flex flex-wrap items-center gap-4 mt-9">
             <Link
-              href="/catalogo"
+              href="/produtos"
               className="degrade-marca animar-respirar inline-flex items-center gap-3 text-white text-lg md:text-xl font-semibold rounded-2xl px-9 py-4.5 md:px-10 md:py-5 active:scale-[0.98] transition-transform"
             >
               Explorar catálogo
@@ -92,42 +76,30 @@ export function HeroHome({ temVideo }: { temVideo: boolean }) {
           </div>
         </div>
 
-        {/* Composição flutuante com produtos reais (some quando há vídeo) */}
+        {/* Composição com produtos reais (some quando há vídeo) */}
         {!temVideo && (
           <div className="hidden md:block md:col-span-5 relative h-[30rem]" aria-hidden="true">
-            {/* Círculo de fundo com a onda */}
+            {/* Círculo de fundo */}
             <div className="absolute right-4 top-1/2 -translate-y-1/2 w-[26rem] h-[26rem] rounded-full bg-royal-claro/70" />
-            <svg
-              viewBox="0 0 400 24"
-              className="absolute right-10 top-[68%] w-80 opacity-70"
-            >
-              <path
-                d="M4 16 C 90 2, 160 22, 240 12 S 380 4, 396 10"
-                fill="none"
-                stroke="#E02129"
-                strokeWidth="5"
-                strokeLinecap="round"
-              />
-            </svg>
 
-            {/* Fotos flutuando */}
+            {/* Fotos em composição */}
             <div
-              className="animar-flutuar absolute left-2 top-6 w-44 bg-white rounded-3xl border border-linha p-4 shadow-[0_18px_44px_rgba(16,42,74,0.14)]"
-              style={{ ["--incl" as string]: FOTOS_HERO[0].incl, animationDelay: FOTOS_HERO[0].atraso }}
+              className="absolute left-2 top-6 w-44 bg-white rounded-3xl border border-linha p-4 shadow-[0_18px_44px_rgba(16,42,74,0.14)]"
+              style={{ rotate: FOTOS_HERO[0].incl }}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={asset(FOTOS_HERO[0].src)} alt="" className="w-full h-40 object-contain" />
             </div>
             <div
-              className="animar-flutuar absolute right-6 top-16 w-48 bg-white rounded-3xl border border-linha p-4 shadow-[0_18px_44px_rgba(16,42,74,0.16)]"
-              style={{ ["--incl" as string]: FOTOS_HERO[1].incl, animationDelay: FOTOS_HERO[1].atraso }}
+              className="absolute right-6 top-16 w-48 bg-white rounded-3xl border border-linha p-4 shadow-[0_18px_44px_rgba(16,42,74,0.16)]"
+              style={{ rotate: FOTOS_HERO[1].incl }}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={asset(FOTOS_HERO[1].src)} alt="" className="w-full h-44 object-contain" />
             </div>
             <div
-              className="animar-flutuar absolute left-24 bottom-2 w-44 bg-white rounded-3xl border border-linha p-4 shadow-[0_18px_44px_rgba(16,42,74,0.14)]"
-              style={{ ["--incl" as string]: FOTOS_HERO[2].incl, animationDelay: FOTOS_HERO[2].atraso }}
+              className="absolute left-24 bottom-2 w-44 bg-white rounded-3xl border border-linha p-4 shadow-[0_18px_44px_rgba(16,42,74,0.14)]"
+              style={{ rotate: FOTOS_HERO[2].incl }}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={asset(FOTOS_HERO[2].src)} alt="" className="w-full h-40 object-contain" />

@@ -58,26 +58,27 @@ async function main() {
   }
 
   // ---------- Avaliações / depoimentos de exemplo ----------
-  // ATENÇÃO: textos abaixo são EXEMPLOS. Substitua pelas avaliações
-  // reais do Google no painel (Depoimentos) — nota = estrelas, fonte = "Google".
+  // ATENÇÃO: os 23 textos abaixo são EXEMPLOS de demonstração.
+  // Substitua pelos comentários REAIS do Google no painel do gestor
+  // (Avaliações), onde também dá para enviar a foto de cada cliente.
   await db.depoimento.deleteMany();
   const depoimentos = [
     {
-      nome: "Maria Helena",
+      nome: "Maria Helena Ribeiro",
       texto:
         "Manipulo minhas fórmulas na Viver Bem há mais de 10 anos. O atendimento é atencioso e a dosagem é sempre certinha para mim.",
       nota: 5,
       fonte: "Google",
     },
     {
-      nome: "Carlos Eduardo",
+      nome: "Carlos Eduardo Moraes",
       texto:
         "O creme que o dermatologista receitou ficou pronto rapidinho e o resultado foi muito melhor que o industrializado.",
       nota: 5,
       fonte: "Google",
     },
     {
-      nome: "Fernanda S.",
+      nome: "Fernanda Salgado",
       texto:
         "Amo que eles montam a vitamina do meu jeito, sem excesso de cápsulas. Confiança total no trabalho da equipe.",
       nota: 5,
@@ -94,6 +95,132 @@ async function main() {
       nome: "Juliana Martins",
       texto:
         "Peço meus manipulados sempre aqui. Entrega no prazo, embalagem impecável e resultado que eu realmente sinto.",
+      nota: 5,
+      fonte: "Google",
+    },
+    {
+      nome: "Patrícia Nogueira",
+      texto:
+        "Atendimento humano de verdade. A farmacêutica revisou a receita comigo e tirou todas as minhas dúvidas.",
+      nota: 5,
+      fonte: "Google",
+    },
+    {
+      nome: "Marcelo Tavares",
+      texto:
+        "Uso o ômega 3 e a vitamina D deles. Qualidade excelente e sempre com prazo cumprido.",
+      nota: 5,
+      fonte: "Google",
+    },
+    {
+      nome: "Ana Cláudia Ferreira",
+      texto:
+        "A melhor manipulação de Petrópolis. Já indiquei para toda a família e todo mundo aprovou.",
+      nota: 5,
+      fonte: "Google",
+    },
+    {
+      nome: "Luciana Prado",
+      texto:
+        "Fiz o combo de colágeno e minha pele mudou em poucas semanas. Recomendo demais.",
+      nota: 5,
+      fonte: "Google",
+    },
+    {
+      nome: "Sérgio Bastos",
+      texto:
+        "Preço justo, atendimento rápido e a fórmula exatamente como o médico pediu. Nota dez.",
+      nota: 5,
+      fonte: "Google",
+    },
+    {
+      nome: "Renata Coutinho",
+      texto:
+        "Sempre me atendem com carinho, lembram do meu nome e da minha fórmula. Isso não tem preço.",
+      nota: 5,
+      fonte: "Google",
+    },
+    {
+      nome: "Paulo Henrique Dias",
+      texto:
+        "Precisei de um manipulado com urgência e eles ficaram prontos no mesmo dia. Salvaram minha semana.",
+      nota: 5,
+      fonte: "Google",
+    },
+    {
+      nome: "Vanessa Rocha",
+      texto:
+        "Os dermocosméticos são maravilhosos. Uso o protetor solar e o sérum, minha pele nunca esteve tão bem.",
+      nota: 5,
+      fonte: "Google",
+    },
+    {
+      nome: "Antônio Carlos Peixoto",
+      texto:
+        "Trabalho sério, com farmacêutico responsável presente. Confio de olhos fechados.",
+      nota: 5,
+      fonte: "Google",
+    },
+    {
+      nome: "Cristiane Barbosa",
+      texto:
+        "Levo minhas receitas de homeopatia sempre aqui. Atendimento diferenciado e produto de qualidade.",
+      nota: 5,
+      fonte: "Google",
+    },
+    {
+      nome: "Rodrigo Meneses",
+      texto:
+        "Ambiente organizado, equipe simpática e produtos que realmente funcionam. Virei cliente fiel.",
+      nota: 5,
+      fonte: "Google",
+    },
+    {
+      nome: "Beatriz Lemos",
+      texto:
+        "A fórmula para o sono mudou minha rotina. Durmo bem e acordo com muito mais disposição.",
+      nota: 5,
+      fonte: "Google",
+    },
+    {
+      nome: "Gustavo Ramos",
+      texto:
+        "Comprei o kit para treino e gostei bastante. Explicaram direitinho como tomar cada coisa.",
+      nota: 5,
+      fonte: "Google",
+    },
+    {
+      nome: "Sandra Regina Alves",
+      texto:
+        "Já são muitos anos comprando com eles. Nunca tive um problema sequer, sempre tudo perfeito.",
+      nota: 5,
+      fonte: "Google",
+    },
+    {
+      nome: "Felipe Andrade",
+      texto:
+        "Ótimo custo-benefício. O mesmo produto na farmácia comum sai bem mais caro e sem personalização.",
+      nota: 5,
+      fonte: "Google",
+    },
+    {
+      nome: "Camila Vasconcelos",
+      texto:
+        "Adoro poder escolher a dosagem. Faz toda a diferença para quem tem sensibilidade como eu.",
+      nota: 5,
+      fonte: "Google",
+    },
+    {
+      nome: "Eduardo Siqueira",
+      texto:
+        "Atendimento nota mil, produtos de altíssima qualidade e entrega sempre pontual.",
+      nota: 5,
+      fonte: "Google",
+    },
+    {
+      nome: "Mônica Teixeira",
+      texto:
+        "A equipe é atenciosa do começo ao fim. Explicam, orientam e acompanham o resultado. Recomendo muito.",
       nota: 5,
       fonte: "Google",
     },
@@ -179,6 +306,10 @@ async function main() {
     },
     {
       nome: "Fórmula Sono Reparador",
+      apresentacao: "30 cápsulas",
+      indicacoes: "Regula o ciclo do sono\nPromove o relaxamento\nRestaura a energia\nMelhora o humor",
+      composicao: "Melatonina 0,21mg\nTriptofano 100mg\nMagnésio quelado 200mg\nVitamina B6 30mg",
+      modoUso: "Tomar 1 cápsula 30 minutos antes de dormir, ou conforme orientação do prescritor.",
       descricao:
         "Melatonina, triptofano, magnésio quelado e Vit. B6. Regula o ciclo do sono, promove o relaxamento e você acorda com mais energia e bom humor. 30 cápsulas.",
       precoCentavos: 7490,
@@ -189,6 +320,10 @@ async function main() {
     // --- Linha própria Viver Bem (fotos reais) — todos em destaque ---
     {
       nome: "CitoRepair™ 2.0",
+      apresentacao: "30 cápsulas",
+      indicacoes: "Longevidade celular\nImita os efeitos do jejum\nContribui para a renovação das células\nApoia a disposição no dia a dia",
+      composicao: "Espermidina\nResveratrol\nNAD+ precursores\nCoenzima Q10",
+      modoUso: "Tomar 1 cápsula ao dia, preferencialmente em jejum, ou conforme orientação do prescritor.",
       descricao:
         "Longevidade celular: imita os efeitos do jejum e contribui para a renovação das células. 30 cápsulas.",
       precoCentavos: 18900,
@@ -199,6 +334,10 @@ async function main() {
     },
     {
       nome: "Ômega 3 Viver Bem",
+      apresentacao: "90 cápsulas · 126g",
+      indicacoes: "Saúde cardiovascular\nApoio à função cerebral\nAção anti-inflamatória\nSaúde dos olhos",
+      composicao: "Óleo de peixe concentrado\nEPA\nDHA\nVitamina E (antioxidante)",
+      modoUso: "Tomar 1 a 3 cápsulas ao dia, junto às refeições.",
       descricao:
         "Suplemento de óleo de peixe em cápsulas, rico em EPA e DHA para o coração e o cérebro. 90 cápsulas.",
       precoCentavos: 8900,
@@ -208,6 +347,10 @@ async function main() {
     },
     {
       nome: "VitaFlex",
+      apresentacao: "60 cápsulas de 500mg",
+      indicacoes: "Saúde das articulações\nConforto ao se movimentar\nApoio à cartilagem\nAção antioxidante",
+      composicao: "Curcumina\nColágeno tipo II\nÁcido hialurônico\nMagnésio\nVitaminas C, D e K",
+      modoUso: "Tomar 2 cápsulas ao dia, junto às refeições.",
       descricao:
         "Curcumina, colágeno, ácido hialurônico, magnésio e vitaminas C, D e K para articulações. 60 cápsulas de 500mg.",
       precoCentavos: 12900,
@@ -217,6 +360,10 @@ async function main() {
     },
     {
       nome: "Creatina Gummy",
+      apresentacao: "Pote com gomas · sabor frutas vermelhas",
+      indicacoes: "Ganho de força\nDesempenho nos treinos\nPrática de tomar\nSem precisar dissolver",
+      composicao: "Creatina monoidratada\nSabor natural de frutas vermelhas",
+      modoUso: "Consumir as gomas conforme a porção indicada, uma vez ao dia.",
       descricao:
         "Creatina em gomas sabor frutas vermelhas — prática e gostosa de tomar todos os dias.",
       precoCentavos: 9900,
@@ -227,6 +374,10 @@ async function main() {
     },
     {
       nome: "Caramelo de Creatina",
+      apresentacao: "500g · 35 unidades de 10g",
+      indicacoes: "Energia com sabor\nGanho de força\nPrático para levar\nÓtima adesão",
+      composicao: "Creatina monoidratada\nFarinha de amêndoa\nCaramelo",
+      modoUso: "Consumir 1 unidade ao dia, preferencialmente antes do treino.",
       descricao:
         "Creatina em caramelo com farinha de amêndoa. 500g com 35 unidades de 10g — energia com sabor.",
       precoCentavos: 11900,
@@ -237,6 +388,10 @@ async function main() {
     },
     {
       nome: "Composto Emagrecedor",
+      apresentacao: "30 doses",
+      indicacoes: "Controle do apetite\nSensação de saciedade\nApoio ao emagrecimento\nFórmula personalizada",
+      composicao: "Fórmula manipulada conforme o seu perfil e a avaliação do prescritor",
+      modoUso: "Tomar conforme a orientação do prescritor.",
       descricao:
         "Fórmula para controle do apetite e saciedade, manipulada conforme o seu perfil. 30 doses.",
       precoCentavos: 13900,
@@ -246,6 +401,10 @@ async function main() {
     },
     {
       nome: "Glow Cream",
+      apresentacao: "Pote 30g",
+      indicacoes: "Viço e luminosidade\nFirmeza da pele\nHidratação profunda\nUniformiza o tom",
+      composicao: "Ceramida 6%\nNiacinamida 4%\nÁcido hialurônico 0,5%\nOligo HA 0,1%\nCopper Peptide 1%",
+      modoUso: "Aplicar à noite no rosto limpo, com movimentos suaves, ou conforme orientação do prescritor.",
       descricao:
         "Ceramida 6% + Niacinamida 4% + Ácido Hialurônico 0,5% + Copper Peptide. Viço e firmeza para o rosto.",
       precoCentavos: 16900,
@@ -256,6 +415,10 @@ async function main() {
     },
     {
       nome: "Firm Defense Serum",
+      apresentacao: "Frasco 30ml",
+      indicacoes: "Firmeza e sustentação\nFortalece a barreira da pele\nReduz a sensibilidade\nEfeito antioxidante",
+      composicao: "Ceramidas\nCentella asiatica\nColágeno\nDunalina",
+      modoUso: "Aplicar 2 vezes ao dia no rosto limpo, antes do hidratante.",
       descricao:
         "Ceramidas + Centella + Colágeno. Sérum de firmeza e proteção da barreira da pele. Uso 2x ao dia.",
       precoCentavos: 15900,
@@ -265,6 +428,10 @@ async function main() {
     },
     {
       nome: "ZincBlock FPS",
+      apresentacao: "Frasco 40g",
+      indicacoes: "Alta proteção solar\nToque seco, sem oleosidade\nIndicado para peles sensíveis\nNão obstrui os poros",
+      composicao: "Óxido de zinco\nDióxido de titânio\nVitamina E\nBase oil free",
+      modoUso: "Aplicar pela manhã no rosto limpo e reaplicar a cada 2 horas de exposição solar.",
       descricao:
         "Protetor solar mineral com óxido de zinco, toque seco e alta proteção. Ideal para peles sensíveis.",
       precoCentavos: 11900,
@@ -275,6 +442,10 @@ async function main() {
     },
     {
       nome: "Bastão Clareador",
+      apresentacao: "Bastão 20g",
+      indicacoes: "Clareia manchas localizadas\nUniformiza o tom\nAplicação prática e precisa\nHidrata a região",
+      composicao: "Ativos clareadores manipulados\nVitamina C\nManteigas vegetais",
+      modoUso: "Aplicar sobre a área desejada, à noite, conforme orientação do prescritor.",
       descricao:
         "Bastão prático para áreas de manchas e hiperpigmentação, com ativos clareadores manipulados.",
       precoCentavos: 9900,
@@ -284,6 +455,10 @@ async function main() {
     },
     {
       nome: "Pó Finalizador FPB 20",
+      apresentacao: "Pote 20g",
+      indicacoes: "Sela a maquiagem\nControla a oleosidade\nAcabamento natural\nProteção adicional",
+      composicao: "Sílica\nÓxidos minerais\nAtivos com proteção",
+      modoUso: "Aplicar com pincel sobre a maquiagem, quantas vezes quiser ao longo do dia.",
       descricao:
         "Pó finalizador com proteção, controla a oleosidade e sela a maquiagem com acabamento natural.",
       precoCentavos: 8900,
@@ -493,6 +668,10 @@ async function main() {
         novidade: p.novidade || false,
         destaque: p.destaque || false,
         dosagens: p.dosagens || null,
+        apresentacao: p.apresentacao || null,
+        indicacoes: p.indicacoes || null,
+        composicao: p.composicao || null,
+        modoUso: p.modoUso || null,
         ordem: i,
         categoriaId: categorias[p.categoria].id,
       },

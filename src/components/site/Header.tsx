@@ -1,7 +1,7 @@
 "use client";
 // Cabeçalho do site: fixo no topo, transparente sobre o hero da home e
 // sólido (branco com sombra) ao rolar ou nas demais páginas.
-// Menu: Catálogo · Sobre · Contatos (+ menu hambúrguer no celular).
+// Menu: Produtos · Sobre · Contatos (+ menu hambúrguer no celular).
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
@@ -9,7 +9,7 @@ import { usePathname } from "next/navigation";
 import { asset } from "@/lib/asset";
 
 const LINKS = [
-  { href: "/catalogo", rotulo: "Catálogo" },
+  { href: "/produtos", rotulo: "Produtos" },
   { href: "/sobre", rotulo: "Sobre" },
   { href: "/contato", rotulo: "Contatos" },
 ];
