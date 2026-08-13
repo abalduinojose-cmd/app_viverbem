@@ -6,6 +6,7 @@
 import { useMemo, useState } from "react";
 import { CategoriaDTO, ProdutoDTO, TIPO_COMBO } from "@/lib/tipos";
 import { ProdutoCard } from "./ProdutoCard";
+import { FaixaProdutos } from "@/components/site/FaixaProdutos";
 
 type Filtro = "tudo" | "novidades" | "combos" | number; // number = id da categoria
 
@@ -102,16 +103,6 @@ export function CatalogoClient({
         ))}
       </div>
     );
-
-  const Faixa = ({ lista }: { lista: ProdutoDTO[] }) => (
-    <div className="flex gap-4 md:gap-5 overflow-x-auto rolagem-sem-barra pb-2 -mx-1 px-1 snap-x">
-      {lista.map((p) => (
-        <div key={p.id} className="w-52 md:w-64 shrink-0 snap-start">
-          <ProdutoCard produto={p} />
-        </div>
-      ))}
-    </div>
-  );
 
   return (
     <div className="flex-1 flex flex-col min-h-screen pt-16 md:pt-[4.5rem]">
@@ -220,7 +211,7 @@ export function CatalogoClient({
                     Mais procurados
                   </h2>
                 </div>
-                <Faixa lista={destaques} />
+                <FaixaProdutos largura="estreita" produtos={destaques} />
               </section>
             )}
 
@@ -233,7 +224,7 @@ export function CatalogoClient({
                     Novidades
                   </h2>
                 </div>
-                <Faixa lista={novidades} />
+                <FaixaProdutos largura="estreita" produtos={novidades} />
               </section>
             )}
 
@@ -294,7 +285,7 @@ export function CatalogoClient({
                     Combos especiais
                   </h2>
                 </div>
-                <Faixa lista={combos} />
+                <FaixaProdutos largura="estreita" produtos={combos} />
               </section>
             )}
           </div>
