@@ -4,6 +4,7 @@
 
 import { useMemo, useState } from "react";
 import { formatarPreco } from "@/lib/preco";
+import { CabecalhoAdmin, CartaoNumero, VazioAdmin } from "./PecasAdmin";
 
 interface ClienteDTO {
   id: number;
@@ -97,44 +98,29 @@ export function ListaClientes({ clientes }: { clientes: ClienteDTO[] }) {
 
   return (
     <div>
-      {/* Cabeçalho */}
-      <div className="flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-bold text-grafite tracking-tight">Clientes captados</h1>
-          <p className="text-grafite-claro mt-1">
-            Quem finalizou pedido pelo site, com o resumo de cada pedido. Base para
-            promoções e recompra.
-          </p>
-        </div>
-        <button
-          type="button"
-          onClick={exportarCSV}
-          disabled={listaFiltrada.length === 0}
-          className="degrade-marca inline-flex items-center gap-2 text-white font-semibold rounded-xl px-5 py-3.5 transition-all active:scale-95 disabled:opacity-50"
-        >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M12 3v12m0 0 4-4m-4 4-4-4M4 19h16" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-          Exportar CSV
-        </button>
-      </div>
+      <CabecalhoAdmin
+        titulo="Clientes captados"
+        descricao="Quem finalizou pedido pelo site. Base para promoções e recompra."
+        acao={
+          <button
+            type="button"
+            onClick={exportarCSV}
+            disabled={listaFiltrada.length === 0}
+            className="degrade-marca inline-flex items-center justify-center gap-2 text-white font-semibold rounded-xl px-5 py-3.5 transition-all active:scale-95 disabled:opacity-50"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M12 3v12m0 0 4-4m-4 4-4-4M4 19h16" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            Exportar CSV
+          </button>
+        }
+      />
 
       {/* Resumo */}
       <div className="grid grid-cols-3 gap-3 mt-6 max-w-xl">
-        <div className="bg-white rounded-2xl border border-linha sombra-card px-5 py-4">
-          <p className="text-xs font-semibold tracking-wider uppercase text-grafite-claro">Pedidos</p>
-          <p className="text-3xl font-bold text-grafite tracking-tight mt-1 tabular-nums">{resumo.pedidos}</p>
-        </div>
-        <div className="bg-white rounded-2xl border border-linha sombra-card px-5 py-4">
-          <p className="text-xs font-semibold tracking-wider uppercase text-grafite-claro">Clientes únicos</p>
-          <p className="text-3xl font-bold text-royal tracking-tight mt-1 tabular-nums">{resumo.unicos}</p>
-        </div>
-        <div className="bg-white rounded-2xl border border-linha sombra-card px-5 py-4">
-          <p className="text-xs font-semibold tracking-wider uppercase text-grafite-claro">Em pedidos</p>
-          <p className="text-2xl font-bold text-grafite tracking-tight mt-1 tabular-nums">
-            {formatarPreco(resumo.totais)}
-          </p>
-        </div>
+        <CartaoNumero rotulo="Pedidos" valor={resumo.pedidos} />
+        <CartaoNumero rotulo="Clientes únicos" valor={resumo.unicos} cor="text-royal" />
+        <CartaoNumero rotulo="Em pedidos" valor={formatarPreco(resumo.totais)} />
       </div>
 
       {/* Busca */}

@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
 import { obterSessao } from "@/lib/sessao";
 import { PAPEL_ADMIN } from "@/lib/tipos";
+import { CabecalhoAdmin, VazioAdmin } from "@/components/admin/PecasAdmin";
 
 export const dynamic = "force-dynamic";
 
@@ -30,28 +31,39 @@ export default async function PaginaLog() {
 
   return (
     <div className="max-w-3xl">
-      <h1 className="text-2xl font-bold text-grafite">Log de alterações</h1>
-      <p className="text-grafite-claro mt-1">
-        Registro automático das últimas {registros.length} ações no painel.
-      </p>
+      <CabecalhoAdmin
+        titulo="Log de alterações"
+        descricao={`Registro automático das últimas ${registros.length} ações no painel.`}
+      />
 
-      <div className="mt-5 bg-white rounded-2xl border border-grafite/10 shadow-sm overflow-hidden">
-        {registros.length === 0 && (
-          <p className="text-grafite-claro py-10 text-center">Nenhuma alteração registrada ainda.</p>
+      <div className="mt-6 bg-white rounded-2xl border border-linha overflow-hidden">
+        {registros.length === 0 ? (
+          <VazioAdmin
+            titulo="Nenhuma alteração registrada"
+            descricao="Assim que alguém mexer no catálogo, aparece aqui."
+          />
+        ) : (
+          registros.map((r) => (
+            <div
+              key={r.id}
+              className="px-5 py-4 border-b border-linha last:border-b-0 flex items-start gap-3.5 hover:bg-royal-nevoa/60 transition-colors"
+            >
+              {/* Inicial de quem fez, para bater o olho e achar */}
+              <span className="shrink-0 w-8 h-8 rounded-full bg-royal-claro text-royal flex items-center justify-center text-xs font-bold">
+                {r.usuario.charAt(0).toUpperCase()}
+              </span>
+              <div className="min-w-0 flex-1">
+                <p className="text-grafite leading-snug">
+                  <b className="font-semibold">{r.usuario}</b> {r.acao}{" "}
+                  <span className="text-grafite-medio">{r.detalhe}</span>
+                </p>
+                <p className="text-xs text-grafite-claro tabular-nums mt-1">
+                  {formatarData(r.criadoEm)}
+                </p>
+              </div>
+            </div>
+          ))
         )}
-        {registros.map((r) => (
-          <div
-            key={r.id}
-            className="px-5 py-3.5 border-b border-grafite/5 last:border-b-0 flex flex-wrap items-baseline gap-x-3 gap-y-1"
-          >
-            <span className="text-xs text-grafite-claro tabular-nums shrink-0">
-              {formatarData(r.criadoEm)}
-            </span>
-            <span className="font-semibold text-royal">{r.usuario}</span>
-            <span className="text-grafite">{r.acao}</span>
-            <span className="text-grafite-claro">{r.detalhe}</span>
-          </div>
-        ))}
       </div>
     </div>
   );

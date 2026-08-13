@@ -5,6 +5,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { PAPEL_ADMIN, PAPEL_OPERADOR } from "@/lib/tipos";
+import { CabecalhoAdmin } from "./PecasAdmin";
 
 export interface UsuarioDTO {
   id: number;
@@ -109,16 +110,10 @@ export function ListaUsuarios({
 
   return (
     <div className="max-w-3xl">
-      <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
-        <div>
-          <h1 className="font-display text-2xl md:text-3xl font-semibold text-grafite tracking-tight">
-            Acessos ao painel
-          </h1>
-          <p className="text-grafite-claro text-sm md:text-base mt-1">
-            Quem pode entrar e o que cada um consegue fazer.
-          </p>
-        </div>
-        {!criando && (
+      <CabecalhoAdmin
+        titulo="Acessos ao painel"
+        descricao="Quem pode entrar e o que cada um consegue fazer."
+        acao={!criando ? (
           <button
             type="button"
             onClick={() => setCriando(true)}
@@ -129,8 +124,8 @@ export function ListaUsuarios({
             </svg>
             Novo acesso
           </button>
-        )}
-      </div>
+        ) : undefined}
+      />
 
       {erro && (
         <p className="bg-escarlate/10 text-escarlate text-sm font-medium rounded-xl px-4 py-3 mt-5">

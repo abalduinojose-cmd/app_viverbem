@@ -4,6 +4,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { CabecalhoAdmin } from "./PecasAdmin";
 
 interface CategoriaComTotal {
   id: number;
@@ -104,7 +105,10 @@ export function ListaCategorias({ categorias }: { categorias: CategoriaComTotal[
 
   return (
     <div className="max-w-2xl">
-      <h1 className="text-2xl font-bold text-grafite">Categorias</h1>
+      <CabecalhoAdmin
+        titulo="Categorias"
+        descricao="Como os produtos ficam agrupados no site."
+      />
 
       {/* Criar nova */}
       <form onSubmit={criar} className="mt-5 flex gap-3">

@@ -6,6 +6,7 @@ import { obterSessao } from "@/lib/sessao";
 import { obterMetricas } from "@/lib/metricas";
 import { PAPEL_ADMIN } from "@/lib/tipos";
 import { formatarPreco } from "@/lib/preco";
+import { CabecalhoAdmin } from "@/components/admin/PecasAdmin";
 
 export const dynamic = "force-dynamic";
 
@@ -88,12 +89,10 @@ export default async function PaginaPainel() {
 
   return (
     <div className="max-w-5xl">
-      <h1 className="font-display text-2xl md:text-3xl font-semibold text-grafite tracking-tight">
-        Olá, {(sessao.nome ?? "").split(" ")[0]}
-      </h1>
-      <p className="text-grafite-claro text-sm md:text-base mt-1">
-        Como está o mês de {mes} na Viver Bem.
-      </p>
+      <CabecalhoAdmin
+        titulo={`Olá, ${(sessao.nome ?? "").split(" ")[0]}`}
+        descricao={`Como está o mês de ${mes} na Viver Bem.`}
+      />
 
       {/* Números do mês */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mt-6">

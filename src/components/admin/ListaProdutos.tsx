@@ -1,15 +1,22 @@
 "use client";
-// Gestão de produtos e preços — visual moderno e elegante.
-// - Cards em grade com foto, preço editável rápido e toggles
-// - Filtro por texto e por situação (ativos/inativos/novidade/destaque)
-// - Resumo no topo (total, ativos, em falta)
-// - Reordenar arrastando (só admin, com o filtro vazio)
+// Gestão de produtos e preços — a tela principal do operador.
+// - Cartões em grade com foto, preço editável no lugar e chaves de
+//   exibição no site (no site / novidade / destaque)
+// - Filtro por texto, por categoria e por situação
+// - Resumo no topo (total, ativos, em falta, destaques)
+// - Reordenar arrastando (só o gestor, com o filtro vazio)
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ProdutoDTO, CategoriaDTO, TIPO_COMBO, PAPEL_ADMIN } from "@/lib/tipos";
 import { formatarPreco, centavosParaInput, converterPrecoParaCentavos } from "@/lib/preco";
+import {
+  CabecalhoAdmin,
+  CartaoNumero,
+  Interruptor,
+  VazioAdmin,
+} from "./PecasAdmin";
 
 type FiltroSituacao = "todos" | "ativos" | "inativos" | "novidade" | "destaque";
 
@@ -154,23 +161,6 @@ export function ListaProdutos({
   }
 
   // ---------- Peças de UI ----------
-  const CartaoResumo = ({
-    rotulo,
-    valor,
-    cor,
-  }: {
-    rotulo: string;
-    valor: number;
-    cor: string;
-  }) => (
-    <div className="bg-white rounded-2xl border border-linha px-4 py-3.5 md:px-5 md:py-4">
-      <p className="text-[0.65rem] md:text-xs font-semibold tracking-wider uppercase text-grafite-claro leading-tight">
-        {rotulo}
-      </p>
-      <p className={`text-2xl md:text-3xl font-bold tracking-tight mt-1 tabular-nums ${cor}`}>{valor}</p>
-    </div>
-  );
-
   const ChipFiltro = ({ valor, children }: { valor: FiltroSituacao; children: React.ReactNode }) => (
     <button
       type="button"
@@ -185,63 +175,31 @@ export function ListaProdutos({
     </button>
   );
 
-  const Toggle = ({
-    ligado,
-    rotulo,
-    aoClicar,
-    desabilitado,
-    corAtiva = "bg-royal border-royal",
-  }: {
-    ligado: boolean;
-    rotulo: string;
-    aoClicar: () => void;
-    desabilitado: boolean;
-    corAtiva?: string;
-  }) => (
-    <button
-      type="button"
-      onClick={aoClicar}
-      disabled={desabilitado}
-      title={`${rotulo}: ${ligado ? "sim" : "não"} (clique para alternar)`}
-      className={`flex-1 text-[0.7rem] font-semibold rounded-lg px-2 py-2 border transition-all disabled:opacity-50 ${
-        ligado
-          ? `${corAtiva} text-white`
-          : "bg-white text-grafite-claro border-linha hover:border-royal/40"
-      }`}
-    >
-      {rotulo}
-    </button>
-  );
-
   return (
     <div>
       {/* ---------- Cabeçalho ---------- */}
-      <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-end sm:justify-between gap-4">
-        <div>
-          <h1 className="font-display text-2xl md:text-3xl font-semibold text-grafite tracking-tight">
-            Produtos e preços
-          </h1>
-          <p className="text-grafite-claro text-sm md:text-base mt-1">
-            Cadastre, ajuste preços e controle o que aparece no site.
-          </p>
-        </div>
-        <Link
-          href="/admin/produtos/novo"
-          className="degrade-marca inline-flex items-center justify-center gap-2 text-white font-semibold rounded-xl px-5 py-3.5 transition-all active:scale-95"
-        >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M12 5v14M5 12h14" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
-          </svg>
-          Novo produto
-        </Link>
-      </div>
+      <CabecalhoAdmin
+        titulo="Produtos e preços"
+        descricao="Cadastre, ajuste preços e controle o que aparece no site."
+        acao={
+          <Link
+            href="/admin/produtos/novo"
+            className="degrade-marca inline-flex items-center justify-center gap-2 text-white font-semibold rounded-xl px-5 py-3.5 transition-all active:scale-95"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M12 5v14M5 12h14" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
+            </svg>
+            Novo produto
+          </Link>
+        }
+      />
 
       {/* ---------- Resumo ---------- */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-6">
-        <CartaoResumo rotulo="Cadastrados" valor={resumo.total} cor="text-grafite" />
-        <CartaoResumo rotulo="Ativos no site" valor={resumo.ativos} cor="text-royal" />
-        <CartaoResumo rotulo="Em falta" valor={resumo.inativos} cor="text-escarlate" />
-        <CartaoResumo rotulo="Em destaque" valor={resumo.destaques} cor="text-grafite" />
+        <CartaoNumero rotulo="Cadastrados" valor={resumo.total} />
+        <CartaoNumero rotulo="Ativos no site" valor={resumo.ativos} cor="text-royal" />
+        <CartaoNumero rotulo="Em falta" valor={resumo.inativos} cor="text-escarlate" />
+        <CartaoNumero rotulo="Em destaque" valor={resumo.destaques} />
       </div>
 
       {/* ---------- Busca + filtros ---------- */}
@@ -330,9 +288,12 @@ export function ListaProdutos({
       {/* ---------- Grade de produtos ---------- */}
       <div className="mt-5 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
         {listaFiltrada.length === 0 && (
-          <p className="text-grafite-claro py-12 text-center col-span-full">
-            Nenhum produto encontrado.
-          </p>
+          <div className="col-span-full bg-white rounded-2xl border border-linha">
+            <VazioAdmin
+              titulo="Nenhum produto encontrado"
+              descricao="Tente outro termo de busca ou limpe os filtros."
+            />
+          </div>
         )}
 
         {listaFiltrada.map((p, indice) => (
@@ -342,9 +303,9 @@ export function ListaProdutos({
             onDragStart={() => (indiceArrastado.current = indice)}
             onDragOver={(e) => e.preventDefault()}
             onDrop={() => aoSoltar(indice)}
-            className={`bg-white rounded-2xl border sombra-card overflow-hidden flex flex-col transition-all ${
+            className={`bg-white rounded-2xl border hover:sombra-card overflow-hidden flex flex-col transition-all ${
               p.ativo ? "border-linha" : "border-escarlate/25 bg-escarlate/[0.02]"
-            }`}
+            } ${ocupado === p.id ? "opacity-60" : ""}`}
           >
             {/* Topo: foto + nome + preço */}
             <div className="p-4 flex gap-4">
@@ -458,26 +419,26 @@ export function ListaProdutos({
               </div>
             </div>
 
-            {/* Toggles */}
-            <div className="px-4 flex gap-1.5">
-              <Toggle
+            {/* Chaves de exibição no site */}
+            <div className="px-4 flex flex-wrap gap-x-5 gap-y-1 border-t border-linha pt-3 mt-1">
+              <Interruptor
                 ligado={p.ativo}
-                rotulo={p.ativo ? "Ativo" : "Em falta"}
-                aoClicar={() => alternar(p, "ativo")}
+                rotulo={p.ativo ? "No site" : "Em falta"}
+                aoAlternar={() => alternar(p, "ativo")}
                 desabilitado={ocupado === p.id}
-                corAtiva="bg-green-600 border-green-600"
+                cor="verde"
               />
-              <Toggle
+              <Interruptor
                 ligado={p.novidade}
                 rotulo="Novidade"
-                aoClicar={() => alternar(p, "novidade")}
+                aoAlternar={() => alternar(p, "novidade")}
                 desabilitado={ocupado === p.id}
-                corAtiva="bg-escarlate border-escarlate"
+                cor="escarlate"
               />
-              <Toggle
+              <Interruptor
                 ligado={p.destaque}
                 rotulo="Destaque"
-                aoClicar={() => alternar(p, "destaque")}
+                aoAlternar={() => alternar(p, "destaque")}
                 desabilitado={ocupado === p.id}
               />
             </div>
