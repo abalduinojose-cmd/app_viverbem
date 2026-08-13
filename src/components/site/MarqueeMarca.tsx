@@ -39,15 +39,17 @@ export function MarqueeMarca() {
         {DADOS.map((d, i) => (
           <Revelar key={d.rotulo} atraso={i * 130}>
             <div>
-              <p className="font-display font-semibold leading-none whitespace-nowrap">
-                <span className="texto-degrade text-4xl md:text-5xl tracking-tight tabular-nums">
+              {/* Sem nowrap: em tela estreita "100% sob medida" precisa
+                  poder quebrar, senão invade a coluna do lado */}
+              <p className="font-display font-semibold leading-[1.1]">
+                <span className="texto-degrade text-[2rem] md:text-5xl tracking-tight tabular-nums">
                   {d.numero}
                 </span>{" "}
-                <span className="texto-degrade text-2xl md:text-3xl italic">
+                <span className="texto-degrade text-xl md:text-3xl italic">
                   {d.unidade}
                 </span>
               </p>
-              <p className="text-grafite-claro text-sm md:text-base mt-2.5 leading-snug">
+              <p className="text-grafite-claro text-sm md:text-base mt-2 leading-snug">
                 {d.rotulo}
               </p>
             </div>

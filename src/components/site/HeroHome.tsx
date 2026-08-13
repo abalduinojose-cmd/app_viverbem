@@ -4,7 +4,11 @@
 // Se public/hero.mp4 existir, o vídeo assume o fundo inteiro.
 import Link from "next/link";
 import { asset } from "@/lib/asset";
-import { ANOS_TRADICAO } from "@/lib/tipos";
+import {
+  AVALIACOES_GOOGLE_NOTA,
+  AVALIACOES_GOOGLE_TOTAL,
+  PERFIL_GOOGLE_URL,
+} from "@/lib/tipos";
 
 // Fotos reais da linha própria usadas na composição do hero
 const FOTOS_HERO = [
@@ -15,7 +19,7 @@ const FOTOS_HERO = [
 
 export function HeroHome({ temVideo }: { temVideo: boolean }) {
   return (
-    <section className="relative min-h-[92vh] flex items-center overflow-hidden bg-white">
+    <section className="relative min-h-[85vh] md:min-h-[92vh] flex items-center overflow-hidden bg-white">
       {/* Fundo: vídeo (quando existir) ou halo suave da marca */}
       {temVideo ? (
         <>
@@ -37,14 +41,36 @@ export function HeroHome({ temVideo }: { temVideo: boolean }) {
         <div className="absolute inset-0 halo-marca" aria-hidden="true" />
       )}
 
-      <div className="relative max-w-7xl mx-auto px-4 md:px-8 w-full pt-28 pb-20 grid grid-cols-1 md:grid-cols-12 gap-10 items-center">
+      <div className="relative max-w-7xl mx-auto px-5 md:px-8 w-full pt-24 pb-14 md:pt-28 md:pb-20 grid grid-cols-1 md:grid-cols-12 gap-10 items-center">
         {/* Texto */}
         <div className="md:col-span-7">
-          <p className="selo-secao text-escarlate">
-            há {ANOS_TRADICAO} anos em Petrópolis
-          </p>
+          {/* Selo com a nota do Google, já entregando a prova social */}
+          <a
+            href={PERFIL_GOOGLE_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 bg-white border border-linha rounded-full pl-2.5 pr-3.5 py-1.5 sombra-card hover:border-royal/30 transition-colors"
+          >
+            <span className="flex items-center gap-0.5 text-[#f5a623]" aria-hidden="true">
+              {[0, 1, 2, 3, 4].map((e) => (
+                <svg key={e} width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8-4.3-4.1 5.9-.9L12 3.5Z" />
+                </svg>
+              ))}
+            </span>
+            <span className="text-xs md:text-sm font-medium text-grafite-medio">
+              {AVALIACOES_GOOGLE_NOTA.toLocaleString("pt-BR", {
+                minimumFractionDigits: 1,
+              })}{" "}
+              no Google
+              <span className="hidden sm:inline text-grafite-claro">
+                {" "}
+                · {AVALIACOES_GOOGLE_TOTAL} avaliações
+              </span>
+            </span>
+          </a>
 
-          <h1 className="font-display text-[2.7rem] md:text-[4.3rem] font-semibold text-grafite leading-[1.03] mt-4">
+          <h1 className="font-display text-[2.15rem] sm:text-[2.7rem] md:text-[4.3rem] font-semibold text-grafite leading-[1.05] md:leading-[1.03] mt-5 md:mt-6">
             Saúde feita
             <br />
             <span>sob medida</span>
@@ -52,24 +78,24 @@ export function HeroHome({ temVideo }: { temVideo: boolean }) {
             <span className="italic text-royal">para você</span>
           </h1>
 
-          <p className="text-grafite-medio text-lg md:text-xl leading-relaxed mt-7 max-w-md">
+          <p className="text-grafite-medio text-base md:text-xl leading-relaxed mt-4 md:mt-7 max-w-md">
             Fórmulas manipuladas, homeopatia e cuidado de verdade. Escolha seus
             produtos e finalize o pedido direto no nosso WhatsApp.
           </p>
 
-          <div className="flex flex-wrap items-center gap-4 mt-9">
+          <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-3 md:gap-4 mt-7 md:mt-9">
             <Link
               href="/produtos"
-              className="degrade-marca animar-respirar inline-flex items-center gap-3 text-white text-lg md:text-xl font-semibold rounded-2xl px-9 py-4.5 md:px-10 md:py-5 active:scale-[0.98] transition-transform"
+              className="degrade-marca animar-respirar inline-flex items-center justify-center gap-3 text-white text-base md:text-xl font-semibold rounded-2xl px-7 py-4 md:px-10 md:py-5 active:scale-[0.98] transition-transform"
             >
               Explorar catálogo
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                 <path d="M5 12h14m0 0-6-6m6 6-6 6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </Link>
             <Link
-              href="/sobre"
-              className="inline-flex items-center gap-2 bg-white/90 backdrop-blur text-grafite border border-linha hover:border-royal/30 hover:text-royal text-base font-medium rounded-2xl px-7 py-4 transition-all active:scale-[0.98]"
+              href="/sobre#como-pedir"
+              className="inline-flex items-center justify-center gap-2 bg-white/90 backdrop-blur text-grafite border border-linha hover:border-royal/30 hover:text-royal text-sm md:text-base font-medium rounded-2xl px-6 py-3.5 md:px-7 md:py-4 transition-all active:scale-[0.98]"
             >
               Como funciona a manipulação
             </Link>
