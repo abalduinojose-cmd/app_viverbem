@@ -19,6 +19,20 @@ export async function POST(req: Request) {
     return NextResponse.json({ erro: "E-mail ou senha incorretos." }, { status: 401 });
   }
 
+  // Acesso desligado pelo gestor: a senha até confere, mas não entra
+  if (!usuario.ativo) {
+    return NextResponse.json(
+      { erro: "Este acesso foi desligado. Fale com o gestor." },
+      { status: 403 }
+    );
+  }
+
+  // Carimba a entrada, para o gestor ver quem anda usando o painel
+  await db.usuario.update({
+    where: { id: usuario.id },
+    data: { ultimoAcesso: new Date() },
+  });
+
   const sessao = await obterSessao();
   sessao.usuarioId = usuario.id;
   sessao.nome = usuario.nome;

@@ -80,6 +80,10 @@ model Usuario {
   email     String   @unique
   senhaHash String
   papel     String   @default("ADMIN")
+  // Desligado pelo gestor: mantém o histórico no log, mas bloqueia
+  // o acesso. Melhor do que apagar quem já mexeu no catálogo.
+  ativo     Boolean  @default(true)
+  ultimoAcesso DateTime?
   criadoEm  DateTime @default(now())
 }
 

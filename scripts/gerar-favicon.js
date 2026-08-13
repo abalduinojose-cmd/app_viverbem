@@ -1,10 +1,9 @@
-// Gera o ícone do site a partir do logo real.
+// Gera o ícone do site com o LOGO COMPLETO, a pedido do cliente.
 //
-// O logo é um wordmark deitado ("Viver Bem" + subtítulo + onda), que
-// vira um borrão em 16px. Então o ícone usa só o "V" do script,
-// recortado do próprio arquivo, sobre um quadrado branco arredondado,
-// com a onda vermelha embaixo — os dois elementos que identificam a
-// marca mesmo quando bem pequenos.
+// Aviso para quem mexer aqui: o logo é um wordmark deitado (proporção
+// ~2,3:1). Dentro de um quadrado ele ocupa só a faixa do meio, então
+// na aba do navegador (16px) ele aparece bem pequeno. Nos tamanhos
+// grandes (atalho do celular, compartilhamento) fica ótimo.
 //
 // Rode com: node scripts/gerar-favicon.js
 const sharp = require("sharp");
@@ -15,10 +14,10 @@ const RAIZ = process.cwd();
 const LOGO = path.join(RAIZ, "public", "logo.png");
 const DESTINO = path.join(RAIZ, "src", "app");
 
-// Recorte do "V" dentro de public/logo.png (1133x497)
-const RECORTE_V = { left: 70, top: 30, width: 195, height: 262 };
-
 const LADO = 512;
+// Margem lateral: o logo encosta quase na borda, para render o máximo
+// de tamanho possível dentro do quadrado.
+const MARGEM = 26;
 
 function fundo() {
   return Buffer.from(
@@ -28,30 +27,21 @@ function fundo() {
   );
 }
 
-// A onda do logo, redesenhada grossa o bastante para sobreviver a 16px
-function onda() {
-  return Buffer.from(
-    `<svg xmlns="http://www.w3.org/2000/svg" width="${LADO}" height="${LADO}">
-       <path d="M74 418 C 180 372, 320 462, 438 406"
-             fill="none" stroke="#E02129" stroke-width="30" stroke-linecap="round"/>
-     </svg>`
-  );
-}
-
 async function principal() {
-  const alturaV = 300;
-  const larguraV = Math.round((RECORTE_V.width / RECORTE_V.height) * alturaV);
+  const larguraLogo = LADO - MARGEM * 2;
 
-  const letra = await sharp(LOGO)
-    .extract(RECORTE_V)
-    .resize({ height: alturaV })
+  const marca = await sharp(LOGO)
+    .resize({ width: larguraLogo })
     .png()
-    .toBuffer();
+    .toBuffer({ resolveWithObject: true });
 
   const icone = await sharp(fundo())
     .composite([
-      { input: letra, left: Math.round((LADO - larguraV) / 2), top: 62 },
-      { input: onda(), left: 0, top: 0 },
+      {
+        input: marca.data,
+        left: MARGEM,
+        top: Math.round((LADO - marca.info.height) / 2),
+      },
     ])
     .png()
     .toBuffer();

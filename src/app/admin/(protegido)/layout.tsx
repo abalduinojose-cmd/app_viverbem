@@ -13,14 +13,24 @@ export default async function LayoutAdmin({ children }: { children: React.ReactN
   }
   const ehAdmin = sessao.papel === PAPEL_ADMIN;
 
-  const itens: ItemNav[] = [
-    { href: "/admin/produtos", rotulo: "Produtos e preços", icone: "produtos", grupo: "Catálogo" },
-  ];
+  // O gestor vê números, clientes, log e acessos. O operador só mexe
+  // no catálogo — é a diferença entre os dois papéis.
+  const itens: ItemNav[] = [];
+  if (ehAdmin) {
+    itens.push({ href: "/admin/painel", rotulo: "Visão geral", icone: "painel", grupo: "Gestão" });
+  }
+  itens.push({
+    href: "/admin/produtos",
+    rotulo: "Produtos e preços",
+    icone: "produtos",
+    grupo: "Catálogo",
+  });
   if (ehAdmin) {
     itens.push(
       { href: "/admin/categorias", rotulo: "Categorias", icone: "categorias", grupo: "Catálogo" },
       { href: "/admin/clientes", rotulo: "Clientes captados", icone: "clientes", grupo: "Gestão" },
-      { href: "/admin/log", rotulo: "Log de alterações", icone: "log", grupo: "Gestão" }
+      { href: "/admin/log", rotulo: "Log de alterações", icone: "log", grupo: "Gestão" },
+      { href: "/admin/usuarios", rotulo: "Acessos ao painel", icone: "acessos", grupo: "Gestão" }
     );
   }
   itens.push({ href: "/", rotulo: "Ver o site", icone: "site", grupo: "Site", externo: true });

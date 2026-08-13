@@ -26,7 +26,9 @@ export default function PaginaLogin() {
         setErro(dados.erro || "Não foi possível entrar.");
         return;
       }
-      router.push("/admin/produtos");
+      // /admin decide o destino pelo papel: gestor vai para a visao
+      // geral, operador para os produtos
+      router.push("/admin");
       router.refresh();
     } catch {
       setErro("Falha de conexão. Tente novamente.");

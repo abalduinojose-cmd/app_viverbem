@@ -19,6 +19,20 @@ export interface ItemNav {
 }
 
 export const ICONES = {
+  painel: (
+    <>
+      <rect x="3.5" y="3.5" width="7.5" height="9" rx="2" stroke="currentColor" strokeWidth="1.7" />
+      <rect x="3.5" y="15.5" width="7.5" height="5" rx="2" stroke="currentColor" strokeWidth="1.7" />
+      <rect x="13.5" y="3.5" width="7" height="5" rx="2" stroke="currentColor" strokeWidth="1.7" />
+      <rect x="13.5" y="11.5" width="7" height="9" rx="2" stroke="currentColor" strokeWidth="1.7" />
+    </>
+  ),
+  acessos: (
+    <>
+      <circle cx="12" cy="8" r="3.6" stroke="currentColor" strokeWidth="1.7" />
+      <path d="M5 20c.8-3.4 3.5-5.3 7-5.3s6.2 1.9 7 5.3" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
+    </>
+  ),
   produtos: (
     <>
       <path d="M3.5 7.5 12 3l8.5 4.5v9L12 21l-8.5-4.5v-9Z" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round" />
