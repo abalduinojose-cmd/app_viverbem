@@ -19,6 +19,7 @@ import { Revelar } from "@/components/site/Revelar";
 import { ReelsInstagram } from "@/components/site/ReelsInstagram";
 import { SecaoDelivery } from "@/components/site/SecaoDelivery";
 import { CartaoNumeros } from "@/components/site/CartaoNumeros";
+import { EnviarReceita } from "@/components/site/EnviarReceita";
 import { CarrosselAvaliacoes } from "@/components/totem/CarrosselAvaliacoes";
 
 export const dynamic = "force-dynamic";
@@ -164,7 +165,12 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* 6 ─ PRODUTOS: vitaminas e suplementos */}
+      {/* 6 ─ RECEITA: o caminho de quem chega com a prescrição */}
+      <Revelar>
+        <EnviarReceita />
+      </Revelar>
+
+      {/* 7 ─ PRODUTOS: vitaminas e suplementos */}
       {produtosVitaminas.length > 0 && (
         <section className="max-w-7xl mx-auto px-4 md:px-8 pt-20">
           <Revelar>
@@ -180,7 +186,7 @@ export default async function Home() {
       )}
 
 
-      {/* 7 ─ DESTAQUES: linha dermatológica */}
+      {/* 8 ─ DESTAQUES: linha dermatológica */}
       {dermatologicos.length > 0 && (
         <section className="max-w-7xl mx-auto px-4 md:px-8 pt-20">
           <Revelar>
@@ -213,19 +219,19 @@ export default async function Home() {
         </section>
       )}
 
-      {/* 8 ─ DESTAQUES: avaliações do Google */}
+      {/* 9 ─ DESTAQUES: avaliações do Google */}
       {avaliacoes.length > 0 && (
         <Revelar>
           <CarrosselAvaliacoes media={AVALIACOES_GOOGLE_NOTA} avaliacoes={avaliacoes} />
         </Revelar>
       )}
 
-      {/* 9 ─ INSTAGRAM: os vídeos da farmácia */}
+      {/* 10 ─ INSTAGRAM: os vídeos da farmácia */}
       <Revelar>
         <ReelsInstagram />
       </Revelar>
 
-      {/* 10 ─ PRODUTOS: combos especiais */}
+      {/* 11 ─ PRODUTOS: combos especiais */}
       {combos.length > 0 && (
         <section className="max-w-7xl mx-auto px-4 md:px-8 pt-16">
           <Revelar>
@@ -239,7 +245,7 @@ export default async function Home() {
         </section>
       )}
 
-      {/* 11 ─ DELIVERY: como o pedido chega (fecha a pagina) */}
+      {/* 12 ─ DELIVERY: como o pedido chega (fecha a pagina) */}
       <Revelar>
         <SecaoDelivery />
       </Revelar>

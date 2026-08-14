@@ -205,6 +205,10 @@ export default async function PaginaProduto({ params }: Props) {
         </div>
       </section>
 
+      {/* O que a pessoa já abriu no site, antes dos relacionados:
+          o histórico dela converte mais do que a sugestão genérica */}
+      <VistosRecentemente slugAtual={produto.slug} catalogo={produtos} />
+
       {/* Relacionados */}
       {relacionados.length > 0 && (
         <section className="max-w-6xl mx-auto px-4 md:px-8 pt-4 pb-14 border-t border-linha">
@@ -216,8 +220,6 @@ export default async function PaginaProduto({ params }: Props) {
         </section>
       )}
 
-      {/* O que a pessoa já abriu no site */}
-      <VistosRecentemente slugAtual={produto.slug} catalogo={produtos} />
     </main>
   );
 }
