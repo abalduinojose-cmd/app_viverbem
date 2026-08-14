@@ -126,14 +126,9 @@ export function CatalogoClient({
       <div className="halo-marca px-4 md:px-8 pt-10 pb-7">
         <div className="max-w-7xl mx-auto">
           <p className="selo-secao text-escarlate">o que a gente prepara</p>
-          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-3 mt-2">
-            <h1 className="font-display text-3xl md:text-[2.8rem] font-semibold text-grafite tracking-tight leading-tight">
-              Nossos <span className="italic text-royal">produtos</span>
-            </h1>
-            <p className="text-grafite-medio md:text-lg md:text-right md:max-w-sm">
-              {produtos.length} fórmulas e dermocosméticos, prontos para o seu pedido.
-            </p>
-          </div>
+          <h1 className="font-display text-3xl md:text-[2.8rem] font-semibold text-grafite tracking-tight leading-tight mt-2">
+            Nossos <span className="italic text-royal">produtos</span>
+          </h1>
         </div>
       </div>
 

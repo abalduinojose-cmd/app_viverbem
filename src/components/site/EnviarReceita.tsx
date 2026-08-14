@@ -1,14 +1,20 @@
-// "Tem uma receita?" — o caminho de quem chega com a prescrição do
-// médico na mão, que é a maior parte do movimento de uma farmácia de
-// manipulação e não era atendido pelo site: o catálogo só resolvia
-// quem já sabia o nome do produto.
+// "Envie a sua receita" — o caminho de quem chega com a prescrição do
+// médico na mão.
 //
-// A mensagem do WhatsApp já vai escrita, então a pessoa só precisa
-// anexar a foto da receita.
+// ATENÇÃO AO TEXTO DESTA SEÇÃO. Farmácia de manipulação segue regras
+// próprias de comunicação (RDC 67/2007 e RDC 96/2008), então o texto
+// aqui é deliberadamente descritivo, e não promocional:
+//   - fala em PRESCRIÇÃO, nunca em comprar manipulado sem receita;
+//   - descreve o PROCESSO (avaliação farmacêutica, preparo, prazo),
+//     nunca resultado, eficácia ou benefício de saúde;
+//   - não compara com industrializado nem sugere trocar/ajustar o que
+//     o médico prescreveu;
+//   - não menciona nome de ativo, indicação ou preço.
+// Antes de mexer, confirme com o farmacêutico responsável da loja.
 import { WHATSAPP_NUMERO, WHATSAPP_LOJA } from "@/lib/tipos";
 
 const MENSAGEM =
-  "Olá! Gostaria de um orçamento de fórmula manipulada. Vou enviar a foto da minha receita.";
+  "Olá! Gostaria de enviar a minha receita para avaliação e orçamento.";
 
 const LINK = `https://wa.me/${WHATSAPP_NUMERO}?text=${encodeURIComponent(MENSAGEM)}`;
 
@@ -22,35 +28,38 @@ const PASSOS = [
     texto: "A mensagem já vai escrita, é só anexar a foto.",
   },
   {
-    titulo: "Receba o orçamento",
-    texto: "O farmacêutico confere a fórmula e passa o valor e o prazo.",
+    titulo: "Aguarde a avaliação",
+    texto: "O farmacêutico analisa a prescrição e retorna com valor e prazo.",
   },
+];
+
+// Descrição do processo, não do resultado
+const COMO_FUNCIONA = [
+  "Cada preparação é feita individualmente, conforme a prescrição",
+  "A receita passa por avaliação farmacêutica antes do preparo",
+  "O preparo começa depois do pedido, não fica pronto na prateleira",
+  "O rótulo sai com o seu nome, a composição e a validade",
 ];
 
 export function EnviarReceita() {
   return (
     <section className="max-w-7xl mx-auto px-4 md:px-8 pt-20">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-        {/* O que é manipular */}
+        {/* Como funciona a manipulação */}
         <div className="bg-royal-nevoa border border-linha rounded-[2rem] px-6 md:px-10 py-10 md:py-12">
-          <p className="selo-secao text-escarlate">feito para você</p>
+          <p className="selo-secao text-escarlate">como funciona</p>
           <h2 className="font-display text-3xl md:text-[2.4rem] font-semibold text-grafite leading-[1.1] mt-2">
-            O que é um
+            Do papel até
             <br />
-            <span className="italic text-royal">manipulado</span>
+            <span className="italic text-royal">a sua mão</span>
           </h2>
           <p className="text-grafite-medio text-base md:text-lg leading-relaxed mt-4">
-            Em vez da dose padrão de fábrica, o farmacêutico prepara a fórmula na
-            concentração que o seu médico pediu, só com os ativos que você precisa.
+            O medicamento manipulado é preparado sob prescrição de profissional
+            habilitado, na dose e na forma farmacêutica que constam da receita.
           </p>
 
           <ul className="flex flex-col gap-3 mt-7">
-            {[
-              "A dose exata da sua receita, sem excesso e sem falta",
-              "Sem o ativo que te faz mal, quando é o caso",
-              "Vários ativos em uma cápsula só, em vez de vários vidros",
-              "Na forma que for melhor: cápsula, creme, gel ou solução",
-            ].map((item) => (
+            {COMO_FUNCIONA.map((item) => (
               <li key={item} className="flex items-start gap-3 text-grafite">
                 <span className="shrink-0 w-6 h-6 rounded-full bg-white border border-linha text-royal flex items-center justify-center mt-0.5">
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -84,17 +93,17 @@ export function EnviarReceita() {
                 />
                 <path d="M9 8.5h6M9 12h6M9 15.5h3.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
               </svg>
-              <span className="text-xs font-medium text-white/80">com receita médica</span>
+              <span className="text-xs font-medium text-white/80">mediante prescrição</span>
             </span>
 
             <h2 className="font-display text-3xl md:text-[2.4rem] font-semibold leading-[1.1] mt-4">
-              Tem uma receita?
+              Envie a sua
               <br />
-              <span className="italic">Envie a foto</span>
+              <span className="italic">receita</span>
             </h2>
             <p className="text-white/65 text-base md:text-lg leading-relaxed mt-4">
-              Não precisa procurar o produto no site. Mande a foto da receita no
-              WhatsApp e o farmacêutico monta o orçamento para você.
+              Mande a foto da prescrição pelo WhatsApp. O farmacêutico avalia e retorna
+              com o orçamento e o prazo de preparo.
             </p>
 
             <ol className="flex flex-col gap-4 mt-8">
@@ -125,8 +134,12 @@ export function EnviarReceita() {
             </svg>
             Enviar receita no WhatsApp
           </a>
-          <p className="relative text-white/40 text-xs text-center mt-3">
-            {WHATSAPP_LOJA} · a receita fica só com a nossa equipe
+
+          {/* Aviso legal, discreto mas presente */}
+          <p className="relative text-white/40 text-xs leading-relaxed mt-4">
+            {WHATSAPP_LOJA} · Medicamentos manipulados são preparados somente mediante
+            prescrição de profissional habilitado, dentro da validade. A sua receita e os
+            seus dados ficam apenas com a nossa equipe.
           </p>
         </div>
       </div>
