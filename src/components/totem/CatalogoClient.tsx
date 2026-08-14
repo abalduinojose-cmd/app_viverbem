@@ -77,20 +77,29 @@ export function CatalogoClient({
     <button
       type="button"
       onClick={aoTocar}
-      className={`shrink-0 rounded-full px-5 py-2.5 text-base font-medium transition-all duration-200 active:scale-95 ${
+      className={`shrink-0 rounded-full px-5 py-2.5 text-sm md:text-base font-medium transition-colors active:scale-95 ${
         ativo
-          ? "bg-royal text-white -translate-y-0.5 scale-[1.03] shadow-[0_6px_18px_rgba(28,105,181,0.35)]"
-          : "bg-white text-grafite-medio border border-linha hover:border-royal/30"
+          ? "bg-royal text-white"
+          : "bg-white text-grafite-medio border border-linha hover:border-royal/40 hover:text-royal"
       }`}
     >
       {children}
     </button>
   );
 
-  const TituloSecao = ({ children }: { children: React.ReactNode }) => (
-    <h2 className="text-2xl md:text-[1.7rem] font-bold text-grafite mb-4 tracking-tight">
-      {children}
-    </h2>
+  const TituloSecao = ({
+    selo,
+    children,
+  }: {
+    selo?: string;
+    children: React.ReactNode;
+  }) => (
+    <div className="mb-5">
+      {selo && <p className="selo-secao text-escarlate">{selo}</p>}
+      <h2 className="font-display text-2xl md:text-3xl font-semibold text-grafite tracking-tight mt-1">
+        {children}
+      </h2>
+    </div>
   );
 
   const Grade = ({ lista }: { lista: ProdutoDTO[] }) =>
@@ -177,7 +186,7 @@ export function CatalogoClient({
       <main className="flex-1 px-4 md:px-8 py-8 pb-24 max-w-7xl mx-auto w-full">
         {buscando ? (
           <>
-            <h2 className="text-xl font-bold text-grafite mb-1 tracking-tight">
+            <h2 className="font-display text-2xl font-semibold text-grafite mb-1 tracking-tight">
               {resultadoBusca.length}{" "}
               {resultadoBusca.length === 1 ? "resultado" : "resultados"} para “
               {busca.trim()}”
@@ -205,12 +214,7 @@ export function CatalogoClient({
             {/* Vitrine: Mais procurados (primeira da página) */}
             {destaques.length > 0 && (
               <section>
-                <div className="flex items-center gap-3 mb-4">
-                  <span className="w-1.5 h-6 rounded-full bg-royal" aria-hidden="true" />
-                  <h2 className="text-2xl md:text-[1.7rem] font-bold text-grafite tracking-tight">
-                    Mais procurados
-                  </h2>
-                </div>
+                <TituloSecao selo="os queridinhos">Mais procurados</TituloSecao>
                 <FaixaProdutos largura="estreita" produtos={destaques} />
               </section>
             )}
@@ -218,12 +222,7 @@ export function CatalogoClient({
             {/* Vitrine: Novidades */}
             {novidades.length > 0 && (
               <section>
-                <div className="flex items-center gap-3 mb-4">
-                  <span className="w-1.5 h-6 rounded-full bg-escarlate" aria-hidden="true" />
-                  <h2 className="text-2xl md:text-[1.7rem] font-bold text-grafite tracking-tight">
-                    Novidades
-                  </h2>
-                </div>
+                <TituloSecao selo="acabou de chegar">Novidades</TituloSecao>
                 <FaixaProdutos largura="estreita" produtos={novidades} />
               </section>
             )}
@@ -232,11 +231,9 @@ export function CatalogoClient({
             {categoriaDermato && (
               <section className="bg-royal rounded-[1.75rem] p-8 md:p-12 text-white relative overflow-hidden">
                 <div className="relative max-w-lg">
-                  <p className="text-xs font-semibold tracking-[0.25em] uppercase text-white/60">
-                    Beleza autêntica
-                  </p>
-                  <h2 className="text-2xl md:text-3xl font-bold mt-2 tracking-tight leading-tight">
-                    Cuidados dermatológicos sob medida
+                  <p className="selo-secao text-white/60">beleza autêntica</p>
+                  <h2 className="font-display text-2xl md:text-3xl font-semibold mt-2 tracking-tight leading-tight">
+                    Cuidados dermatológicos <span className="italic">sob medida</span>
                   </h2>
                   <p className="text-white/80 mt-3 text-base leading-relaxed">
                     Cremes, séruns e fórmulas estéticas personalizadas para a sua pele, porque
@@ -279,12 +276,7 @@ export function CatalogoClient({
             {/* Vitrine: Combos — sempre por último */}
             {combos.length > 0 && (
               <section>
-                <div className="flex items-center gap-3 mb-4">
-                  <span className="w-1.5 h-6 rounded-full bg-royal" aria-hidden="true" />
-                  <h2 className="text-2xl md:text-[1.7rem] font-bold text-grafite tracking-tight">
-                    Combos especiais
-                  </h2>
-                </div>
+                <TituloSecao selo="mais completo, mais vantajoso">Combos especiais</TituloSecao>
                 <FaixaProdutos largura="estreita" produtos={combos} />
               </section>
             )}

@@ -60,47 +60,41 @@ export function CarrosselAvaliacoes({
   return (
     <section className="mt-16">
       <div className="px-4 md:px-8 max-w-6xl mx-auto">
-        <p className="selo-secao text-escarlate">quem já é cliente</p>
-        <div className="flex flex-wrap items-end justify-between gap-4 mt-2">
-          <h2 className="font-display text-3xl md:text-[2.6rem] font-semibold text-grafite leading-tight">
-            O que dizem
-            <br />
-            <span className="italic text-royal">sobre a gente</span>
+        <div className="md:text-center md:max-w-2xl md:mx-auto">
+          <p className="selo-secao text-escarlate">quem já é cliente</p>
+          <h2 className="font-display text-3xl md:text-[2.6rem] font-semibold text-grafite leading-tight mt-2">
+            O que dizem <span className="italic text-royal">sobre a gente</span>
           </h2>
 
-          {/* Setas do carrossel */}
-          <div className="hidden sm:flex gap-2">
-            <SetaBotao direcao={-1} rotulo="Ver avaliações anteriores" />
-            <SetaBotao direcao={1} rotulo="Ver próximas avaliações" />
-          </div>
-        </div>
-
-        {/* Cartão com a nota do perfil, clicável */}
-        <a
-          href={PERFIL_GOOGLE_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mt-6 flex items-center gap-4 md:gap-5 bg-white border border-linha rounded-[1.5rem] sombra-card hover:sombra-card-hover px-5 md:px-7 py-4 md:py-5 transition-shadow"
-        >
-          <IconeGoogle tamanho={38} />
-          <div className="min-w-0">
-            <div className="flex items-baseline gap-2.5">
-              <span className="font-display text-3xl md:text-4xl font-semibold text-grafite leading-none tabular-nums">
+          {/* Nota do perfil: uma pílula compacta, centralizada no desktop */}
+          <a
+            href={PERFIL_GOOGLE_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group mt-5 inline-flex items-center gap-3 md:gap-4 bg-white border border-linha rounded-full sombra-card hover:sombra-card-hover hover:border-royal/30 pl-4 pr-5 py-2.5 transition-all"
+          >
+            <IconeGoogle tamanho={26} />
+            <span className="flex items-baseline gap-2">
+              <span className="font-display text-2xl font-semibold text-grafite leading-none tabular-nums">
                 {media.toLocaleString("pt-BR", { minimumFractionDigits: 1 })}
               </span>
-              <Estrelas nota={Math.round(media)} tamanho={18} />
-            </div>
-            <p className="text-grafite-claro text-sm mt-1.5 truncate">
-              {AVALIACOES_GOOGLE_TOTAL} avaliações no Google
-            </p>
-          </div>
-          <span className="ml-auto shrink-0 hidden md:inline-flex items-center gap-2 text-royal font-semibold text-sm">
-            Ver no Google
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path d="M7 17 17 7m0 0H8m9 0v9" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+              <Estrelas nota={Math.round(media)} tamanho={15} />
+            </span>
+            <span className="hidden sm:inline text-grafite-claro text-sm">
+              {AVALIACOES_GOOGLE_TOTAL} avaliações
+            </span>
+            <svg
+              width="15"
+              height="15"
+              viewBox="0 0 24 24"
+              fill="none"
+              aria-hidden="true"
+              className="text-grafite-claro group-hover:text-royal transition-colors"
+            >
+              <path d="M7 17 17 7m0 0H8m9 0v9" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
-          </span>
-        </a>
+          </a>
+        </div>
       </div>
 
       {/* Faixa rolável */}
@@ -156,6 +150,13 @@ export function CarrosselAvaliacoes({
         ))}
 
         <div className="shrink-0 w-2" aria-hidden="true" />
+      </div>
+
+      {/* Setas embaixo e centralizadas, para acompanhar o cabeçalho.
+          No celular a pessoa arrasta, então elas nem aparecem. */}
+      <div className="hidden sm:flex justify-center gap-3 mt-7">
+        <SetaBotao direcao={-1} rotulo="Ver avaliações anteriores" />
+        <SetaBotao direcao={1} rotulo="Ver próximas avaliações" />
       </div>
     </section>
   );
