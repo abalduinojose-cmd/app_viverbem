@@ -6,6 +6,8 @@ import { useRef } from "react";
 import {
   DepoimentoDTO,
   AVALIACOES_GOOGLE_TOTAL,
+  AVALIACOES_GOOGLE_NOTAS,
+  AVALIACOES_GOOGLE_ASSUNTOS,
   PERFIL_GOOGLE_URL,
 } from "@/lib/tipos";
 import { Estrelas } from "./Estrelas";
@@ -65,35 +67,79 @@ export function CarrosselAvaliacoes({
           <h2 className="font-display text-3xl md:text-[2.6rem] font-semibold text-grafite leading-tight mt-2">
             O que dizem <span className="italic text-royal">sobre a gente</span>
           </h2>
+        </div>
 
-          {/* Nota do perfil: uma pílula compacta, centralizada no desktop */}
-          <a
-            href={PERFIL_GOOGLE_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group mt-5 inline-flex items-center gap-3 md:gap-4 bg-white border border-linha rounded-full sombra-card hover:sombra-card-hover hover:border-royal/30 pl-4 pr-5 py-2.5 transition-all"
-          >
-            <IconeGoogle tamanho={26} />
-            <span className="flex items-baseline gap-2">
-              <span className="font-display text-2xl font-semibold text-grafite leading-none tabular-nums">
-                {media.toLocaleString("pt-BR", { minimumFractionDigits: 1 })}
-              </span>
-              <Estrelas nota={Math.round(media)} tamanho={15} />
-            </span>
-            <span className="hidden sm:inline text-grafite-claro text-sm">
-              {AVALIACOES_GOOGLE_TOTAL} avaliações
-            </span>
-            <svg
-              width="15"
-              height="15"
-              viewBox="0 0 24 24"
-              fill="none"
-              aria-hidden="true"
-              className="text-grafite-claro group-hover:text-royal transition-colors"
-            >
-              <path d="M7 17 17 7m0 0H8m9 0v9" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </a>
+        {/* Resumo do perfil: a nota, a distribuição das notas e o que
+            os clientes mais citam. Tudo vem do Google. */}
+        <div className="bg-white border border-linha rounded-[1.75rem] sombra-card mt-7 overflow-hidden">
+          <div className="grid grid-cols-1 sm:grid-cols-[auto_1fr] gap-6 sm:gap-9 p-6 md:p-8">
+            {/* Nota */}
+            <div className="flex sm:flex-col items-center sm:items-start gap-4 sm:gap-2">
+              <IconeGoogle tamanho={30} />
+              <div>
+                <div className="flex items-baseline gap-2.5">
+                  <span className="font-display text-4xl md:text-5xl font-semibold text-grafite leading-none">
+                    {media.toLocaleString("pt-BR", { minimumFractionDigits: 1 })}
+                  </span>
+                  <Estrelas nota={Math.round(media)} tamanho={17} />
+                </div>
+                <a
+                  href={PERFIL_GOOGLE_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group inline-flex items-center gap-1.5 text-grafite-claro hover:text-royal text-sm mt-2 transition-colors"
+                >
+                  {AVALIACOES_GOOGLE_TOTAL} avaliações no Google
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M7 17 17 7m0 0H8m9 0v9" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </a>
+              </div>
+            </div>
+
+            {/* Distribuição das notas: barra por estrela, uma cor só */}
+            <ul className="flex flex-col gap-1.5 min-w-0">
+              {AVALIACOES_GOOGLE_NOTAS.map((n) => (
+                <li key={n.estrelas} className="flex items-center gap-3 text-sm">
+                  <span className="flex items-center gap-1 text-grafite-claro tabular-nums w-6 shrink-0">
+                    {n.estrelas}
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="text-[#f5a623]">
+                      <path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8-4.3-4.1 5.9-.9L12 3.5Z" />
+                    </svg>
+                  </span>
+                  <span className="flex-1 h-2 rounded-full bg-royal-nevoa overflow-hidden">
+                    <span
+                      className="block h-full rounded-full bg-royal"
+                      style={{ width: `${(n.quantidade / AVALIACOES_GOOGLE_TOTAL) * 100}%` }}
+                    />
+                  </span>
+                  <span className="text-grafite-medio tabular-nums w-9 text-right shrink-0">
+                    {n.quantidade}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* O que os clientes mais citam */}
+          <div className="border-t border-linha bg-royal-nevoa/50 px-6 md:px-8 py-5">
+            <p className="text-[0.65rem] font-semibold tracking-[0.18em] uppercase text-grafite-claro">
+              O que mais citam
+            </p>
+            <div className="flex flex-wrap gap-2 mt-3">
+              {AVALIACOES_GOOGLE_ASSUNTOS.map((a) => (
+                <span
+                  key={a.assunto}
+                  className="inline-flex items-center gap-1.5 bg-white border border-linha rounded-full pl-3 pr-2 py-1.5 text-sm text-grafite"
+                >
+                  {a.assunto}
+                  <span className="text-[0.7rem] font-semibold text-royal bg-royal-claro rounded-full px-1.5 py-0.5 tabular-nums">
+                    {a.vezes}
+                  </span>
+                </span>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
 
