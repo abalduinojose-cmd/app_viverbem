@@ -1,6 +1,5 @@
-// Hero da home — assimétrico e com a cara da Viver Bem:
-// à esquerda o texto (com o script e o sublinhado ondulado da marca),
-// à direita uma composição em cartões com fotos reais dos produtos.
+// Hero da home: à esquerda a promessa e as saídas, à direita um
+// painel com o produto de destaque e duas miniaturas da linha.
 // Se public/hero.mp4 existir, o vídeo assume o fundo inteiro.
 import Link from "next/link";
 import { asset } from "@/lib/asset";
@@ -12,9 +11,9 @@ import {
 
 // Fotos reais da linha própria usadas na composição do hero
 const FOTOS_HERO = [
-  { src: "/uploads/citorepair.png", incl: "-5deg" },
-  { src: "/uploads/glow-cream.png", incl: "3deg" },
-  { src: "/uploads/omega3.png", incl: "-2deg" },
+  { src: "/uploads/citorepair.png" },
+  { src: "/uploads/glow-cream.png" },
+  { src: "/uploads/omega3.png" },
 ];
 
 export function HeroHome({ temVideo }: { temVideo: boolean }) {
@@ -102,39 +101,51 @@ export function HeroHome({ temVideo }: { temVideo: boolean }) {
           </div>
         </div>
 
-        {/* Composição com produtos reais (some quando há vídeo) */}
+        {/* Produto em destaque (some quando há vídeo).
+            Eram três cartões inclinados sobre um círculo, com um selo
+            girado por cima: muita coisa disputando atenção com o
+            título. Virou um painel só, com a foto grande e as outras
+            duas em miniatura embaixo. */}
         {!temVideo && (
-          <div className="hidden md:block md:col-span-5 relative h-[30rem]" aria-hidden="true">
-            {/* Círculo de fundo */}
-            <div className="absolute right-4 top-1/2 -translate-y-1/2 w-[26rem] h-[26rem] rounded-full bg-royal-claro/70" />
+          <div className="hidden md:block md:col-span-5" aria-hidden="true">
+            <div className="relative bg-royal-claro/60 rounded-[2.5rem] p-8 lg:p-10">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={asset(FOTOS_HERO[0].src)}
+                alt=""
+                decoding="async"
+                width={420}
+                height={420}
+                className="w-full h-[19rem] lg:h-[22rem] object-contain drop-shadow-[0_20px_40px_rgba(16,42,74,0.18)]"
+              />
 
-            {/* Fotos em composição */}
-            <div
-              className="absolute left-2 top-6 w-44 bg-white rounded-3xl border border-linha p-4 shadow-[0_18px_44px_rgba(16,42,74,0.14)]"
-              style={{ rotate: FOTOS_HERO[0].incl }}
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={asset(FOTOS_HERO[0].src)} alt="" decoding="async" width={320} height={320} className="w-full h-40 object-contain" />
-            </div>
-            <div
-              className="absolute right-6 top-16 w-48 bg-white rounded-3xl border border-linha p-4 shadow-[0_18px_44px_rgba(16,42,74,0.16)]"
-              style={{ rotate: FOTOS_HERO[1].incl }}
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={asset(FOTOS_HERO[1].src)} alt="" decoding="async" width={320} height={320} className="w-full h-44 object-contain" />
-            </div>
-            <div
-              className="absolute left-24 bottom-2 w-44 bg-white rounded-3xl border border-linha p-4 shadow-[0_18px_44px_rgba(16,42,74,0.14)]"
-              style={{ rotate: FOTOS_HERO[2].incl }}
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={asset(FOTOS_HERO[2].src)} alt="" decoding="async" width={320} height={320} className="w-full h-40 object-contain" />
-            </div>
+              {/* As outras duas, pequenas, como amostra da linha */}
+              <div className="flex justify-center gap-3 mt-6">
+                {FOTOS_HERO.slice(1).map((f) => (
+                  <div
+                    key={f.src}
+                    className="w-24 h-24 bg-white rounded-2xl border border-linha p-2.5 flex items-center justify-center"
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={asset(f.src)}
+                      alt=""
+                      decoding="async"
+                      width={160}
+                      height={160}
+                      className="max-w-full max-h-full object-contain"
+                    />
+                  </div>
+                ))}
+              </div>
 
-            {/* Selo 100% sob medida */}
-            <div className="absolute right-0 bottom-10 bg-royal text-white rounded-2xl px-5 py-3.5 shadow-[0_14px_34px_rgba(28,105,181,0.35)] rotate-3">
-              <p className="font-display italic text-lg leading-none">fórmulas</p>
-              <p className="text-xs font-semibold tracking-widest uppercase mt-1">100% sob medida</p>
+              {/* Selo reto, encostado na borda do painel */}
+              <div className="absolute -left-4 top-10 bg-white rounded-2xl border border-linha sombra-card px-4 py-3">
+                <p className="font-display text-xl font-semibold text-royal leading-none">100%</p>
+                <p className="text-[0.65rem] font-semibold tracking-[0.14em] uppercase text-grafite-claro mt-1">
+                  sob medida
+                </p>
+              </div>
             </div>
           </div>
         )}
