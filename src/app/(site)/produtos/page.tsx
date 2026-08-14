@@ -1,7 +1,7 @@
 // Catálogo do TOTEM — carrega os dados no servidor e entrega para o
 // componente de cliente, que cuida da navegação por toque.
 import { obterCatalogo } from "@/lib/catalogo";
-import { CatalogoClient } from "@/components/totem/CatalogoClient";
+import { CatalogoClient } from "@/components/site/CatalogoClient";
 
 // Sempre buscar dados frescos do banco (alterações do painel
 // aparecem no totem na próxima navegação/toque)

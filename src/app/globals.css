@@ -31,7 +31,6 @@
   /* Sombras suaves em camadas (clean, sem peso) */
   --shadow-card: 0 1px 2px rgba(16, 42, 74, 0.04), 0 4px 16px rgba(16, 42, 74, 0.06);
   --shadow-card-hover: 0 2px 4px rgba(16, 42, 74, 0.05), 0 12px 32px rgba(16, 42, 74, 0.12);
-  --shadow-flutuante: 0 8px 30px rgba(28, 105, 181, 0.28);
 }
 
 body {
@@ -39,7 +38,7 @@ body {
   color: var(--color-grafite);
   font-family: var(--font-sans);
   letter-spacing: -0.01em;
-  /* Totem: evita seleção de texto e "borracha" azul ao tocar */
+  /* Evita a "borracha" azul do toque no celular */
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -71,16 +70,6 @@ h1, h2, h3, h4 {
 .revelar.visivel {
   opacity: 1;
   transform: translateY(0);
-}
-
-/* Fonte manuscrita do fallback do logo ("Viver Bem") */
-.fonte-logo {
-  font-family: var(--font-display);
-  font-style: italic;
-}
-/* Serifada do subtítulo do logo ("MANIPULAÇÃO E HOMEOPATIA") */
-.fonte-serif {
-  font-family: Georgia, "Times New Roman", serif;
 }
 
 /* Degradê da marca (azul royal -> vermelho escarlate) para CTAs */
@@ -132,8 +121,7 @@ h1, h2, h3, h4 {
   box-shadow: var(--shadow-card-hover);
 }
 
-/* Esconde a barra de rolagem nas faixas horizontais do totem,
-   mantendo a rolagem por toque funcionando */
+/* Esconde a barra nas faixas horizontais, mantendo a rolagem */
 .rolagem-sem-barra {
   scrollbar-width: none;
 }
@@ -141,7 +129,7 @@ h1, h2, h3, h4 {
   display: none;
 }
 
-/* Entrada suave dos cards do catálogo */
+/* Entrada suave dos cartões */
 @keyframes surgir {
   from {
     opacity: 0;

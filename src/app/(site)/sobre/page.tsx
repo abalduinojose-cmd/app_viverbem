@@ -3,7 +3,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { obterAvaliacoes } from "@/lib/catalogo";
-import { CarrosselAvaliacoes } from "@/components/totem/CarrosselAvaliacoes";
+import { CarrosselAvaliacoes } from "@/components/site/CarrosselAvaliacoes";
 import { ComoPedir } from "@/components/site/ComoPedir";
 import {
   ANOS_TRADICAO,

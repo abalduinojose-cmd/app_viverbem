@@ -12,7 +12,7 @@ import { useCarrinho } from "@/lib/carrinho";
 import { formatarPreco } from "@/lib/preco";
 import { linkWhatsAppPedido, gerarCodigoPedido } from "@/lib/whatsapp";
 import { UNIDADES, ENTREGA_RETIRADA, ENTREGA_DELIVERY } from "@/lib/tipos";
-import { IconeMoto } from "@/components/site/IconeMoto";
+import { IconeMoto } from "./IconeMoto";
 import { FotoProduto } from "./FotoProduto";
 
 type Etapa = "itens" | "finalizar";

@@ -20,7 +20,7 @@ import { ReelsInstagram } from "@/components/site/ReelsInstagram";
 import { SecaoDelivery } from "@/components/site/SecaoDelivery";
 import { CartaoNumeros } from "@/components/site/CartaoNumeros";
 import { EnviarReceita } from "@/components/site/EnviarReceita";
-import { CarrosselAvaliacoes } from "@/components/totem/CarrosselAvaliacoes";
+import { CarrosselAvaliacoes } from "@/components/site/CarrosselAvaliacoes";
 
 export const dynamic = "force-dynamic";
 

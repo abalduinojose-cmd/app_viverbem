@@ -6,7 +6,7 @@
 import { useMemo, useState } from "react";
 import { CategoriaDTO, ProdutoDTO, TIPO_COMBO } from "@/lib/tipos";
 import { ProdutoCard } from "./ProdutoCard";
-import { FaixaProdutos } from "@/components/site/FaixaProdutos";
+import { FaixaProdutos } from "./FaixaProdutos";
 
 type Filtro = "tudo" | "novidades" | "combos" | number; // number = id da categoria
 

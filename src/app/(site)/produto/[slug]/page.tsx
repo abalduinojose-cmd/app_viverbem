@@ -11,7 +11,7 @@ import type { Metadata } from "next";
 import { obterCatalogo } from "@/lib/catalogo";
 import { formatarPreco } from "@/lib/preco";
 import { TIPO_COMBO, listarItens, listarDosagens } from "@/lib/tipos";
-import { FotoProduto } from "@/components/totem/FotoProduto";
+import { FotoProduto } from "@/components/site/FotoProduto";
 import { AcoesProduto } from "@/components/site/AcoesProduto";
 import { FaixaProdutos } from "@/components/site/FaixaProdutos";
 import { VistosRecentemente } from "@/components/site/VistosRecentemente";

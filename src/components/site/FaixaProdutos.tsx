@@ -11,7 +11,7 @@
 
 import { useRef, useState } from "react";
 import { ProdutoDTO } from "@/lib/tipos";
-import { ProdutoCard } from "@/components/totem/ProdutoCard";
+import { ProdutoCard } from "./ProdutoCard";
 
 // A partir de quantos pixels consideramos que foi arrasto, e não clique
 const TOLERANCIA = 6;

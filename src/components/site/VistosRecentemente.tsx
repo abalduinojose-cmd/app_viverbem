@@ -12,7 +12,7 @@ import Link from "next/link";
 import { ProdutoDTO, listarDosagens } from "@/lib/tipos";
 import { formatarPreco } from "@/lib/preco";
 import { useCarrinho } from "@/lib/carrinho";
-import { FotoProduto } from "@/components/totem/FotoProduto";
+import { FotoProduto } from "./FotoProduto";
 
 const CHAVE = "viverbem:vistos";
 const LIMITE = 12;
