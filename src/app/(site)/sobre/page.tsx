@@ -4,6 +4,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { obterAvaliacoes } from "@/lib/catalogo";
 import { CarrosselAvaliacoes } from "@/components/totem/CarrosselAvaliacoes";
+import { ComoPedir } from "@/components/site/ComoPedir";
 import {
   ANOS_TRADICAO,
   WHATSAPP_LOJA,
@@ -19,27 +20,6 @@ export const metadata: Metadata = {
     "Há 19 anos em Petrópolis: manipulação, homeopatia e saúde personalizada. Conheça a Viver Bem, como fazer seu pedido e as nossas 3 unidades.",
 };
 
-// Passo a passo do pedido pelo site
-const PASSOS = [
-  {
-    titulo: "Escolha seus produtos",
-    texto: "Navegue pelo catálogo e adicione ao carrinho tudo o que você precisa.",
-  },
-  {
-    titulo: "Informe seus dados",
-    texto:
-      "Preencha o formulário rápido com seus dados para que possamos identificar seu pedido.",
-  },
-  {
-    titulo: "Envie para o WhatsApp",
-    texto: "Finalize no site e envie seu pedido direto para a nossa equipe pelo WhatsApp.",
-  },
-  {
-    titulo: "Finalização com a equipe",
-    texto:
-      "Nossa atendente recebe seu pedido na hora, verifica a disponibilidade, organiza a manipulação ou separa o item do estoque e conclui o pagamento com você.",
-  },
-];
 
 
 export default async function PaginaSobre() {
@@ -72,35 +52,7 @@ export default async function PaginaSobre() {
       </section>
 
       {/* ---------- Como fazer o pedido ---------- */}
-      <section id="como-pedir" className="px-4 md:px-8 mt-12 max-w-6xl mx-auto scroll-mt-24">
-        <h2 className="text-2xl md:text-3xl font-bold text-grafite tracking-tight text-center mb-8">
-          Como fazer seu pedido por aqui
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
-          {PASSOS.map((p, i) => (
-            <div
-              key={p.titulo}
-              className="group bg-white rounded-[1.75rem] border border-linha sombra-card hover:sombra-card-hover transition-all p-7 relative overflow-hidden"
-            >
-              <span
-                className="absolute -right-2 -top-6 text-[6rem] font-bold text-royal/5 select-none leading-none"
-                aria-hidden="true"
-              >
-                {i + 1}
-              </span>
-              <div className="relative flex items-start gap-5">
-                <span className="shrink-0 w-12 h-12 rounded-2xl degrade-marca text-white flex items-center justify-center text-lg font-bold">
-                  {i + 1}
-                </span>
-                <div>
-                  <h3 className="text-xl font-bold text-grafite tracking-tight">{p.titulo}</h3>
-                  <p className="text-grafite-medio mt-2 leading-relaxed">{p.texto}</p>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+      <ComoPedir />
 
       {/* ---------- Diferenciais ---------- */}
       <section className="px-4 md:px-8 mt-12 max-w-6xl mx-auto">
