@@ -35,11 +35,28 @@ function variacao(atual: number, anterior: number): number | null {
   return Math.round(((atual - anterior) / anterior) * 100);
 }
 
+const MESES_CURTOS = [
+  "jan",
+  "fev",
+  "mar",
+  "abr",
+  "mai",
+  "jun",
+  "jul",
+  "ago",
+  "set",
+  "out",
+  "nov",
+  "dez",
+];
+
 export async function obterMetricas() {
   const comecoDesteMes = inicioDoMes();
   const comecoDoMesPassado = inicioDoMes(-1);
+  // Janela dos gráficos: 6 meses cheios contando o atual
+  const comecoDaJanela = inicioDoMes(-5);
 
-  const [doMes, doMesPassado, totalPedidos, produtos, ultimos] = await Promise.all([
+  const [doMes, doMesPassado, totalPedidos, produtos, ultimos, daJanela] = await Promise.all([
     db.cliente.findMany({ where: { criadoEm: { gte: comecoDesteMes } } }),
     db.cliente.findMany({
       where: { criadoEm: { gte: comecoDoMesPassado, lt: comecoDesteMes } },
@@ -56,6 +73,10 @@ export async function obterMetricas() {
       },
     }),
     db.cliente.findMany({ orderBy: { criadoEm: "desc" }, take: 5 }),
+    db.cliente.findMany({
+      where: { criadoEm: { gte: comecoDaJanela } },
+      select: { criadoEm: true, totalCentavos: true },
+    }),
   ]);
 
   const faturamentoMes = doMes.reduce((s, c) => s + c.totalCentavos, 0);
@@ -85,7 +106,57 @@ export async function obterMetricas() {
     semCategoria: produtos.filter((p) => p.categoriaId === null).length,
   };
 
+  // Faturamento dos 6 meses da janela, inclusive os zerados: um mês
+  // sem venda precisa aparecer como vale, não sumir do gráfico.
+  const hoje = new Date();
+  const porMes = new Map<string, { faturamento: number; pedidos: number }>();
+  for (let i = 5; i >= 0; i--) {
+    const d = new Date(hoje.getFullYear(), hoje.getMonth() - i, 1);
+    porMes.set(`${d.getFullYear()}-${d.getMonth()}`, { faturamento: 0, pedidos: 0 });
+  }
+  for (const p of daJanela) {
+    const chave = `${p.criadoEm.getFullYear()}-${p.criadoEm.getMonth()}`;
+    const atual = porMes.get(chave);
+    if (atual) {
+      atual.faturamento += p.totalCentavos;
+      atual.pedidos += 1;
+    }
+  }
+  const porMesLista = [...porMes.entries()].map(([chave, v]) => {
+    const [ano, mes] = chave.split("-").map(Number);
+    return {
+      rotulo: MESES_CURTOS[mes],
+      ano,
+      faturamento: v.faturamento,
+      pedidos: v.pedidos,
+    };
+  });
+
+  // Pedidos por dia nos últimos 14 dias, mesma lógica dos vazios
+  const porDia = new Map<string, number>();
+  const diasRotulo: { chave: string; rotulo: string }[] = [];
+  for (let i = 13; i >= 0; i--) {
+    const d = new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate() - i);
+    const chave = `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
+    porDia.set(chave, 0);
+    diasRotulo.push({
+      chave,
+      rotulo: `${String(d.getDate()).padStart(2, "0")}/${String(d.getMonth() + 1).padStart(2, "0")}`,
+    });
+  }
+  for (const p of daJanela) {
+    const d = p.criadoEm;
+    const chave = `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
+    if (porDia.has(chave)) porDia.set(chave, (porDia.get(chave) ?? 0) + 1);
+  }
+  const porDiaLista = diasRotulo.map((d) => ({
+    rotulo: d.rotulo,
+    pedidos: porDia.get(d.chave) ?? 0,
+  }));
+
   return {
+    porMes: porMesLista,
+    porDia: porDiaLista,
     pedidosMes: doMes.length,
     pedidosVariacao: variacao(doMes.length, doMesPassado.length),
     faturamentoMes,

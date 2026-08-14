@@ -104,9 +104,16 @@ export function CatalogoClient({
 
   const Grade = ({ lista }: { lista: ProdutoDTO[] }) =>
     lista.length === 0 ? (
-      <p className="text-grafite-claro text-lg py-16 text-center">Nenhum produto encontrado.</p>
+      <div className="py-16 text-center">
+        <p className="font-display text-xl font-semibold text-grafite">
+          Nenhum produto encontrado
+        </p>
+        <p className="text-grafite-claro mt-1">
+          Tente outra palavra ou escolha outra categoria acima.
+        </p>
+      </div>
     ) : (
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5">
+      <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-5">
         {lista.map((p) => (
           <ProdutoCard key={p.id} produto={p} />
         ))}
@@ -115,15 +122,26 @@ export function CatalogoClient({
 
   return (
     <div className="flex-1 flex flex-col min-h-screen pt-16 md:pt-[4.5rem]">
-      {/* ---------- Barra de busca e filtros (gruda abaixo do header) ---------- */}
-      <div className="sticky top-16 md:top-[4.5rem] z-40 bg-white/95 backdrop-blur-md border-b border-linha">
-        <div className="flex items-center gap-4 px-4 md:px-8 pt-4 pb-3 max-w-7xl mx-auto w-full">
-          <h1 className="hidden md:block text-xl font-bold text-grafite tracking-tight shrink-0">
-            Catálogo
-          </h1>
+      {/* ---------- Abertura da página ---------- */}
+      <div className="halo-marca px-4 md:px-8 pt-10 pb-7">
+        <div className="max-w-7xl mx-auto">
+          <p className="selo-secao text-escarlate">o que a gente prepara</p>
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-3 mt-2">
+            <h1 className="font-display text-3xl md:text-[2.8rem] font-semibold text-grafite tracking-tight leading-tight">
+              Nossos <span className="italic text-royal">produtos</span>
+            </h1>
+            <p className="text-grafite-medio md:text-lg md:text-right md:max-w-sm">
+              {produtos.length} fórmulas e dermocosméticos, prontos para o seu pedido.
+            </p>
+          </div>
+        </div>
+      </div>
 
+      {/* ---------- Barra de busca e filtros (gruda abaixo do header) ---------- */}
+      <div className="sticky top-16 md:top-[4.5rem] z-40 bg-white/95 backdrop-blur-md border-y border-linha">
+        <div className="flex items-center gap-4 px-4 md:px-8 pt-4 pb-3 max-w-7xl mx-auto w-full">
           {/* Busca */}
-          <div className="flex-1 relative max-w-2xl ml-auto">
+          <div className="flex-1 relative max-w-2xl mx-auto">
             <svg
               className="absolute left-4 top-1/2 -translate-y-1/2 text-grafite-claro"
               width="20"

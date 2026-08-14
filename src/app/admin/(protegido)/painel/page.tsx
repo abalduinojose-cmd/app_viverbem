@@ -7,6 +7,11 @@ import { obterMetricas } from "@/lib/metricas";
 import { PAPEL_ADMIN } from "@/lib/tipos";
 import { formatarPreco } from "@/lib/preco";
 import { CabecalhoAdmin } from "@/components/admin/PecasAdmin";
+import {
+  GraficoFaturamento,
+  GraficoPedidosDia,
+  GraficoEntregas,
+} from "@/components/admin/Graficos";
 
 export const dynamic = "force-dynamic";
 
@@ -116,6 +121,25 @@ export default async function PaginaPainel() {
         />
       </div>
 
+      {/* Gráficos */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-4">
+        <div className="bg-white rounded-2xl border border-linha p-5">
+          <h2 className="font-semibold text-grafite">Faturamento por mês</h2>
+          <p className="text-grafite-claro text-xs mt-0.5">Últimos 6 meses</p>
+          <div className="mt-4">
+            <GraficoFaturamento dados={m.porMes} />
+          </div>
+        </div>
+
+        <div className="bg-white rounded-2xl border border-linha p-5">
+          <h2 className="font-semibold text-grafite">Pedidos por dia</h2>
+          <p className="text-grafite-claro text-xs mt-0.5">Últimos 14 dias</p>
+          <div className="mt-4">
+            <GraficoPedidosDia dados={m.porDia} />
+          </div>
+        </div>
+      </div>
+
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-4">
         {/* Mais pedidos */}
         <div className="bg-white rounded-2xl border border-linha p-5">
@@ -156,39 +180,7 @@ export default async function PaginaPainel() {
         {/* Como os clientes recebem */}
         <div className="bg-white rounded-2xl border border-linha p-5">
           <h2 className="font-semibold text-grafite">Como recebem o pedido</h2>
-          {m.entregas + m.retiradas === 0 ? (
-            <p className="text-grafite-claro text-sm mt-3">
-              Ainda sem pedidos com essa informação neste mês.
-            </p>
-          ) : (
-            <>
-              <div className="flex h-3 rounded-full overflow-hidden mt-4 bg-royal-nevoa">
-                <div
-                  className="bg-royal"
-                  style={{
-                    width: `${Math.round((m.entregas / (m.entregas + m.retiradas)) * 100)}%`,
-                  }}
-                />
-                <div className="bg-escarlate flex-1" />
-              </div>
-              <div className="flex flex-wrap gap-x-6 gap-y-2 mt-4 text-sm">
-                <span className="inline-flex items-center gap-2">
-                  <span className="w-2.5 h-2.5 rounded-full bg-royal" aria-hidden="true" />
-                  <span className="text-grafite-medio">Entrega</span>
-                  <b className="text-grafite tabular-nums">{m.entregas}</b>
-                </span>
-                <span className="inline-flex items-center gap-2">
-                  <span className="w-2.5 h-2.5 rounded-full bg-escarlate" aria-hidden="true" />
-                  <span className="text-grafite-medio">Retirada</span>
-                  <b className="text-grafite tabular-nums">{m.retiradas}</b>
-                </span>
-              </div>
-              <p className="text-grafite-claro text-xs mt-4 leading-relaxed">
-                Serve para dimensionar a equipe de entrega e saber qual loja recebe mais
-                gente.
-              </p>
-            </>
-          )}
+          <GraficoEntregas entregas={m.entregas} retiradas={m.retiradas} />
         </div>
       </div>
 
